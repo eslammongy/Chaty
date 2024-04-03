@@ -24,15 +24,14 @@ class SignInRepoImplementation implements SignInRepo {
       AuthCredential credential = GoogleAuthProvider.credential(
           idToken: authentication?.idToken,
           accessToken: authentication?.accessToken);
-      await firebaseAuth
-          .signInWithCredential(credential)
-          .then((userCredential) {
-        if (userCredential.user != null) {
-          final userModel = _fillUserModel(userCredential.user!);
-          return right(userModel);
-        }
-      });
-      return left(AuthExceptionsTypes.undefined);
+      final userCredential =
+          await firebaseAuth.signInWithCredential(credential);
+      if (userCredential.user != null) {
+        final userModel = _fillUserModel(userCredential.user!);
+        return right(userModel);
+      } else {
+        return left(AuthExceptionsTypes.undefined);
+      }
     } on PlatformException catch (ex) {
       return left(AuthExceptionHandler.handleException(ex.message));
     } on FirebaseAuthException catch (error) {

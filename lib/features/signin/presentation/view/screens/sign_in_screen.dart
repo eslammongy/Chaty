@@ -70,6 +70,8 @@ class SignInScreen extends StatelessWidget {
                           showLoadingDialog(context);
                         }
                         if (state is SignInWithGoogleSuccessState) {
+                          debugPrint(
+                              "User Signed:Name: ${state.userModel.name} ID: ${state.userModel.uId}");
                           await userInfoCubit
                               .createNewUserProfile(user: state.userModel)
                               .then((value) async {

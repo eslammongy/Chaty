@@ -23,6 +23,7 @@ class SignInCubit extends Cubit<SignInStates> {
       });
     } catch (exp) {
       final errorMsg = AuthExceptionHandler.generateExceptionMessage(exp);
+      debugPrint("SignIn CUBIT Error-$errorMsg");
       emit(SignInGenericFailureState(errorMsg));
     }
   }
@@ -74,7 +75,6 @@ class SignInCubit extends Cubit<SignInStates> {
     await signInRepo.submitUserPhoneNumber(
       phoneNumber: phoneNumber,
       setVerificationCode: (verifyCode) {
-        debugPrint("#submitUserPhoneNumber verificationId: $verifyCode");
         emit(PhoneNumberSubmittedState(verificationId: verifyCode));
       },
       verificationFailed: (authException) {
@@ -89,8 +89,6 @@ class SignInCubit extends Cubit<SignInStates> {
       String otpCode, String verificationId) async {
     emit(SignInLoadingState());
 
-    debugPrint(
-        "Verify Code:: verificationId: $verificationId--otpCode: $otpCode");
     var result = await signInRepo.signInWithPhoneNumber(
       otpCode: otpCode,
       verificationId: verificationId,

@@ -1,5 +1,6 @@
 import 'profile_info_repo.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_firebase/core/errors/exp_enum.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_firebase/features/profile/data/models/user_model.dart';
 class ProfileInfoRepoImpl implements ProfileInfoRepo {
   final FirebaseAuth firebaseAuth;
   final DatabaseReference databaseReference =
-      FirebaseDatabase.instance.ref().child('users');
+      FirebaseDatabase.instance.ref("users");
 
   ProfileInfoRepoImpl({required this.firebaseAuth});
 
@@ -20,8 +21,10 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
       await databaseReference
           .child(firebaseAuth.currentUser!.uid)
           .set(userModel.toMap());
+      debugPrint("User Profile-${databaseReference.path}");
       return right(userModel);
     } on FirebaseException catch (error) {
+      debugPrint("User Profile Error-$error");
       return left(AuthExceptionHandler.handleException(error.code));
     }
   }
