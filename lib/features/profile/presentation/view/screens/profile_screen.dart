@@ -1,6 +1,8 @@
 import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_firebase/features/profile/presentation/view_model/profile_info_cubit.dart';
@@ -51,7 +53,9 @@ class ProfileScreen extends StatelessWidget {
                           size: 28,
                           color: theme.colorScheme.secondary,
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          pickGalleryImage(context: context);
+                        },
                       ),
                     ),
                   ]),
@@ -130,5 +134,37 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> pickGalleryImage({
+    required BuildContext context,
+  }) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 200,
+      maxHeight: 200,
+    );
+    try {
+      if (context.mounted) {
+        if (pickedFile != null) {
+          await displayPickImageDialog(
+            context,
+            pickedFile.path,
+            onPressed: () async {
+              try {} catch (e) {
+                rethrow;
+              }
+            },
+          );
+        } else {
+          return;
+        }
+      }
+    } on Exception catch (e) {
+      Future(() {
+        displaySnackBar(context, e.toString());
+      });
+    }
   }
 }

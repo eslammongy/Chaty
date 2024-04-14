@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
 
@@ -73,4 +74,31 @@ bool isValidEmail(String value) {
   const pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
   RegExp regExp = RegExp(pattern);
   return regExp.hasMatch(value);
+}
+
+Future<void> displayPickImageDialog(BuildContext context, String imgPath,
+    {Function()? onPressed}) async {
+  return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add optional parameters'),
+          content: ClipRRect(
+            child: Image.file(
+              File(imgPath),
+              width: 200,
+              height: 200,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('CANCEL'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(onPressed: onPressed, child: const Text('PICK')),
+          ],
+        );
+      });
 }

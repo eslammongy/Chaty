@@ -40,6 +40,7 @@ dependencies:
   firebase_database: ^10.0.16
   flutter_bloc: ^8.1.2
   cached_network_image: ^3.3.1
+  image_picker: ^1.0.8
   flutter_native_splash: ^2.2.19
   flutter_svg: ^2.0.9
   font_awesome_flutter: ^10.4.0
