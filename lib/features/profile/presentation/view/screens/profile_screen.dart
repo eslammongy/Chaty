@@ -1,11 +1,9 @@
 import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase/core/utils/helper.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_firebase/features/profile/presentation/view_model/profile_info_cubit.dart';
+import 'package:flutter_firebase/features/profile/presentation/view/widgets/profile_image_section.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/widgets/profile_info_field_item.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -31,34 +29,7 @@ class ProfileScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: 10.h),
-                  Stack(children: [
-                    CachedNetworkImage(
-                      imageUrl: userModel?.image ??
-                          "http://via.placeholder.com/200x150",
-                      imageBuilder: (context, imageProvider) =>
-                          const CircleAvatar(
-                        radius: 60,
-                      ),
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                    Positioned(
-                      bottom: 2,
-                      right: 2,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.add_a_photo_rounded,
-                          size: 28,
-                          color: theme.colorScheme.secondary,
-                        ),
-                        onPressed: () async {
-                          pickGalleryImage(context: context);
-                        },
-                      ),
-                    ),
-                  ]),
+                  const ProfileImageSection(),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -134,37 +105,5 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> pickGalleryImage({
-    required BuildContext context,
-  }) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 200,
-      maxHeight: 200,
-    );
-    try {
-      if (context.mounted) {
-        if (pickedFile != null) {
-          await displayPickImageDialog(
-            context,
-            pickedFile.path,
-            onPressed: () async {
-              try {} catch (e) {
-                rethrow;
-              }
-            },
-          );
-        } else {
-          return;
-        }
-      }
-    } on Exception catch (e) {
-      Future(() {
-        displaySnackBar(context, e.toString());
-      });
-    }
   }
 }

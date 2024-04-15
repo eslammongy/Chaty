@@ -97,7 +97,7 @@ Future<void> displayPickImageDialog(BuildContext context, String imgPath,
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(onPressed: onPressed, child: const Text('PICK')),
+            TextButton(onPressed: onPressed, child: const Text('Select')),
           ],
         );
       });

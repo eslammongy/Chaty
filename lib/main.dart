@@ -43,7 +43,7 @@ class FlutterFirebase extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => ProfileInfoCubit(
-              profileInfoRepo: injectable.getIt<ProfileInfoRepo>(),
+              profileInfoRepo: injectable.getIt<ProfileInfoRepo>(), 
             ),
           )
         ],
