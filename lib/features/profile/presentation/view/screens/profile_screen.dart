@@ -1,6 +1,7 @@
 import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_firebase/features/profile/presentation/view_model/profile_info_cubit.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/widgets/profile_image_section.dart';
@@ -37,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'Hi Johan, is there a repo anywhere that I can check my code against please. It all worked fine until I extracted the ProfileMenuItem code',
+                          dummyBio,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.bodyLarge,
@@ -58,19 +59,19 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   ProfileInfoFieldItem(
-                    text: userModel?.name ?? 'John Doe',
+                    text: userModel?.name ?? dummyName,
                     textController: nameTxtController,
                     icon: FontAwesomeIcons.user,
                   ),
                   const SizedBox(height: 15),
                   ProfileInfoFieldItem(
-                    text: userModel?.email ?? "QWk7z@example.com",
+                    text: userModel?.email ?? dummyEmail,
                     textController: emailTxtController,
                     icon: FontAwesomeIcons.envelope,
                   ),
                   const SizedBox(height: 15),
                   ProfileInfoFieldItem(
-                    text: userModel?.phone ?? '+201234567890',
+                    text: userModel?.phone ?? dummyPhone,
                     textController: phoneTxtController,
                     icon: FontAwesomeIcons.phone,
                   ),
@@ -97,7 +98,7 @@ class ProfileScreen extends StatelessWidget {
           height: 50,
           child: Center(
             child: Text(
-              'Update Info',
+              'Save',
               textAlign: TextAlign.center,
               style: theme.textTheme.titleLarge,
             ),

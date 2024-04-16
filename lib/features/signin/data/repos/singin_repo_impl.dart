@@ -26,12 +26,11 @@ class SignInRepoImplementation implements SignInRepo {
           accessToken: authentication?.accessToken);
       final userCredential =
           await firebaseAuth.signInWithCredential(credential);
-      if (userCredential.user != null) {
-        final userModel = _fillUserModel(userCredential.user!);
-        return right(userModel);
-      } else {
+      if (userCredential.user == null) {
         return left(AuthExceptionsTypes.undefined);
       }
+      final userModel = _fillUserModel(userCredential.user!);
+      return right(userModel);
     } on PlatformException catch (ex) {
       return left(AuthExceptionHandler.handleException(ex.message));
     } on FirebaseAuthException catch (error) {
@@ -44,7 +43,7 @@ class SignInRepoImplementation implements SignInRepo {
         uId: user.uid,
         name: user.displayName,
         email: user.email,
-        image: user.photoURL,
+        imageUrl: user.photoURL,
         phone: user.phoneNumber);
     return userModel;
   }

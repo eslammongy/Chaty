@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_firebase/core/utils/helper.dart';
+import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_firebase/features/profile/presentation/view_model/profile_info_cubit.dart';
 
@@ -21,33 +22,39 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final userModel = ProfileInfoCubit.get(context).userModel;
-    return Stack(children: [
-      _image != null
-          ? CircleAvatar(radius: 100, backgroundImage: MemoryImage(_image!))
-          : CachedNetworkImage(
-              imageUrl:
-                  userModel?.image ?? "http://via.placeholder.com/200x150",
-              imageBuilder: (context, imageProvider) => const CircleAvatar(
-                radius: 60,
+    return SizedBox(
+      height: 160,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          _image != null
+              ? CircleAvatar(radius: 80, backgroundImage: MemoryImage(_image!))
+              : CachedNetworkImage(
+                  imageUrl: userModel?.imageUrl ?? dummyImageUrl,
+                  imageBuilder: (context, imageProvider) => const CircleAvatar(
+                    radius: 80,
+                  ),
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+          Positioned(
+            bottom: 5,
+            right: 0,
+            child: IconButton(
+              icon: Icon(
+                Icons.add_a_photo_rounded,
+                size: 28,
+                color: theme.colorScheme.secondary,
               ),
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
+              onPressed: () {
+                showImagePickerOption(context);
+              },
             ),
-      Positioned(
-        bottom: 2,
-        right: 2,
-        child: IconButton(
-          icon: Icon(
-            Icons.add_a_photo_rounded,
-            size: 28,
-            color: theme.colorScheme.secondary,
           ),
-          onPressed: () {
-            showImagePickerOption(context);
-          },
-        ),
+        ],
       ),
-    ]);
+    );
   }
 
   void showImagePickerOption(BuildContext context) {
