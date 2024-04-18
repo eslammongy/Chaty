@@ -49,6 +49,7 @@ void showLoadingDialog(BuildContext context) {
 
 AlertDialog generateAlertDialog() {
   return AlertDialog(
+    key: GlobalKey(),
     backgroundColor: Colors.transparent,
     elevation: 0,
     content: SizedBox(

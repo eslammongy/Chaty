@@ -22,21 +22,23 @@ class ProfileScreen extends StatelessWidget {
 
     return BlocConsumer<ProfileInfoCubit, ProfileInfoStates>(
       listener: (context, state) {
-        if (state is ProfileInfoFetchedState) {
-          // dismiss the loading dialog
+        if (state is ProfileInfoLoadingState) {
+          showLoadingDialog(context);
+        }
+        if (state is ProfileInfoFetchedState ||
+            state is ProfileInfoCreatedState) {
+          //* dismiss the loading dialog
           GoRouter.of(context).pop();
         }
         if (state is ProfileInfoFailureState) {
-          // dismiss the loading dialog
+          //* dismiss the loading dialog
           GoRouter.of(context).pop();
           displaySnackBar(context, state.errorMsg);
         }
       },
       builder: (context, state) {
         if (state is ProfileInfoLoadingState) {
-          Future(() {
-            showLoadingDialog(context);
-          });
+          Future(() => showLoadingDialog(context));
         }
         return Scaffold(
           body: SingleChildScrollView(

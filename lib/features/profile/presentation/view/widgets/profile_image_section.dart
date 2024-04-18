@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,7 +23,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final userModel = ProfileInfoCubit.get(context).userModel;
+    final profileCubit = ProfileInfoCubit.get(context);
     final roundedShape = RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(80),
         side: const BorderSide(width: 2, color: Colors.white));
@@ -41,12 +39,14 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
                   child: CircleAvatar(
                       radius: 80, backgroundImage: MemoryImage(_image!)))
               : CachedNetworkImage(
-                  imageUrl: userModel?.imageUrl ?? dummyImageUrl,
+                  imageUrl: profileCubit.userModel?.imageUrl ?? dummyImageUrl,
                   imageBuilder: (context, imageProvider) => Card(
                     shape: roundedShape,
+                    color: Colors.transparent,
                     margin: EdgeInsets.zero,
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 80,
+                      backgroundImage: imageProvider,
                     ),
                   ),
                   placeholder: (context, url) => Card(
