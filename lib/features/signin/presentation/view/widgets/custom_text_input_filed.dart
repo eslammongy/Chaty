@@ -32,6 +32,7 @@ class CustomTextInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    textEditingController.text = text ?? "";
     return Card(
       color: theme.colorScheme.surface,
       shape: RoundedRectangleBorder(borderRadius: publicRoundedRadius),

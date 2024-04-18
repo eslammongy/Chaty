@@ -15,7 +15,6 @@ class ProfileInfoFieldItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    textController.text = text;
     return Card(
       elevation: 0,
       color: theme.colorScheme.surface,

@@ -1,6 +1,8 @@
 import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_firebase/features/profile/presentation/view_model/profile_info_cubit.dart';
@@ -13,16 +15,30 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final profileCubit = ProfileInfoCubit.get(context);
     final nameTxtController = TextEditingController();
     final phoneTxtController = TextEditingController();
     final emailTxtController = TextEditingController();
 
-    var userModel = ProfileInfoCubit.get(context).userModel;
-    return Scaffold(
-      body: BlocConsumer<ProfileInfoCubit, ProfileInfoStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return SingleChildScrollView(
+    return BlocConsumer<ProfileInfoCubit, ProfileInfoStates>(
+      listener: (context, state) {
+        if (state is ProfileInfoLoadingState) {
+          debugPrint("Profile Info CUBIT State $state");
+          showLoadingDialog(context);
+        }
+        /* if (state is ProfileInfoFetchedState) {
+          // dismiss the loading dialog
+          GoRouter.of(context).pop();
+        } */
+        if (state is ProfileInfoFailureState) {
+          // dismiss the loading dialog
+          GoRouter.of(context).pop();
+          displaySnackBar(context, state.errorMsg);
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
               child: Column(
@@ -59,19 +75,19 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   ProfileInfoFieldItem(
-                    text: userModel?.name ?? dummyName,
+                    text: profileCubit.userModel?.name ?? dummyName,
                     textController: nameTxtController,
                     icon: FontAwesomeIcons.user,
                   ),
                   const SizedBox(height: 15),
                   ProfileInfoFieldItem(
-                    text: userModel?.email ?? dummyEmail,
+                    text: profileCubit.userModel?.email ?? dummyEmail,
                     textController: emailTxtController,
                     icon: FontAwesomeIcons.envelope,
                   ),
                   const SizedBox(height: 15),
                   ProfileInfoFieldItem(
-                    text: userModel?.phone ?? dummyPhone,
+                    text: profileCubit.userModel?.phone ?? dummyPhone,
                     textController: phoneTxtController,
                     icon: FontAwesomeIcons.phone,
                   ),
@@ -80,9 +96,9 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

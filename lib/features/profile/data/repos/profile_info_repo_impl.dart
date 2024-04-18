@@ -1,6 +1,5 @@
 import 'profile_info_repo.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_firebase/core/errors/exp_enum.dart';
@@ -21,24 +20,23 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
       await databaseReference
           .child(firebaseAuth.currentUser!.uid)
           .set(userModel.toMap());
-      debugPrint("User Profile-${databaseReference.path}");
       return right(userModel);
     } on FirebaseException catch (error) {
-      debugPrint("User Profile Error-$error");
       return left(AuthExceptionHandler.handleException(error.code));
+    } on Exception catch (error) {
+      return left(AuthExceptionHandler.handleException(error));
     }
   }
 
   @override
   Future<Either<AuthExceptionsTypes, UserModel>> fetchUserProfileInfo() async {
-    UserModel userModel = UserModel();
     try {
-      await databaseReference
+      final userModel = await databaseReference
           .child(firebaseAuth.currentUser!.uid)
           .once()
           .then((event) {
-        userModel =
-            UserModel.fromJson(event.snapshot.value as Map<Object?, Object?>);
+        return UserModel.fromJson(
+            event.snapshot.value as Map<Object?, Object?>);
       });
       return right(userModel);
     } on FirebaseException catch (error) {

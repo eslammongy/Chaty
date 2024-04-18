@@ -1,11 +1,15 @@
 import 'dart:io';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_firebase/core/constants/app_assets.dart';
+import 'package:flutter_firebase/features/profile/presentation/view/widgets/pick_image_sheet.dart';
 import 'package:flutter_firebase/features/profile/presentation/view_model/profile_info_cubit.dart';
 
 class ProfileImageSection extends StatefulWidget {
@@ -22,96 +26,63 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final userModel = ProfileInfoCubit.get(context).userModel;
+    final roundedShape = RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(80),
+        side: const BorderSide(width: 2, color: Colors.white));
     return SizedBox(
       height: 160,
       child: Stack(
         alignment: Alignment.center,
         children: [
           _image != null
-              ? CircleAvatar(radius: 80, backgroundImage: MemoryImage(_image!))
+              ? Card(
+                  margin: EdgeInsets.zero,
+                  shape: roundedShape,
+                  child: CircleAvatar(
+                      radius: 80, backgroundImage: MemoryImage(_image!)))
               : CachedNetworkImage(
                   imageUrl: userModel?.imageUrl ?? dummyImageUrl,
-                  imageBuilder: (context, imageProvider) => const CircleAvatar(
-                    radius: 80,
+                  imageBuilder: (context, imageProvider) => Card(
+                    shape: roundedShape,
+                    margin: EdgeInsets.zero,
+                    child: const CircleAvatar(
+                      radius: 80,
+                    ),
                   ),
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
+                  placeholder: (context, url) => Card(
+                    shape: roundedShape,
+                    margin: EdgeInsets.zero,
+                    child: CircleAvatar(
+                      radius: 80,
+                      child: Image.asset(AppAssetsManager.firebaseLogo),
+                    ),
+                  ),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
           Positioned(
             bottom: 5,
             right: 0,
             child: IconButton(
+              style: TextButton.styleFrom(
+                  backgroundColor: Colors.white, elevation: 0),
               icon: Icon(
                 Icons.add_a_photo_rounded,
-                size: 28,
                 color: theme.colorScheme.secondary,
               ),
               onPressed: () {
-                showImagePickerOption(context);
+                showImagePickerOption(
+                  context,
+                  onCameraTap: () async => await _pickImageFromCamera(),
+                  onGalleryTap: () async => await _pickGalleryImage(
+                    context,
+                  ),
+                );
               },
             ),
           ),
         ],
       ),
     );
-  }
-
-  void showImagePickerOption(BuildContext context) {
-    final theme = Theme.of(context);
-    showModalBottomSheet(
-        backgroundColor: theme.colorScheme.surface,
-        context: context,
-        builder: (builder) {
-          return Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: SizedBox(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height / 4.5,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        _pickGalleryImage(context);
-                      },
-                      child: const SizedBox(
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.image,
-                              size: 50,
-                            ),
-                            Text("Gallery")
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        _pickImageFromCamera();
-                      },
-                      child: const SizedBox(
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.camera_alt,
-                              size: 50,
-                            ),
-                            Text("Camera")
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
   }
 
   /// pick an image fromGallery
@@ -160,6 +131,6 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
         displaySnackBar(context, e.toString());
       });
     }
-    //  Future(() => GoRouter.of(context).pop());
+    Future(() => GoRouter.of(context).pop());
   }
 }
