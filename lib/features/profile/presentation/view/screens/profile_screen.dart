@@ -14,22 +14,18 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final profileCubit = ProfileInfoCubit.get(context);
+    final theme = Theme.of(context);
     final nameTxtController = TextEditingController();
     final phoneTxtController = TextEditingController();
     final emailTxtController = TextEditingController();
 
     return BlocConsumer<ProfileInfoCubit, ProfileInfoStates>(
       listener: (context, state) {
-        if (state is ProfileInfoLoadingState) {
-          debugPrint("Profile Info CUBIT State $state");
-          showLoadingDialog(context);
-        }
-        /* if (state is ProfileInfoFetchedState) {
+        if (state is ProfileInfoFetchedState) {
           // dismiss the loading dialog
           GoRouter.of(context).pop();
-        } */
+        }
         if (state is ProfileInfoFailureState) {
           // dismiss the loading dialog
           GoRouter.of(context).pop();
@@ -37,6 +33,11 @@ class ProfileScreen extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        if (state is ProfileInfoLoadingState) {
+          Future(() {
+            showLoadingDialog(context);
+          });
+        }
         return Scaffold(
           body: SingleChildScrollView(
             child: Padding(
