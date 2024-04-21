@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_firebase/core/errors/auth_exceptions_handler.dart';
@@ -50,7 +49,6 @@ class ProfileInfoCubit extends Cubit<ProfileInfoStates> {
       emit(ProfileInfoFailureState(errorMsg: errorMsg));
     }, (userModel) {
       this.userModel = userModel;
-      debugPrint("User Profile: ${userModel.imageUrl}");
       emit(ProfileInfoFetchedState(userModel: userModel));
     });
   }

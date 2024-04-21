@@ -1,15 +1,20 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'profile_info_cubit.dart';
 
-abstract class ProfileInfoStates {}
+abstract class ProfileInfoStates {
+  final UserModel? userModel;
 
-class ProfileInfoInitialState extends ProfileInfoStates {}
+  ProfileInfoStates({this.userModel});
+}
+
+class ProfileInfoInitialState extends ProfileInfoStates {
+  ProfileInfoInitialState();
+}
 
 class ProfileInfoLoadingState extends ProfileInfoStates {}
 
 class ProfileInfoCreatedState extends ProfileInfoStates {
-  final UserModel userModel;
-
-  ProfileInfoCreatedState({required this.userModel});
+  ProfileInfoCreatedState({super.userModel});
 }
 
 class ProfileInfoUpdatedState extends ProfileInfoStates {
@@ -17,9 +22,9 @@ class ProfileInfoUpdatedState extends ProfileInfoStates {
 }
 
 class ProfileInfoFetchedState extends ProfileInfoStates {
-  final UserModel userModel;
-
-  ProfileInfoFetchedState({required this.userModel});
+  ProfileInfoFetchedState({
+    super.userModel,
+  });
 }
 
 class ProfileInfoFailureState extends ProfileInfoStates {

@@ -27,6 +27,7 @@ class ProfileScreen extends StatelessWidget {
         }
         if (state is ProfileInfoFetchedState ||
             state is ProfileInfoCreatedState) {
+          profileCubit.userModel = state.userModel;
           //* dismiss the loading dialog
           GoRouter.of(context).pop();
         }
@@ -49,7 +50,9 @@ class ProfileScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: 10.h),
-                  const ProfileImageSection(),
+                  ProfileImageSection(
+                    profileImgUrl: profileCubit.userModel?.imageUrl,
+                  ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

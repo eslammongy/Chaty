@@ -8,10 +8,10 @@ import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/widgets/pick_image_sheet.dart';
-import 'package:flutter_firebase/features/profile/presentation/view_model/profile_info_cubit.dart';
 
 class ProfileImageSection extends StatefulWidget {
-  const ProfileImageSection({super.key});
+  const ProfileImageSection({super.key, required this.profileImgUrl});
+  final String? profileImgUrl;
 
   @override
   State<ProfileImageSection> createState() => _ProfileImageSectionState();
@@ -23,7 +23,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final profileCubit = ProfileInfoCubit.get(context);
+    //final profileCubit = ProfileInfoCubit.get(context);
     final roundedShape = RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(80),
         side: const BorderSide(width: 2, color: Colors.white));
@@ -39,7 +39,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
                   child: CircleAvatar(
                       radius: 80, backgroundImage: MemoryImage(_image!)))
               : CachedNetworkImage(
-                  imageUrl: profileCubit.userModel?.imageUrl ?? dummyImageUrl,
+                  imageUrl: widget.profileImgUrl ?? dummyImageUrl,
                   imageBuilder: (context, imageProvider) => Card(
                     shape: roundedShape,
                     color: Colors.transparent,
