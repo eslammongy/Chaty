@@ -5,5 +5,7 @@ import 'package:flutter_firebase/features/profile/data/models/user_model.dart';
 abstract class ProfileInfoRepo {
   Future<Either<AuthExceptionsTypes, UserModel>> createNewUserProfile(
       {required UserModel userModel});
+  Future<Either<AuthExceptionsTypes, UserModel>> updateUserProfile(
+      {required UserModel userModel});
   Future<Either<AuthExceptionsTypes, UserModel>> fetchUserProfileInfo();
 }

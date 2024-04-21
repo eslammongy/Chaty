@@ -12,6 +12,10 @@ class ProfileInfoCreatedState extends ProfileInfoStates {
   ProfileInfoCreatedState({required this.userModel});
 }
 
+class ProfileInfoUpdatedState extends ProfileInfoStates {
+  ProfileInfoUpdatedState();
+}
+
 class ProfileInfoFetchedState extends ProfileInfoStates {
   final UserModel userModel;
 

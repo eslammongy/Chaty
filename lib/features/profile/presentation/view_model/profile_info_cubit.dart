@@ -26,6 +26,18 @@ class ProfileInfoCubit extends Cubit<ProfileInfoStates> {
     });
   }
 
+  Future<void> updateUserProfile() async {
+    emit(ProfileInfoLoadingState());
+    var result = await profileInfoRepo.updateUserProfile(userModel: userModel!);
+    result.fold((errorStatus) {
+      var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);
+      emit(ProfileInfoFailureState(errorMsg: errorMsg));
+    }, (userModel) {
+      this.userModel = userModel;
+      emit(ProfileInfoUpdatedState());
+    });
+  }
+
   Future<void> fetchUserProfileInfo() async {
     if (FirebaseAuth.instance.currentUser == null) {
       return;

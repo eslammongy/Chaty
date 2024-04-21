@@ -45,4 +45,19 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
       return left(AuthExceptionHandler.handleException(error));
     }
   }
+
+  @override
+  Future<Either<AuthExceptionsTypes, UserModel>> updateUserProfile(
+      {required UserModel userModel}) async {
+    try {
+      await databaseReference
+          .child(firebaseAuth.currentUser!.uid)
+          .update(userModel.toMap());
+      return right(userModel);
+    } on FirebaseException catch (error) {
+      return left(AuthExceptionHandler.handleException(error.code));
+    } on Exception catch (error) {
+      return left(AuthExceptionHandler.handleException(error));
+    }
+  }
 }
