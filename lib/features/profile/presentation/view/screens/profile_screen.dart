@@ -1,5 +1,7 @@
 import 'package:sizer/sizer.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase/core/utils/helper.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_firebase/features/profile/presentation/view_model/profile_info_cubit.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/widgets/profile_image_section.dart';
+import 'package:flutter_firebase/features/signin/presentation/view/widgets/custom_text_input_filed.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/widgets/profile_info_field_item.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -16,6 +19,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final profileCubit = ProfileInfoCubit.get(context);
     final theme = Theme.of(context);
+    final pioTxtController = TextEditingController();
     final nameTxtController = TextEditingController();
     final phoneTxtController = TextEditingController();
     final emailTxtController = TextEditingController();
@@ -26,8 +30,8 @@ class ProfileScreen extends StatelessWidget {
           showLoadingDialog(context);
         }
         if (state is ProfileInfoFetchedState ||
+            state is ProfileInfoUpdatedState ||
             state is ProfileInfoCreatedState) {
-          profileCubit.userModel = state.userModel;
           //* dismiss the loading dialog
           GoRouter.of(context).pop();
         }
@@ -54,30 +58,32 @@ class ProfileScreen extends StatelessWidget {
                     profileImgUrl: profileCubit.userModel?.imageUrl,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          dummyBio,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodyLarge,
+                  Card(
+                    color: theme.colorScheme.surface,
+                    elevation: 0,
+                    margin: EdgeInsets.zero,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, top: 16),
+                          child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Icon(
+                                Icons.info_outline,
+                                color: theme.colorScheme.secondary,
+                              )),
                         ),
-                      ),
-                      Card(
-                          color: theme.colorScheme.primary,
-                          margin: EdgeInsets.zero,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(10),
-                            onTap: () {},
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(Icons.edit_note_rounded),
-                            ),
-                          )),
-                    ],
+                        Expanded(
+                          child: CustomTextInputField(
+                            textEditingController: pioTxtController,
+                            initText: dummyBio,
+                            maxLines: 5,
+                            height: 130,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 20),
                   ProfileInfoFieldItem(
@@ -98,7 +104,12 @@ class ProfileScreen extends StatelessWidget {
                     icon: FontAwesomeIcons.phone,
                   ),
                   const SizedBox(height: 45),
-                  buildUpdateInfoBtn(theme),
+                  buildUpdateInfoBtn(
+                    theme,
+                    onTap: () async {
+                      await profileCubit.updateUserProfile();
+                    },
+                  ),
                 ],
               ),
             ),

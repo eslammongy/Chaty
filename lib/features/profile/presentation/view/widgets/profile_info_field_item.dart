@@ -7,10 +7,12 @@ class ProfileInfoFieldItem extends StatelessWidget {
     required this.text,
     required this.textController,
     required this.icon,
+    this.height = 50.0,
   });
   final String text;
   final TextEditingController textController;
   final IconData icon;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,8 @@ class ProfileInfoFieldItem extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: CustomTextInputField(
             textEditingController: textController,
-            text: text,
+            initText: text,
+            height: height,
             prefix: Icon(
               icon,
               color: theme.colorScheme.secondary,

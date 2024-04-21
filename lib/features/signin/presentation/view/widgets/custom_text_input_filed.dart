@@ -12,13 +12,14 @@ class CustomTextInputField extends StatelessWidget {
     this.onSaved,
     this.maxLines = 1,
     this.isTextPassword = false,
-    this.hintColor,
+    this.textColor,
     this.suffix,
-    this.text,
+    this.initText,
+    this.height = 55.0,
   }) : super(key: key);
 
   final TextEditingController textEditingController;
-  final String? text;
+  final String? initText;
   final String? hint;
   final Widget? prefix;
   final Widget? suffix;
@@ -26,23 +27,23 @@ class CustomTextInputField extends StatelessWidget {
   final bool autoFocus;
   final bool? isTextPassword;
   final int? maxLines;
-  final Color? hintColor;
+  final Color? textColor;
   final Function(String?)? onSaved;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    textEditingController.text = text ?? "";
+    textEditingController.text = initText ?? "";
     return Card(
       color: theme.colorScheme.surface,
       shape: RoundedRectangleBorder(borderRadius: publicRoundedRadius),
       margin: EdgeInsets.zero,
       elevation: 0,
       child: SizedBox(
-        height: 55,
+        height: height,
         child: TextFormField(
           autofocus: autoFocus,
-          expands: false,
           obscureText: isTextPassword ?? false,
           maxLines: maxLines,
           textAlign: TextAlign.start,
@@ -61,12 +62,13 @@ class CustomTextInputField extends StatelessWidget {
               ),
             ),
             isDense: false,
+            isCollapsed: true,
             contentPadding: const EdgeInsets.only(
                 bottom: 20.0, top: 20, left: 10.0, right: 10),
             hintText: hint,
             border: InputBorder.none,
             prefixIcon: prefix,
-            prefixIconColor: hintColor ?? theme.colorScheme.surfaceTint,
+            prefixIconColor: textColor ?? theme.colorScheme.surfaceTint,
           ),
           cursorColor: theme.colorScheme.primary,
           keyboardType: textInputType,

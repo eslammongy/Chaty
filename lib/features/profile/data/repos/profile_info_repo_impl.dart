@@ -1,5 +1,6 @@
 import 'profile_info_repo.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_firebase/core/errors/exp_enum.dart';
@@ -23,7 +24,7 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
       return right(userModel);
     } on FirebaseException catch (error) {
       return left(AuthExceptionHandler.handleException(error.code));
-    } on Exception catch (error) {
+    } catch (error) {
       return left(AuthExceptionHandler.handleException(error));
     }
   }
@@ -41,7 +42,7 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
       return right(userModel);
     } on FirebaseException catch (error) {
       return left(AuthExceptionHandler.handleException(error.code));
-    } on Exception catch (error) {
+    } catch (error) {
       return left(AuthExceptionHandler.handleException(error));
     }
   }
@@ -53,10 +54,14 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
       await databaseReference
           .child(firebaseAuth.currentUser!.uid)
           .update(userModel.toMap());
+      debugPrint("Update Profile ${firebaseAuth.currentUser!.uid} info Done");
+
       return right(userModel);
     } on FirebaseException catch (error) {
+      debugPrint("Firebase Error : ${error.message}");
       return left(AuthExceptionHandler.handleException(error.code));
-    } on Exception catch (error) {
+    } catch (error) {
+      debugPrint("Other Error : $error");
       return left(AuthExceptionHandler.handleException(error));
     }
   }
