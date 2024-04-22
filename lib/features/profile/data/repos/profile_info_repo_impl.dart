@@ -51,7 +51,7 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
   Future<Either<AuthExceptionsTypes, UserModel>> updateUserProfile(
       {required UserModel userModel}) async {
     try {
-      await databaseReference
+      await databaseReference.ref
           .child(firebaseAuth.currentUser!.uid)
           .update(userModel.toMap());
       debugPrint("Update Profile ${firebaseAuth.currentUser!.uid} info Done");
