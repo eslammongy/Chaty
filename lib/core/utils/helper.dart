@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
+import 'package:flutter_firebase/core/theme/common_palette.dart';
 
 /// this is the default box shadow for the card items
 get defBoxShadows => [
@@ -81,11 +82,12 @@ bool isValidEmail(String value) {
 
 Future<void> displayPickImageDialog(BuildContext context, String imgPath,
     {Function()? onPressed}) async {
+  final theme = Theme.of(context);
   return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add optional parameters'),
+          title: const Text('Select Image'),
           content: ClipRRect(
             child: Image.file(
               File(imgPath),
@@ -95,12 +97,23 @@ Future<void> displayPickImageDialog(BuildContext context, String imgPath,
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('CANCEL'),
+              child: Text(
+                'CANCEL',
+                style: theme.textTheme.titleMedium
+                    ?.copyWith(color: theme.colorScheme.onError),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(onPressed: onPressed, child: const Text('Select')),
+            TextButton(
+              onPressed: onPressed,
+              child: Text(
+                'Select',
+                style: theme.textTheme.titleMedium
+                    ?.copyWith(color: CommonColorPalette.greenColor),
+              ),
+            ),
           ],
         );
       });

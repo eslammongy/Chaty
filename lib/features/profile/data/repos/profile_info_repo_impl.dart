@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'profile_info_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_firebase/core/errors/exp_enum.dart';
 import 'package:flutter_firebase/core/errors/auth_exceptions_handler.dart';
@@ -62,6 +64,26 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
       return left(AuthExceptionHandler.handleException(error.code));
     } catch (error) {
       debugPrint("Other Error : $error");
+      return left(AuthExceptionHandler.handleException(error));
+    }
+  }
+
+  @override
+  Future<Either<AuthExceptionsTypes, String>> uploadProfileImg(
+      File imageFile) async {
+    try {
+      String? fileName =
+          FirebaseAuth.instance.currentUser?.displayName ?? "NONE";
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference storageReference =
+          storage.ref().child('profile_images/$fileName');
+      UploadTask uploadTask = storageReference.putFile(imageFile);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+      return right(imageUrl);
+    } on FirebaseException catch (error) {
+      return left(AuthExceptionHandler.handleException(error.code));
+    } catch (error) {
       return left(AuthExceptionHandler.handleException(error));
     }
   }

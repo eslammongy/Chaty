@@ -1,7 +1,5 @@
 import 'package:sizer/sizer.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase/core/utils/helper.dart';
@@ -32,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
             state is ProfileInfoUpdatedState) {
           //* dismiss the loading dialog
           GoRouter.of(context).pop();
-          Future(() => displaySnackBar(context, "Profile Fe Successfully",
+          Future(() => displaySnackBar(context, "Profile info Set Successfully",
               isFailState: false));
         } else if (state is ProfileInfoFailureState) {
           //* dismiss the loading dialog

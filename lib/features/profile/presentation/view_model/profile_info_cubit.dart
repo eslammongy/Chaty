@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase/core/errors/auth_exceptions_handler.dart';
 import 'package:flutter_firebase/features/profile/data/models/user_model.dart';
@@ -47,6 +48,18 @@ class ProfileInfoCubit extends Cubit<ProfileInfoStates> {
     }, (userModel) {
       this.userModel = userModel;
       emit(ProfileInfoFetchedState(userModel: userModel));
+    });
+  }
+
+  Future<void> uploadProfileImage(File imageFile) async {
+    emit(ProfileInfoLoadingState());
+    final result = await profileInfoRepo.uploadProfileImg(imageFile);
+    result.fold((errorStatus) {
+      var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);
+      emit(ProfileInfoFailureState(errorMsg: errorMsg));
+    }, (downloadUrl) {
+      userModel?.imageUrl = downloadUrl;
+      emit(ProfileInfoUpdatedState());
     });
   }
 }

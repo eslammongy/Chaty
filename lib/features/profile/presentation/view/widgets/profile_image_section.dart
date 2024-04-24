@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_firebase/core/utils/helper.dart';
@@ -19,8 +18,7 @@ class ProfileImageSection extends StatefulWidget {
 }
 
 class _ProfileImageSectionState extends State<ProfileImageSection> {
-  Uint8List? _image;
-  File? selectedIMage;
+  File? selectedImg;
   @override
   void initState() {
     super.initState();
@@ -30,7 +28,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    //final profileCubit = ProfileInfoCubit.get(context);
+    final profileCubit = ProfileInfoCubit.get(context);
     final roundedShape = RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(80),
         side: const BorderSide(width: 2, color: Colors.white));
@@ -39,33 +37,13 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          _image != null
+          selectedImg != null
               ? Card(
                   margin: EdgeInsets.zero,
                   shape: roundedShape,
                   child: CircleAvatar(
-                      radius: 80, backgroundImage: MemoryImage(_image!)))
-              : CachedNetworkImage(
-                  imageUrl: widget.profileImgUrl ?? dummyImageUrl,
-                  imageBuilder: (context, imageProvider) => Card(
-                    shape: roundedShape,
-                    color: Colors.transparent,
-                    margin: EdgeInsets.zero,
-                    child: CircleAvatar(
-                      radius: 80,
-                      backgroundImage: imageProvider,
-                    ),
-                  ),
-                  placeholder: (context, url) => Card(
-                    shape: roundedShape,
-                    margin: EdgeInsets.zero,
-                    child: CircleAvatar(
-                      radius: 80,
-                      child: Image.asset(AppAssetsManager.firebaseLogo),
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ),
+                      radius: 80, backgroundImage: FileImage(selectedImg!)))
+              : _cachedNetworkImg(roundedShape),
           Positioned(
             bottom: 5,
             right: 0,
@@ -79,10 +57,14 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
               onPressed: () {
                 showImagePickerOption(
                   context,
-                  onCameraTap: () async => await _pickImageFromCamera(),
-                  onGalleryTap: () async => await _pickGalleryImage(
-                    context,
-                  ),
+                  onCameraTap: () async {
+                    await _pickImageFromCamera();
+                    await profileCubit.uploadProfileImage(selectedImg!);
+                  },
+                  onGalleryTap: () async {
+                    await _pickGalleryImage();
+                    await profileCubit.uploadProfileImage(selectedImg!);
+                  },
                 );
               },
             ),
@@ -92,8 +74,32 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
     );
   }
 
+  CachedNetworkImage _cachedNetworkImg(RoundedRectangleBorder roundedShape) {
+    return CachedNetworkImage(
+      imageUrl: widget.profileImgUrl ?? dummyImageUrl,
+      imageBuilder: (context, imageProvider) => Card(
+        shape: roundedShape,
+        color: Colors.transparent,
+        margin: EdgeInsets.zero,
+        child: CircleAvatar(
+          radius: 80,
+          backgroundImage: imageProvider,
+        ),
+      ),
+      placeholder: (context, url) => Card(
+        shape: roundedShape,
+        margin: EdgeInsets.zero,
+        child: CircleAvatar(
+          radius: 80,
+          child: Image.asset(AppAssetsManager.firebaseLogo),
+        ),
+      ),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
+    );
+  }
+
   /// pick an image fromGallery
-  Future<void> _pickGalleryImage(BuildContext context) async {
+  Future<void> _pickGalleryImage() async {
     final ImagePicker picker = ImagePicker();
 
     try {
@@ -104,16 +110,17 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
       );
       if (context.mounted) {
         if (pickedFile == null) return;
-        await displayPickImageDialog(
-          context,
-          pickedFile.path,
-          onPressed: () async {
-            setState(() {
-              selectedIMage = File(pickedFile.path);
-              _image = File(pickedFile.path).readAsBytesSync();
-            });
-          },
-        );
+        Future(() async {
+          await displayPickImageDialog(
+            context,
+            pickedFile.path,
+            onPressed: () async {
+              setState(() {
+                selectedImg = File(pickedFile.path);
+              });
+            },
+          );
+        });
       }
     } on Exception catch (e) {
       Future(() {
@@ -130,8 +137,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
           await ImagePicker().pickImage(source: ImageSource.camera);
       if (returnImage == null) return;
       setState(() {
-        selectedIMage = File(returnImage.path);
-        _image = File(returnImage.path).readAsBytesSync();
+        selectedImg = File(returnImage.path);
       });
     } on Exception catch (e) {
       Future(() {
