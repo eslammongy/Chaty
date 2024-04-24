@@ -64,7 +64,7 @@ class CustomTextInputField extends StatelessWidget {
             isDense: false,
             isCollapsed: true,
             contentPadding: const EdgeInsets.only(
-                bottom: 20.0, top: 20, left: 10.0, right: 10),
+                bottom: 18.0, top: 16, left: 10.0, right: 10),
             hintText: hint,
             border: InputBorder.none,
             prefixIcon: prefix,

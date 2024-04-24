@@ -16,7 +16,8 @@ get defBoxShadows => [
 get publicRoundedRadius => BorderRadius.circular(14);
 
 /// displaying a customized snackbar
-void displaySnackBar(BuildContext context, String msg) {
+void displaySnackBar(BuildContext context, String msg,
+    {bool isFailState = true}) {
   final theme = Theme.of(context);
   final snackBar = SnackBar(
     content: Text(
@@ -25,8 +26,9 @@ void displaySnackBar(BuildContext context, String msg) {
     ),
     margin: const EdgeInsets.only(right: 20, left: 20, bottom: 20),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    backgroundColor: theme.colorScheme.secondary,
-    duration: const Duration(milliseconds: 6000),
+    backgroundColor:
+        isFailState ? theme.colorScheme.error : theme.colorScheme.primary,
+    duration: const Duration(milliseconds: 2000),
     behavior: SnackBarBehavior.floating,
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);

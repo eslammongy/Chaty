@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_firebase/core/errors/auth_exceptions_handler.dart';
 import 'package:flutter_firebase/features/profile/data/models/user_model.dart';
 import 'package:flutter_firebase/features/profile/data/repos/profile_info_repo.dart';
@@ -10,8 +9,9 @@ class ProfileInfoCubit extends Cubit<ProfileInfoStates> {
   ProfileInfoCubit({required this.profileInfoRepo})
       : super(ProfileInfoInitialState());
   final ProfileInfoRepo profileInfoRepo;
-  UserModel? userModel;
   static ProfileInfoCubit get(context) => BlocProvider.of(context);
+  UserModel? userModel;
+  bool isShouldPopLoading = false;
 
   Future<void> createNewUserProfile({required UserModel user}) async {
     emit(ProfileInfoLoadingState());
@@ -38,9 +38,6 @@ class ProfileInfoCubit extends Cubit<ProfileInfoStates> {
   }
 
   Future<void> fetchUserProfileInfo() async {
-    if (FirebaseAuth.instance.currentUser == null) {
-      return;
-    }
     emit(ProfileInfoLoadingState());
 
     var result = await profileInfoRepo.fetchUserProfileInfo();

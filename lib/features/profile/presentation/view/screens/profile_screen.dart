@@ -27,77 +27,70 @@ class ProfileScreen extends StatelessWidget {
 
     return BlocConsumer<ProfileInfoCubit, ProfileInfoStates>(
       listener: (context, state) {
-        if (state is ProfileInfoLoadingState) {
+        if (state is ProfileInfoCreatedState ||
+            state is ProfileInfoFetchedState ||
+            state is ProfileInfoUpdatedState) {
+          //* dismiss the loading dialog
+          GoRouter.of(context).pop();
+          Future(() => displaySnackBar(context, "Profile Fe Successfully",
+              isFailState: false));
+        } else if (state is ProfileInfoFailureState) {
+          //* dismiss the loading dialog
+          GoRouter.of(context).pop();
+          Future(() => displaySnackBar(context, state.errorMsg));
+        } else {
           showLoadingDialog(context);
-        }
-        if (state is ProfileInfoFetchedState ||
-            state is ProfileInfoUpdatedState ||
-            state is ProfileInfoCreatedState) {
-          //* dismiss the loading dialog
-          GoRouter.of(context).pop();
-        }
-        if (state is ProfileInfoFailureState) {
-          //* dismiss the loading dialog
-          GoRouter.of(context).pop();
-          displaySnackBar(context, state.errorMsg);
         }
       },
       builder: (context, state) {
-        return BlocBuilder<ProfileInfoCubit, ProfileInfoStates>(
-          builder: (context, state) {
-            return Scaffold(
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 10.h),
-                      ProfileImageSection(
-                        profileImgUrl: profileCubit.userModel?.imageUrl,
-                      ),
-                      const SizedBox(height: 20),
-                      _buildBioSection(theme, pioTxtController),
-                      const SizedBox(height: 20),
-                      ProfileInfoFieldItem(
-                        text: profileCubit.userModel?.name ?? dummyName,
-                        textController: nameTxtController,
-                        icon: FontAwesomeIcons.user,
-                      ),
-                      const SizedBox(height: 15),
-                      ProfileInfoFieldItem(
-                        text: profileCubit.userModel?.email ?? dummyEmail,
-                        textController: emailTxtController,
-                        icon: FontAwesomeIcons.envelope,
-                      ),
-                      const SizedBox(height: 15),
-                      ProfileInfoFieldItem(
-                        text: profileCubit.userModel?.phone ?? dummyPhone,
-                        textController: phoneTxtController,
-                        icon: FontAwesomeIcons.phone,
-                      ),
-                      const SizedBox(height: 45),
-                      CustomTextButton(
-                        backgroundColor: theme.colorScheme.primary,
-                        text: "Save",
-                        onPressed: () async {
-                          profileCubit.userModel?.name = nameTxtController.text;
-                          profileCubit.userModel?.bio = pioTxtController.text;
-                          profileCubit.userModel?.email =
-                              emailTxtController.text;
-                          profileCubit.userModel?.phone =
-                              phoneTxtController.text;
-                          await profileCubit.updateUserProfile();
-                        },
-                      )
-                    ],
+        return Scaffold(
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 10.h),
+                  ProfileImageSection(
+                    profileImgUrl: profileCubit.userModel?.imageUrl,
                   ),
-                ),
+                  const SizedBox(height: 20),
+                  _buildBioSection(theme, pioTxtController),
+                  const SizedBox(height: 20),
+                  ProfileInfoFieldItem(
+                    text: profileCubit.userModel?.name ?? dummyName,
+                    textController: nameTxtController,
+                    icon: FontAwesomeIcons.user,
+                  ),
+                  const SizedBox(height: 15),
+                  ProfileInfoFieldItem(
+                    text: profileCubit.userModel?.email ?? dummyEmail,
+                    textController: emailTxtController,
+                    icon: FontAwesomeIcons.envelope,
+                  ),
+                  const SizedBox(height: 15),
+                  ProfileInfoFieldItem(
+                    text: profileCubit.userModel?.phone ?? dummyPhone,
+                    textController: phoneTxtController,
+                    icon: FontAwesomeIcons.phone,
+                  ),
+                  const SizedBox(height: 45),
+                  CustomTextButton(
+                    backgroundColor: theme.colorScheme.primary,
+                    text: "Save",
+                    onPressed: () async {
+                      profileCubit.userModel?.name = nameTxtController.text;
+                      profileCubit.userModel?.bio = pioTxtController.text;
+                      profileCubit.userModel?.email = emailTxtController.text;
+                      profileCubit.userModel?.phone = phoneTxtController.text;
+                      await profileCubit.updateUserProfile();
+                    },
+                  )
+                ],
               ),
-            );
-          },
+            ),
+          ),
         );
       },
     );

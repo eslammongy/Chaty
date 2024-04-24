@@ -7,6 +7,7 @@ import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
+import 'package:flutter_firebase/features/profile/presentation/view_model/profile_info_cubit.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/widgets/pick_image_sheet.dart';
 
 class ProfileImageSection extends StatefulWidget {
@@ -20,6 +21,12 @@ class ProfileImageSection extends StatefulWidget {
 class _ProfileImageSectionState extends State<ProfileImageSection> {
   Uint8List? _image;
   File? selectedIMage;
+  @override
+  void initState() {
+    super.initState();
+    fetchProfileInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -132,5 +139,9 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
       });
     }
     Future(() => GoRouter.of(context).pop());
+  }
+
+  Future fetchProfileInfo() async {
+    await ProfileInfoCubit.get(context).fetchUserProfileInfo();
   }
 }
