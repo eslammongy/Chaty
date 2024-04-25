@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
-import 'package:flutter_firebase/core/theme/common_palette.dart';
+import 'package:flutter_firebase/features/profile/presentation/view/widgets/custom_text_btn.dart';
 
 /// this is the default box shadow for the card items
 get defBoxShadows => [
@@ -80,39 +80,47 @@ bool isValidEmail(String value) {
   return regExp.hasMatch(value);
 }
 
-Future<void> displayPickImageDialog(BuildContext context, String imgPath,
-    {Function()? onPressed}) async {
-  final theme = Theme.of(context);
-  return showDialog(
+Future<void> displayPickImageDialog(
+  BuildContext context,
+  String imgPath, {
+  Function()? onConfirm,
+}) async {
+  return await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Select Image'),
-          content: ClipRRect(
-            child: Image.file(
-              File(imgPath),
-              width: 200,
-              height: 200,
+          title: const Row(
+            children: [
+              Icon(Icons.info_outlined),
+              SizedBox(
+                width: 6,
+              ),
+              Text('Select Image'),
+            ],
+          ),
+          insetPadding: const EdgeInsets.symmetric(horizontal: 10),
+          content: SizedBox(
+            height: 280,
+            width: 320,
+            child: ClipRRect(
+              child: Image.file(
+                File(imgPath),
+                width: 200,
+                height: 200,
+              ),
             ),
           ),
+          actionsPadding:
+              const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+          actionsAlignment: MainAxisAlignment.spaceAround,
           actions: <Widget>[
-            TextButton(
-              child: Text(
-                'CANCEL',
-                style: theme.textTheme.titleMedium
-                    ?.copyWith(color: theme.colorScheme.onError),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            const CustomTextBtn(
+              text: "Cancel",
+              isCancel: true,
             ),
-            TextButton(
-              onPressed: onPressed,
-              child: Text(
-                'Select',
-                style: theme.textTheme.titleMedium
-                    ?.copyWith(color: CommonColorPalette.greenColor),
-              ),
+            CustomTextBtn(
+              text: "Select",
+              onConfirm: onConfirm,
             ),
           ],
         );

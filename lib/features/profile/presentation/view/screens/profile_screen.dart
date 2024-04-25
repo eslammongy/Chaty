@@ -30,8 +30,6 @@ class ProfileScreen extends StatelessWidget {
             state is ProfileInfoUpdatedState) {
           //* dismiss the loading dialog
           GoRouter.of(context).pop();
-          Future(() => displaySnackBar(context, "Profile info Set Successfully",
-              isFailState: false));
         } else if (state is ProfileInfoFailureState) {
           //* dismiss the loading dialog
           GoRouter.of(context).pop();

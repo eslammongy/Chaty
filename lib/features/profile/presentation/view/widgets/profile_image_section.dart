@@ -63,7 +63,17 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
                   },
                   onGalleryTap: () async {
                     await _pickGalleryImage();
-                    await profileCubit.uploadProfileImage(selectedImg!);
+                    if (selectedImg != null) {
+                      Future(() {
+                        displayPickImageDialog(
+                          context,
+                          selectedImg!.path,
+                          onConfirm: () async {
+                            await profileCubit.uploadProfileImage(selectedImg!);
+                          },
+                        );
+                      });
+                    }
                   },
                 );
               },
@@ -103,25 +113,14 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
     final ImagePicker picker = ImagePicker();
 
     try {
-      final XFile? pickedFile = await picker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 250,
-        maxHeight: 250,
-      );
-      if (context.mounted) {
-        if (pickedFile == null) return;
-        Future(() async {
-          await displayPickImageDialog(
-            context,
-            pickedFile.path,
-            onPressed: () async {
-              setState(() {
-                selectedImg = File(pickedFile.path);
-              });
-            },
-          );
-        });
-      }
+      final XFile? pickedFile =
+          await picker.pickImage(source: ImageSource.gallery);
+
+      if (pickedFile == null) return;
+      setState(() {
+        debugPrint("Image Path: ${pickedFile.path}");
+        selectedImg = File(pickedFile.path);
+      });
     } on Exception catch (e) {
       Future(() {
         displaySnackBar(context, e.toString());
