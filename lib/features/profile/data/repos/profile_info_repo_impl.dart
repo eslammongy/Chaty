@@ -2,7 +2,9 @@ import 'dart:io';
 import 'profile_info_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_firebase/core/errors/exp_enum.dart';
@@ -72,8 +74,9 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
   Future<Either<AuthExceptionsTypes, String>> uploadProfileImg(
       File imageFile) async {
     try {
-      String? fileName =
-          FirebaseAuth.instance.currentUser?.displayName ?? "NONE";
+      final deviceId = getUniqueDeviceId();
+      final userName = FirebaseAuth.instance.currentUser?.displayName ?? "NONE";
+      String? fileName = "${userName}_$deviceId";
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference storageReference =
           storage.ref().child('profile_images/$fileName');
@@ -86,5 +89,22 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
     } catch (error) {
       return left(AuthExceptionHandler.handleException(error));
     }
+  }
+
+  Future<String> getUniqueDeviceId() async {
+    String uniqueDeviceId = '';
+
+    var deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isIOS) {
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      uniqueDeviceId =
+          '${iosDeviceInfo.name}:${iosDeviceInfo.identifierForVendor}';
+    } else if (Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      uniqueDeviceId = '${androidDeviceInfo.model}:${androidDeviceInfo.id}';
+    }
+
+    return uniqueDeviceId;
   }
 }

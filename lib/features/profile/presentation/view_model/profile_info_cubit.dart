@@ -59,7 +59,7 @@ class ProfileInfoCubit extends Cubit<ProfileInfoStates> {
       emit(ProfileInfoFailureState(errorMsg: errorMsg));
     }, (downloadUrl) {
       userModel?.imageUrl = downloadUrl;
-      emit(ProfileInfoUpdatedState());
+      emit(ProfileImgUploadedState());
     });
   }
 }

@@ -17,6 +17,10 @@ class ProfileInfoCreatedState extends ProfileInfoStates {
   ProfileInfoCreatedState({super.userModel});
 }
 
+class ProfileImgUploadedState extends ProfileInfoStates {
+  ProfileImgUploadedState();
+}
+
 class ProfileInfoUpdatedState extends ProfileInfoStates {
   ProfileInfoUpdatedState();
 }
