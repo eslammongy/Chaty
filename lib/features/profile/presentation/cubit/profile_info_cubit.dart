@@ -53,6 +53,7 @@ class ProfileInfoCubit extends Cubit<ProfileInfoStates> {
 
   Future<void> uploadProfileImage(File imageFile) async {
     emit(ProfileInfoLoadingState());
+
     final result = await profileInfoRepo.uploadProfileImg(imageFile);
     result.fold((errorStatus) {
       var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);

@@ -103,6 +103,7 @@ Future<void> displayPickImageDialog(
             height: 280,
             width: 320,
             child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
               child: Image.file(
                 File(imgPath),
                 width: 200,
@@ -114,13 +115,16 @@ Future<void> displayPickImageDialog(
               const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
           actionsAlignment: MainAxisAlignment.spaceAround,
           actions: <Widget>[
-            const CustomTextBtn(
+            CustomTextBtn(
               text: "Cancel",
               isCancel: true,
+              onPresses: () {
+                Navigator.of(context).pop();
+              },
             ),
             CustomTextBtn(
               text: "Select",
-              onConfirm: onConfirm,
+              onPresses: onConfirm,
             ),
           ],
         );

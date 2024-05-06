@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_firebase/core/utils/app_routes.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
-import 'package:flutter_firebase/features/signin/presentation/view_model/signin_cubit.dart';
+import 'package:flutter_firebase/features/signin/presentation/cubit/signin_cubit.dart';
 import 'package:flutter_firebase/features/signin/presentation/view/widgets/custom_text_button.dart';
 import 'package:flutter_firebase/features/signin/presentation/view/widgets/custom_text_input_filed.dart';
 

@@ -4,7 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_firebase/core/errors/exp_enum.dart';
@@ -74,12 +73,9 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
   Future<Either<AuthExceptionsTypes, String>> uploadProfileImg(
       File imageFile) async {
     try {
-      final deviceId = getUniqueDeviceId();
-      final userName = FirebaseAuth.instance.currentUser?.displayName ?? "NONE";
-      String? fileName = "${userName}_$deviceId";
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference storageReference =
-          storage.ref().child('profile_images/$fileName');
+          storage.ref().child('profile_images/$imgFileName');
       UploadTask uploadTask = storageReference.putFile(imageFile);
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       String imageUrl = await taskSnapshot.ref.getDownloadURL();
@@ -91,20 +87,9 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
     }
   }
 
-  Future<String> getUniqueDeviceId() async {
-    String uniqueDeviceId = '';
-
-    var deviceInfo = DeviceInfoPlugin();
-
-    if (Platform.isIOS) {
-      var iosDeviceInfo = await deviceInfo.iosInfo;
-      uniqueDeviceId =
-          '${iosDeviceInfo.name}:${iosDeviceInfo.identifierForVendor}';
-    } else if (Platform.isAndroid) {
-      var androidDeviceInfo = await deviceInfo.androidInfo;
-      uniqueDeviceId = '${androidDeviceInfo.model}:${androidDeviceInfo.id}';
-    }
-
-    return uniqueDeviceId;
+  String get imgFileName {
+    final deviceId = FirebaseAuth.instance.currentUser?.uid;
+    final userName = FirebaseAuth.instance.currentUser?.displayName ?? "NONE";
+    return "${userName}_$deviceId";
   }
 }

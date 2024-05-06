@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_firebase/features/profile/presentation/view_model/profile_info_cubit.dart';
+import 'package:flutter_firebase/features/profile/presentation/cubit/profile_info_cubit.dart';
 import 'package:flutter_firebase/features/signin/presentation/view/widgets/custom_text_button.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/widgets/profile_image_section.dart';
 import 'package:flutter_firebase/features/signin/presentation/view/widgets/custom_text_input_filed.dart';
@@ -31,6 +31,8 @@ class ProfileScreen extends StatelessWidget {
           //* dismiss the loading dialog
           GoRouter.of(context).pop();
         } else if (state is ProfileImgUploadedState) {
+          //* dismiss the loading dialog
+          GoRouter.of(context).pop();
           Future(() => displaySnackBar(context, "Profile Image Uploaded",
               isFailState: false));
         } else if (state is ProfileInfoFailureState) {
@@ -83,6 +85,7 @@ class ProfileScreen extends StatelessWidget {
                       profileCubit.userModel?.bio = pioTxtController.text;
                       profileCubit.userModel?.email = emailTxtController.text;
                       profileCubit.userModel?.phone = phoneTxtController.text;
+                      //* update user profile info
                       await profileCubit.updateUserProfile();
                     },
                   )

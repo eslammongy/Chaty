@@ -7,7 +7,7 @@ import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_firebase/core/utils/app_routes.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
-import 'package:flutter_firebase/features/signin/presentation/view_model/signin_cubit.dart';
+import 'package:flutter_firebase/features/signin/presentation/cubit/signin_cubit.dart';
 import 'package:flutter_firebase/features/signin/presentation/view/widgets/custom_text_button.dart';
 
 class PhoneAuthScreen extends StatelessWidget {

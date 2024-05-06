@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../cubit/signin_cubit.dart';
 import 'package:go_router/go_router.dart';
-import '../../view_model/signin_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase/core/utils/app_routes.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';

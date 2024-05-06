@@ -7,7 +7,7 @@ import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
-import 'package:flutter_firebase/features/profile/presentation/view_model/profile_info_cubit.dart';
+import 'package:flutter_firebase/features/profile/presentation/cubit/profile_info_cubit.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/widgets/pick_image_sheet.dart';
 
 class ProfileImageSection extends StatefulWidget {
@@ -59,20 +59,18 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
                 showImagePickerOption(
                   context,
                   onCameraTap: () async {
-                    await _pickImageFromCamera();
+                    await _pickImageFromCamera()
+                        .whenComplete(() => GoRouter.of(context).pop());
                     await profileCubit.uploadProfileImage(selectedImg!);
                   },
                   onGalleryTap: () async {
-                    await _pickGalleryImage();
-                    if (selectedImg != null) {
-                      Future(() {
-                        displayPickImageDialog(
-                          context,
-                          selectedImg!.path,
-                          onConfirm: () async {
-                            await profileCubit.uploadProfileImage(selectedImg!);
-                          },
-                        );
+                    //* close the bottom sheet
+                    GoRouter.of(context).pop();
+                    final imgFile = await _pickGalleryImage();
+                    if (imgFile != null) {
+                      await displayPickGalleryImg(imgFile, profileCubit)
+                          .then((value) async {
+                        await profileCubit.uploadProfileImage(selectedImg!);
                       });
                     }
                   },
@@ -83,6 +81,22 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
         ],
       ),
     );
+  }
+
+  Future displayPickGalleryImg(
+      XFile imgFile, ProfileInfoCubit profileCubit) async {
+    Future(() {
+      displayPickImageDialog(
+        context,
+        imgFile.path,
+        onConfirm: () async {
+          setState(() {
+            selectedImg = File(imgFile.path);
+            profileCubit.userModel?.imageUrl = selectedImg?.path;
+          });
+        },
+      );
+    });
   }
 
   CachedNetworkImage _cachedNetworkImg(RoundedRectangleBorder roundedShape) {
@@ -110,24 +124,22 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
   }
 
   /// pick an image fromGallery
-  Future<void> _pickGalleryImage() async {
+  Future<XFile?> _pickGalleryImage() async {
     final ImagePicker picker = ImagePicker();
 
     try {
       final XFile? pickedFile =
           await picker.pickImage(source: ImageSource.gallery);
 
-      if (pickedFile == null) return;
-      setState(() {
-        debugPrint("Image Path: ${pickedFile.path}");
-        selectedImg = File(pickedFile.path);
-      });
+      if (pickedFile == null) return null;
+
+      return pickedFile;
     } on Exception catch (e) {
       Future(() {
         displaySnackBar(context, e.toString());
       });
     }
-    Future(() => GoRouter.of(context).pop());
+    return null;
   }
 
   /// pick an image from camera
