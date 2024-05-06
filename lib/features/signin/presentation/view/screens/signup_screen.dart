@@ -177,7 +177,7 @@ class SignUpScreen extends StatelessWidget {
 
   Future<void> _keepUserLoggedIn(BuildContext context) async {
     await UserPref.keepUserAuthenticated(isLogged: true).then((value) {
-      GoRouter.of(context).pushReplacement(AppRouter.profileScreen);
+      GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
     });
   }
 }

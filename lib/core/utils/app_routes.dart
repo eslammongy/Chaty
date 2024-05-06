@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter_firebase/core/utils/user_pref.dart';
+import 'package:flutter_firebase/features/dashboard/presentation/view/dashboard_screen.dart';
 import 'package:flutter_firebase/features/signin/presentation/view/screens/signup_screen.dart';
 import 'package:flutter_firebase/features/signin/presentation/view/screens/sign_in_screen.dart';
 import 'package:flutter_firebase/features/signin/presentation/view/widgets/forget_password.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_firebase/features/signin/presentation/view/screens/phone
 import 'package:flutter_firebase/features/signin/presentation/view/screens/verification_otp_screen.dart';
 
 abstract class AppRouter {
-  static String onBoardingScreenRout = '/onboardingScreen';
+  static String dashboardScreen = '/dashboard';
   static String loginScreen = '/loginScreen';
   static String signUpScreen = '/signUpScreen';
   static String forgetPasswordScreen = '/forgetPasswordScreen';
@@ -32,9 +33,13 @@ abstract class AppRouter {
           if (!isUserLogin) {
             return const SignInScreen();
           } else {
-            return const ProfileScreen();
+            return const DashboardScreen();
           }
         },
+      ),
+      GoRoute(
+        path: dashboardScreen,
+        builder: (context, state) => const DashboardScreen(),
       ),
       GoRoute(
         path: loginScreen,
