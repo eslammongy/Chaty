@@ -24,22 +24,16 @@ class ProfileScreen extends StatelessWidget {
 
     return BlocConsumer<ProfileInfoCubit, ProfileInfoStates>(
       listener: (context, state) {
-        if (state is ProfileInfoCreatedState ||
-            state is ProfileInfoFetchedState ||
-            state is ProfileInfoUpdatedState) {
-          //* dismiss the loading dialog
-          GoRouter.of(context).pop();
-        } else if (state is ProfileImgUploadedState) {
+        if (state is ProfileImgUploadedState) {
           //* dismiss the loading dialog
           GoRouter.of(context).pop();
           Future(() => displaySnackBar(context, "Profile Image Uploaded",
               isFailState: false));
-        } else if (state is ProfileInfoFailureState) {
+        }
+        if (state is ProfileInfoFailureState) {
           //* dismiss the loading dialog
           GoRouter.of(context).pop();
           Future(() => displaySnackBar(context, state.errorMsg));
-        } else {
-          showLoadingDialog(context);
         }
       },
       builder: (context, state) {
@@ -51,7 +45,15 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 10.h),
+                  const SizedBox(height: kToolbarHeight - 10),
+                  if (state is ProfileInfoLoadingState)
+                    LinearProgressIndicator(
+                      color: theme.colorScheme.primary,
+                      backgroundColor: theme.colorScheme.surface,
+                      minHeight: 8,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  SizedBox(height: 6.h),
                   ProfileImageSection(
                     profileImgUrl: profileCubit.userModel?.imageUrl,
                   ),
@@ -62,8 +64,9 @@ class ProfileScreen extends StatelessWidget {
                     text: profileCubit.userModel?.name ?? dummyName,
                     textController: nameTxtController,
                     icon: FontAwesomeIcons.user,
-                    onChanged: (value) async {
-                      profileCubit.userModel?.email = emailTxtController.text;
+                    onSubmitted: (value) async {
+                      profileCubit.userModel?.name = value;
+                      debugPrint("Name: ${profileCubit.userModel?.name}");
                       await profileCubit.updateUserProfile();
                     },
                   ),
@@ -72,8 +75,8 @@ class ProfileScreen extends StatelessWidget {
                     text: profileCubit.userModel?.email ?? dummyEmail,
                     textController: emailTxtController,
                     icon: FontAwesomeIcons.envelope,
-                    onChanged: (value) async {
-                      profileCubit.userModel?.email = emailTxtController.text;
+                    onSubmitted: (value) async {
+                      profileCubit.userModel?.email = value;
                       await profileCubit.updateUserProfile();
                     },
                   ),
@@ -82,8 +85,8 @@ class ProfileScreen extends StatelessWidget {
                     text: profileCubit.userModel?.phone ?? dummyPhone,
                     textController: phoneTxtController,
                     icon: FontAwesomeIcons.phone,
-                    onChanged: (value) async {
-                      profileCubit.userModel?.phone = phoneTxtController.text;
+                    onSubmitted: (value) async {
+                      profileCubit.userModel?.phone = value;
                       await profileCubit.updateUserProfile();
                     },
                   ),
@@ -121,11 +124,11 @@ class ProfileScreen extends StatelessWidget {
           Expanded(
             child: CustomTextInputField(
               textEditingController: pioTxtController,
-              initText: dummyBio,
+              initText: profileCubit.userModel?.bio ?? dummyBio,
               maxLines: 5,
               height: 130,
-              onChange: (value) async {
-                profileCubit.userModel?.email = pioTxtController.text;
+              onSubmitted: (value) async {
+                profileCubit.userModel?.bio = value;
                 await profileCubit.updateUserProfile();
               },
             ),

@@ -15,7 +15,7 @@ class CustomTextInputField extends StatelessWidget {
     this.suffix,
     this.initText,
     this.height = 55.0,
-    this.onSaved,
+    this.onSubmitted,
     this.onChange,
   }) : super(key: key);
 
@@ -29,7 +29,7 @@ class CustomTextInputField extends StatelessWidget {
   final bool? isTextPassword;
   final int? maxLines;
   final Color? textColor;
-  final Function(String?)? onSaved;
+  final Function(String?)? onSubmitted;
   final Function(String?)? onChange;
   final double height;
 
@@ -74,7 +74,7 @@ class CustomTextInputField extends StatelessWidget {
           ),
           cursorColor: theme.colorScheme.primary,
           keyboardType: textInputType,
-          onFieldSubmitted: onSaved,
+          onFieldSubmitted: onSubmitted,
           onChanged: onChange,
         ),
       ),

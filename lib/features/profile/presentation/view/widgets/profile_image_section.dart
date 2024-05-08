@@ -59,19 +59,20 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
                 showImagePickerOption(
                   context,
                   onCameraTap: () async {
-                    await _pickImageFromCamera()
-                        .whenComplete(() => GoRouter.of(context).pop());
-                    await profileCubit.uploadProfileImage(selectedImg!);
+                    //* close the bottom sheet
+                    GoRouter.of(context).pop();
+                    final imgFile = await _pickImageFromCamera();
+                    if (imgFile != null) {
+                      selectedImg = File(imgFile.path);
+                      await _updateProfileInfo(profileCubit);
+                    }
                   },
                   onGalleryTap: () async {
                     //* close the bottom sheet
                     GoRouter.of(context).pop();
                     final imgFile = await _pickGalleryImage();
                     if (imgFile != null) {
-                      await displayPickGalleryImg(imgFile, profileCubit)
-                          .then((value) async {
-                        await profileCubit.uploadProfileImage(selectedImg!);
-                      });
+                      await displayPickGalleryImg(imgFile, profileCubit);
                     }
                   },
                 );
@@ -83,6 +84,12 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
     );
   }
 
+  Future<void> _updateProfileInfo(ProfileInfoCubit profileCubit) async {
+    await profileCubit.uploadProfileImage(selectedImg!).then((value) async {
+      await profileCubit.updateUserProfile();
+    });
+  }
+
   Future displayPickGalleryImg(
       XFile imgFile, ProfileInfoCubit profileCubit) async {
     Future(() {
@@ -90,10 +97,9 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
         context,
         imgFile.path,
         onConfirm: () async {
-          setState(() {
-            selectedImg = File(imgFile.path);
-            profileCubit.userModel?.imageUrl = selectedImg?.path;
-          });
+          selectedImg = File(imgFile.path);
+          profileCubit.userModel?.imageUrl = selectedImg?.path;
+          await _updateProfileInfo(profileCubit);
         },
       );
     });
@@ -143,20 +149,19 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
   }
 
   /// pick an image from camera
-  Future _pickImageFromCamera() async {
+  Future<XFile?> _pickImageFromCamera() async {
     try {
-      final returnImage =
+      final pickedImg =
           await ImagePicker().pickImage(source: ImageSource.camera);
-      if (returnImage == null) return;
-      setState(() {
-        selectedImg = File(returnImage.path);
-      });
+      if (pickedImg == null) return null;
+      return pickedImg;
     } on Exception catch (e) {
       Future(() {
         displaySnackBar(context, e.toString());
       });
     }
     Future(() => GoRouter.of(context).pop());
+    return null;
   }
 
   Future fetchProfileInfo() async {

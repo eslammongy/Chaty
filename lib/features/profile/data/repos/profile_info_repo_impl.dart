@@ -39,6 +39,7 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
           .child(firebaseAuth.currentUser!.uid)
           .once()
           .then((event) {
+        debugPrint("User Model : ${event.snapshot.value}");
         return UserModel.fromJson(
             event.snapshot.value as Map<Object?, Object?>);
       });

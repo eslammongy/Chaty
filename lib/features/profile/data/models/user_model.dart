@@ -14,6 +14,7 @@ class UserModel {
     this.uId,
     this.imageUrl,
     this.password,
+    this.bio,
   });
 
   UserModel.fromJson(Map<Object?, Object?> json) {
