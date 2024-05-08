@@ -17,24 +17,22 @@ class FloatingBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final borderRadius = BorderRadius.circular(20);
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-      elevation: 4,
-      color: theme.colorScheme.surface,
+      elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: borderRadius),
       child: SizedBox(
-        height: 80,
+        height: 70,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildBottomNavItem(
               context,
-              title: "Chat",
-              icon: FontAwesomeIcons.message,
+              title: "Profile",
+              icon: FontAwesomeIcons.user,
               isActive: currentIndex == 0 ? true : false,
               onTap: () {
                 getCurrentIndex(0);
@@ -42,13 +40,13 @@ class FloatingBottomNavBar extends StatelessWidget {
             ),
             _buildBottomNavItem(
               context,
-              title: "Profile",
-              icon: FontAwesomeIcons.user,
+              title: "Chat",
+              icon: FontAwesomeIcons.message,
               isActive: currentIndex == 1 ? true : false,
               onTap: () {
                 getCurrentIndex(1);
               },
-            )
+            ),
           ],
         ),
       ),
@@ -79,7 +77,7 @@ class FloatingBottomNavBar extends StatelessWidget {
             color: isActive ? activeColor.withOpacity(0.3) : Colors.transparent,
             elevation: 0,
             child: Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               child: Icon(
                 icon,
                 size: 20,
@@ -88,7 +86,10 @@ class FloatingBottomNavBar extends StatelessWidget {
           ),
           Text(
             title,
-            style: TextStyle(color: isActive ? activeColor : defColor),
+            style: theme.textTheme.labelLarge?.copyWith(
+                color: isActive ? activeColor : defColor,
+                letterSpacing: 1.2,
+                fontWeight: FontWeight.w600),
           ),
         ],
       ),

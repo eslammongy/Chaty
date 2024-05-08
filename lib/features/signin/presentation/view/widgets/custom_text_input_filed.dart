@@ -9,13 +9,14 @@ class CustomTextInputField extends StatelessWidget {
     this.prefix,
     this.autoFocus = false,
     this.textInputType = TextInputType.text,
-    this.onSaved,
     this.maxLines = 1,
     this.isTextPassword = false,
     this.textColor,
     this.suffix,
     this.initText,
     this.height = 55.0,
+    this.onSaved,
+    this.onChange,
   }) : super(key: key);
 
   final TextEditingController textEditingController;
@@ -29,6 +30,7 @@ class CustomTextInputField extends StatelessWidget {
   final int? maxLines;
   final Color? textColor;
   final Function(String?)? onSaved;
+  final Function(String?)? onChange;
   final double height;
 
   @override
@@ -73,6 +75,7 @@ class CustomTextInputField extends StatelessWidget {
           cursorColor: theme.colorScheme.primary,
           keyboardType: textInputType,
           onFieldSubmitted: onSaved,
+          onChanged: onChange,
         ),
       ),
     );

@@ -6,7 +6,6 @@ import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_firebase/features/profile/presentation/cubit/profile_info_cubit.dart';
-import 'package:flutter_firebase/features/signin/presentation/view/widgets/custom_text_button.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/widgets/profile_image_section.dart';
 import 'package:flutter_firebase/features/signin/presentation/view/widgets/custom_text_input_filed.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/widgets/profile_info_field_item.dart';
@@ -57,38 +56,38 @@ class ProfileScreen extends StatelessWidget {
                     profileImgUrl: profileCubit.userModel?.imageUrl,
                   ),
                   const SizedBox(height: 20),
-                  _buildBioSection(theme, pioTxtController),
+                  _buildBioSection(profileCubit, theme, pioTxtController),
                   const SizedBox(height: 20),
                   ProfileInfoFieldItem(
                     text: profileCubit.userModel?.name ?? dummyName,
                     textController: nameTxtController,
                     icon: FontAwesomeIcons.user,
+                    onChanged: (value) async {
+                      profileCubit.userModel?.email = emailTxtController.text;
+                      await profileCubit.updateUserProfile();
+                    },
                   ),
                   const SizedBox(height: 15),
                   ProfileInfoFieldItem(
                     text: profileCubit.userModel?.email ?? dummyEmail,
                     textController: emailTxtController,
                     icon: FontAwesomeIcons.envelope,
+                    onChanged: (value) async {
+                      profileCubit.userModel?.email = emailTxtController.text;
+                      await profileCubit.updateUserProfile();
+                    },
                   ),
                   const SizedBox(height: 15),
                   ProfileInfoFieldItem(
                     text: profileCubit.userModel?.phone ?? dummyPhone,
                     textController: phoneTxtController,
                     icon: FontAwesomeIcons.phone,
-                  ),
-                  const SizedBox(height: 45),
-                  CustomTextButton(
-                    backgroundColor: theme.colorScheme.primary,
-                    text: "Save",
-                    onPressed: () async {
-                      profileCubit.userModel?.name = nameTxtController.text;
-                      profileCubit.userModel?.bio = pioTxtController.text;
-                      profileCubit.userModel?.email = emailTxtController.text;
+                    onChanged: (value) async {
                       profileCubit.userModel?.phone = phoneTxtController.text;
-                      //* update user profile info
                       await profileCubit.updateUserProfile();
                     },
-                  )
+                  ),
+                  const SizedBox(height: 45),
                 ],
               ),
             ),
@@ -99,7 +98,10 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Card _buildBioSection(
-      ThemeData theme, TextEditingController pioTxtController) {
+    ProfileInfoCubit profileCubit,
+    ThemeData theme,
+    TextEditingController pioTxtController,
+  ) {
     return Card(
       color: theme.colorScheme.surface,
       elevation: 0,
@@ -122,6 +124,10 @@ class ProfileScreen extends StatelessWidget {
               initText: dummyBio,
               maxLines: 5,
               height: 130,
+              onChange: (value) async {
+                profileCubit.userModel?.email = pioTxtController.text;
+                await profileCubit.updateUserProfile();
+              },
             ),
           ),
         ],

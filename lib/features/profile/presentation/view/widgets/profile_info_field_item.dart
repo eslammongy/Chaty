@@ -8,11 +8,13 @@ class ProfileInfoFieldItem extends StatelessWidget {
     required this.textController,
     required this.icon,
     this.height = 50.0,
+    this.onChanged,
   });
   final String text;
   final TextEditingController textController;
   final IconData icon;
   final double height;
+  final Function(String?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class ProfileInfoFieldItem extends StatelessWidget {
               icon,
               color: theme.colorScheme.secondary,
             ),
+            onChange: onChanged,
           ),
         ),
       ),
