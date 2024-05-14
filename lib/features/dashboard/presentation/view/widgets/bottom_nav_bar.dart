@@ -47,6 +47,15 @@ class FloatingBottomNavBar extends StatelessWidget {
                 getCurrentIndex(1);
               },
             ),
+            _buildBottomNavItem(
+              context,
+              title: "Setting",
+              icon: FontAwesomeIcons.gear,
+              isActive: currentIndex == 2 ? true : false,
+              onTap: () {
+                getCurrentIndex(2);
+              },
+            ),
           ],
         ),
       ),
@@ -84,13 +93,15 @@ class FloatingBottomNavBar extends StatelessWidget {
               ),
             ),
           ),
-          Text(
-            title,
-            style: theme.textTheme.labelLarge?.copyWith(
-                color: isActive ? activeColor : defColor,
-                letterSpacing: 1.2,
-                fontWeight: FontWeight.w600),
-          ),
+          isActive
+              ? Text(
+                  title,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                      color: isActive ? activeColor : defColor,
+                      letterSpacing: 1.2,
+                      fontWeight: FontWeight.w600),
+                )
+              : const SizedBox.shrink(),
         ],
       ),
     );

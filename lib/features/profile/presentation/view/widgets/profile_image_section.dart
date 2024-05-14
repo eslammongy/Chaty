@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,12 +19,7 @@ class ProfileImageSection extends StatefulWidget {
 
 class _ProfileImageSectionState extends State<ProfileImageSection> {
   File? selectedImg;
-  @override
-  void initState() {
-    super.initState();
-    fetchProfileInfo();
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -162,10 +156,5 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
     }
     Future(() => GoRouter.of(context).pop());
     return null;
-  }
-
-  Future fetchProfileInfo() async {
-    if (FirebaseAuth.instance.currentUser == null) return;
-    await ProfileInfoCubit.get(context).fetchUserProfileInfo();
   }
 }
