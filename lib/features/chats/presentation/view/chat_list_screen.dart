@@ -1,3 +1,4 @@
+import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 
 class ChatListScreen extends StatelessWidget {
@@ -5,8 +6,14 @@ class ChatListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.grey,
-    );
+    return Scaffold(
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(100.h),
+            child: const Card(child: Row(
+            
+            ))),
+        body: const Column(
+          children: [],
+        ));
   }
 }

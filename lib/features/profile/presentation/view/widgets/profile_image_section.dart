@@ -6,6 +6,7 @@ import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
+import 'package:flutter_firebase/core/widgets/cache_network_image.dart';
 import 'package:flutter_firebase/features/profile/presentation/cubit/profile_info_cubit.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/widgets/pick_image_sheet.dart';
 
@@ -38,7 +39,9 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
                   shape: roundedShape,
                   child: CircleAvatar(
                       radius: 80, backgroundImage: FileImage(selectedImg!)))
-              : _cachedNetworkImg(roundedShape),
+              : CacheNetworkImg(
+                  imgUrl: widget.profileImgUrl ?? dummyImageUrl,
+                  shapeBorder: roundedShape),
           Positioned(
             bottom: 5,
             right: 0,
@@ -97,31 +100,6 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
         },
       );
     });
-  }
-
-  CachedNetworkImage _cachedNetworkImg(RoundedRectangleBorder roundedShape) {
-    return CachedNetworkImage(
-      imageUrl: widget.profileImgUrl ?? dummyImageUrl,
-      fadeInCurve: Curves.bounceInOut,
-      imageBuilder: (context, imageProvider) => Card(
-        shape: roundedShape,
-        color: Colors.transparent,
-        margin: EdgeInsets.zero,
-        child: CircleAvatar(
-          radius: 80,
-          backgroundImage: imageProvider,
-        ),
-      ),
-      placeholder: (context, url) => Card(
-        shape: roundedShape,
-        margin: EdgeInsets.zero,
-        child: CircleAvatar(
-          radius: 80,
-          child: Image.asset(AppAssetsManager.firebaseLogo),
-        ),
-      ),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
-    );
   }
 
   /// pick an image fromGallery
