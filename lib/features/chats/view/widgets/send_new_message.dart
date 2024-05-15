@@ -19,6 +19,7 @@ class SendNewMessage extends StatelessWidget {
         Expanded(
           child: CustomTextInputField(
             textEditingController: msgController,
+            focusColor: theme.colorScheme.surface,
             hint: "type something...",
             prefix: InkWell(
               onTap: () {},

@@ -42,19 +42,18 @@ class _MessagesListViewState extends State<MessagesListView> {
             return displayLoadingIndicator(theme);
           }
           final msg = messages[index];
-          return MessageItem(isSender: msg.isSenderMsg);
+          return MessageItem(msg: msg);
         },
       ),
     );
   }
 
-  void _fetchMoreMsg({int limit = 10}) async {
+  void _fetchMoreMsg({int limit = 12}) async {
     // Simulate data fetching with delay
     await Future.delayed(const Duration(milliseconds: 300));
 
     final startIndex = messages.length;
     final endIndex = min(startIndex + limit, fakeMessages.length);
-
     if (messages.length >= fakeMessages.length) {
       Future(() => displayToastMsg(context, "all messages are loaded"));
     } else {

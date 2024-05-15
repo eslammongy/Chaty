@@ -17,6 +17,9 @@ class CustomTextInputField extends StatelessWidget {
     this.height = 55.0,
     this.onSubmitted,
     this.onChange,
+    this.bkColor,
+    this.fieldRoundedRadius,
+    this.focusColor,
   }) : super(key: key);
 
   final TextEditingController textEditingController;
@@ -32,18 +35,22 @@ class CustomTextInputField extends StatelessWidget {
   final Function(String?)? onSubmitted;
   final Function(String?)? onChange;
   final double height;
+  final Color? bkColor;
+  final Color? focusColor;
+  final BorderRadius? fieldRoundedRadius;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     textEditingController.text = initText ?? "";
-    return Card(
-      color: theme.colorScheme.surface,
-      shape: RoundedRectangleBorder(borderRadius: publicRoundedRadius),
-      margin: EdgeInsets.zero,
-      elevation: 0,
-      child: SizedBox(
-        height: height,
+    return SizedBox(
+      height: height,
+      child: Card(
+        color: bkColor ?? theme.colorScheme.surface,
+        shape: RoundedRectangleBorder(
+            borderRadius: fieldRoundedRadius ?? publicRoundedRadius),
+        margin: EdgeInsets.zero,
+        elevation: 0,
         child: TextFormField(
           autofocus: autoFocus,
           obscureText: isTextPassword ?? false,
@@ -59,14 +66,14 @@ class CustomTextInputField extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
-                color: theme.colorScheme.secondary,
+                color: focusColor ?? theme.colorScheme.secondary,
                 width: 1,
               ),
             ),
             isDense: false,
             isCollapsed: true,
             contentPadding: const EdgeInsets.only(
-                bottom: 18.0, top: 16, left: 10.0, right: 10),
+                bottom: 22, top: 16, left: 10.0, right: 10),
             hintText: hint,
             border: InputBorder.none,
             prefixIcon: prefix,

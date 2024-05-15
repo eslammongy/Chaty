@@ -58,7 +58,8 @@ List<MessageModel> fakeMessages = [
     isSenderMsg: false,
   ),
   MessageModel(
-    text: "Do you want to go out for dinner?",
+    text:
+        "Do you want to go out for dinner? Do you want to go out for dinner? Do you want to go out for dinner? Do you want to go out for dinner? Do you want to go out for dinner?",
     senderId: "user1",
     receiverId: "user2",
     dateTime: DateTime.now(),
@@ -142,5 +143,3 @@ List<MessageModel> fakeMessages = [
     isSenderMsg: false,
   ),
 ];
-
-// Total of 30 items in the list
