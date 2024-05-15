@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
 import 'package:flutter_firebase/features/profile/view/widgets/custom_text_btn.dart';
 
@@ -129,4 +130,22 @@ Future<void> displayPickImageDialog(
           ],
         );
       });
+}
+
+void displayToastMsg(BuildContext context, String msg,
+    {ToastificationType? type}) {
+  final theme = Theme.of(context);
+  toastification.show(
+    context: context,
+    title: Text(
+      msg,
+      style: theme.textTheme.titleMedium,
+    ),
+    type: type ?? ToastificationType.info,
+    style: ToastificationStyle.simple,
+    borderSide: BorderSide.none,
+    alignment: Alignment.bottomCenter,
+    backgroundColor: type != null ? Colors.red : theme.colorScheme.secondary,
+    autoCloseDuration: const Duration(seconds: 2),
+  );
 }
