@@ -70,6 +70,7 @@ class CustomTextInputField extends StatelessWidget {
             hintText: hint,
             border: InputBorder.none,
             prefixIcon: prefix,
+            suffixIcon: suffix,
             prefixIconColor: textColor ?? theme.colorScheme.surfaceTint,
           ),
           cursorColor: theme.colorScheme.primary,
