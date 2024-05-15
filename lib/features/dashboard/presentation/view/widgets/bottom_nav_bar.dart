@@ -51,7 +51,7 @@ class FloatingBottomNavBar extends StatelessWidget {
               context,
               title: "Setting",
               icon: FontAwesomeIcons.gear,
-              isActive: currentIndex == 3 ? true : false,
+              isActive: currentIndex == 2 ? true : false,
               onTap: () {
                 getCurrentIndex(2);
               },
@@ -81,9 +81,10 @@ class FloatingBottomNavBar extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            color: isActive ? activeColor.withOpacity(0.3) : Colors.transparent,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100)),
+            color:
+                isActive ? activeColor.withOpacity(0.45) : Colors.transparent,
             elevation: 0,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
