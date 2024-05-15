@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_firebase/features/profile/data/models/user_model.dart';
-import 'package:flutter_firebase/features/profile/presentation/view/widgets/info_dialog_title.dart';
-import 'package:flutter_firebase/features/signin/presentation/view/widgets/custom_text_input_filed.dart';
+import 'package:flutter_firebase/features/profile/view/widgets/info_dialog_title.dart';
+import 'package:flutter_firebase/features/signin/view/widgets/custom_text_input_filed.dart';
 
 Future displayingEditInfoDialog(BuildContext context,
     {required UserModel userModel}) async {

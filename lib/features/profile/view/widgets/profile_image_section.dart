@@ -5,8 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:flutter_firebase/core/widgets/cache_network_image.dart';
-import 'package:flutter_firebase/features/profile/presentation/cubit/profile_info_cubit.dart';
-import 'package:flutter_firebase/features/profile/presentation/view/widgets/pick_image_sheet.dart';
+import 'package:flutter_firebase/features/profile/cubit/profile_info_cubit.dart';
+import 'package:flutter_firebase/features/profile/view/widgets/pick_image_sheet.dart';
 
 class ProfileImageSection extends StatefulWidget {
   const ProfileImageSection({super.key, required this.profileImgUrl});

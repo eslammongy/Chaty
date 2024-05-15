@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
-import 'package:flutter_firebase/features/profile/presentation/view/widgets/custom_text_btn.dart';
+import 'package:flutter_firebase/features/profile/view/widgets/custom_text_btn.dart';
 
 /// this is the default box shadow for the card items
 get defBoxShadows => [

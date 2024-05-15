@@ -5,10 +5,10 @@ import 'package:flutter_firebase/core/utils/helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_firebase/features/profile/presentation/cubit/profile_info_cubit.dart';
-import 'package:flutter_firebase/features/profile/presentation/view/widgets/profile_image_section.dart';
-import 'package:flutter_firebase/features/signin/presentation/view/widgets/custom_text_input_filed.dart';
-import 'package:flutter_firebase/features/profile/presentation/view/widgets/profile_info_field_item.dart';
+import 'package:flutter_firebase/features/profile/cubit/profile_info_cubit.dart';
+import 'package:flutter_firebase/features/profile/view/widgets/profile_image_section.dart';
+import 'package:flutter_firebase/features/signin/view/widgets/custom_text_input_filed.dart';
+import 'package:flutter_firebase/features/profile/view/widgets/profile_info_field_item.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

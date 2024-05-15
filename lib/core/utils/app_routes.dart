@@ -1,12 +1,14 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter_firebase/core/utils/user_pref.dart';
-import 'package:flutter_firebase/features/dashboard/presentation/view/dashboard_screen.dart';
-import 'package:flutter_firebase/features/signin/presentation/view/screens/signup_screen.dart';
-import 'package:flutter_firebase/features/signin/presentation/view/screens/sign_in_screen.dart';
-import 'package:flutter_firebase/features/signin/presentation/view/widgets/forget_password.dart';
-import 'package:flutter_firebase/features/profile/presentation/view/screens/profile_screen.dart';
-import 'package:flutter_firebase/features/signin/presentation/view/screens/phone_auth_screen.dart';
-import 'package:flutter_firebase/features/signin/presentation/view/screens/verification_otp_screen.dart';
+import 'package:flutter_firebase/features/chats/view/chat_screen.dart';
+import 'package:flutter_firebase/features/chats/view/chat_list_screen.dart';
+import 'package:flutter_firebase/features/dashboard/view/dashboard_screen.dart';
+import 'package:flutter_firebase/features/signin/view/screens/signup_screen.dart';
+import 'package:flutter_firebase/features/signin/view/screens/sign_in_screen.dart';
+import 'package:flutter_firebase/features/profile/view/screens/profile_screen.dart';
+import 'package:flutter_firebase/features/signin/view/widgets/forget_password.dart';
+import 'package:flutter_firebase/features/signin/view/screens/phone_auth_screen.dart';
+import 'package:flutter_firebase/features/signin/view/screens/verification_otp_screen.dart';
 
 abstract class AppRouter {
   static String dashboardScreen = '/dashboard';
@@ -16,6 +18,8 @@ abstract class AppRouter {
   static String phoneAuthScreen = '/phoneAuthScreen';
   static String verifyingPhoneScreen = '/verifyingPhoneScreen';
   static String profileScreen = '/profileScreen';
+  static String chatsListScreen = '/chatsListScreen';
+  static String chatScreen = '/chatScreen';
 
   static bool isUserLogin = false;
   static setInitialRoute() async {
@@ -33,7 +37,7 @@ abstract class AppRouter {
           if (!isUserLogin) {
             return const SignInScreen();
           } else {
-            return const DashboardScreen();
+            return const ChatScreen();
           }
         },
       ),
@@ -64,6 +68,14 @@ abstract class AppRouter {
       GoRoute(
         path: profileScreen,
         builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: chatsListScreen,
+        builder: (context, state) => const ChatListScreen(),
+      ),
+      GoRoute(
+        path: chatScreen,
+        builder: (context, state) => const ChatScreen(),
       ),
     ]);
   }

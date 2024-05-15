@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_firebase/features/chats/view/widgets/chats_list.dart';
 import 'package:flutter_firebase/features/chats/view/widgets/chats_app_bar.dart';
+import 'package:flutter_firebase/features/chats/view/widgets/chats_listview.dart';
 
 class ChatListScreen extends StatelessWidget {
   const ChatListScreen({super.key});

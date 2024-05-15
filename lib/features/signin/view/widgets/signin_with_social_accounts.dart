@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase/core/utils/app_routes.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
-import 'package:flutter_firebase/features/signin/presentation/view/widgets/build_login_option_btn.dart';
+import 'package:flutter_firebase/features/signin/view/widgets/build_login_option_btn.dart';
 
 class SignInWithSocialAccounts extends StatelessWidget {
   const SignInWithSocialAccounts({

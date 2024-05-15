@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase/features/signin/presentation/view/widgets/custom_text_input_filed.dart';
+import 'package:flutter_firebase/features/signin/view/widgets/custom_text_input_filed.dart';
 
 class ProfileInfoFieldItem extends StatelessWidget {
   const ProfileInfoFieldItem({
