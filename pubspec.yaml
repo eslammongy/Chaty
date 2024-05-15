@@ -50,7 +50,7 @@ dependencies:
   image_picker: ^1.0.8
   pinput: ^2.2.31
   shared_preferences: ^2.1.0
-  sizer: ^2.0.15
+  flutter_screenutil: ^5.9.0
 
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to

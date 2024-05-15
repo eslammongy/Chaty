@@ -4,9 +4,13 @@ import 'package:flutter_firebase/core/constants/app_assets.dart';
 
 class CacheNetworkImg extends StatelessWidget {
   const CacheNetworkImg(
-      {super.key, required this.imgUrl, required this.shapeBorder});
+      {super.key,
+      required this.imgUrl,
+      required this.shapeBorder,
+      this.radius = 80});
   final String imgUrl;
   final ShapeBorder shapeBorder;
+  final double radius;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class CacheNetworkImg extends StatelessWidget {
         color: Colors.transparent,
         margin: EdgeInsets.zero,
         child: CircleAvatar(
-          radius: 80,
+          radius: radius,
           backgroundImage: imageProvider,
         ),
       ),
@@ -26,7 +30,7 @@ class CacheNetworkImg extends StatelessWidget {
         shape: shapeBorder,
         margin: EdgeInsets.zero,
         child: CircleAvatar(
-          radius: 80,
+          radius: radius,
           child: Image.asset(AppAssetsManager.firebaseLogo),
         ),
       ),

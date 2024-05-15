@@ -1,18 +1,17 @@
-import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_firebase/firebase_options.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_firebase/core/theme/theme_data.dart';
 import 'package:flutter_firebase/core/utils/app_routes.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_firebase/features/signin/data/repos/signin_repo.dart';
-import 'package:flutter_firebase/core/utils/services_locator.dart' as injectable;
+import 'package:flutter_firebase/core/utils/services_locator.dart'
+    as injectable;
 import 'package:flutter_firebase/features/profile/data/repos/profile_info_repo.dart';
 import 'package:flutter_firebase/features/signin/presentation/cubit/signin_cubit.dart';
 import 'package:flutter_firebase/features/profile/presentation/cubit/profile_info_cubit.dart';
-    
-   
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -33,8 +32,10 @@ class FlutterFirebase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Sizer(builder: (_, orientation, deviceType) {
-      return MultiBlocProvider(
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      child: MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (context) => SignInCubit(
@@ -43,7 +44,7 @@ class FlutterFirebase extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => ProfileInfoCubit(
-              profileInfoRepo: injectable.getIt<ProfileInfoRepo>(), 
+              profileInfoRepo: injectable.getIt<ProfileInfoRepo>(),
             ),
           )
         ],
@@ -53,7 +54,7 @@ class FlutterFirebase extends StatelessWidget {
           theme: getDarkThemeData(),
           routerConfig: AppRouter.appRoutes(),
         ),
-      );
-    });
+      ),
+    );
   }
 }

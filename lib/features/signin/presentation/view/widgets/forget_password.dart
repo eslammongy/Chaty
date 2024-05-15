@@ -1,9 +1,9 @@
-import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase/core/utils/helper.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_firebase/core/utils/app_routes.dart';
 import 'package:flutter_firebase/core/constants/app_assets.dart';
 import 'package:flutter_firebase/features/signin/presentation/cubit/signin_cubit.dart';
