@@ -24,10 +24,9 @@ class ProfileScreen extends StatelessWidget {
 
     return BlocConsumer<ProfileInfoCubit, ProfileInfoStates>(
       listener: (context, state) {
-        if (state is ProfileImgUploadedState) {
-          //* dismiss the loading dialog
-          GoRouter.of(context).pop();
-          Future(() => displaySnackBar(context, "Profile Image Uploaded",
+        if (state is ProfileImgUploadedState ||
+            state is ProfileInfoCreatedState) {
+          Future(() => displaySnackBar(context, "Profile Info Uploaded",
               isFailState: false));
         }
         if (state is ProfileInfoFailureState) {

@@ -17,22 +17,22 @@ class FloatingBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(20);
-
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+      margin: EdgeInsets.zero,
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: borderRadius),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15), topRight: Radius.circular(15))),
       child: SizedBox(
-        height: 70,
+        height: 80,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildBottomNavItem(
               context,
-              title: "Profile",
-              icon: FontAwesomeIcons.user,
+              title: "Chat",
+              icon: FontAwesomeIcons.commentDots,
               isActive: currentIndex == 0 ? true : false,
               onTap: () {
                 getCurrentIndex(0);
@@ -40,8 +40,8 @@ class FloatingBottomNavBar extends StatelessWidget {
             ),
             _buildBottomNavItem(
               context,
-              title: "Chat",
-              icon: FontAwesomeIcons.message,
+              title: "Profile",
+              icon: FontAwesomeIcons.user,
               isActive: currentIndex == 1 ? true : false,
               onTap: () {
                 getCurrentIndex(1);
@@ -51,7 +51,7 @@ class FloatingBottomNavBar extends StatelessWidget {
               context,
               title: "Setting",
               icon: FontAwesomeIcons.gear,
-              isActive: currentIndex == 2 ? true : false,
+              isActive: currentIndex == 3 ? true : false,
               onTap: () {
                 getCurrentIndex(2);
               },
@@ -86,7 +86,7 @@ class FloatingBottomNavBar extends StatelessWidget {
             color: isActive ? activeColor.withOpacity(0.3) : Colors.transparent,
             elevation: 0,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Icon(
                 icon,
                 size: 20,

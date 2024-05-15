@@ -25,7 +25,7 @@ class SignInScreen extends StatelessWidget {
           Future(() async {
             await UserPref.keepUserAuthenticated(isLogged: true)
                 .then((value) async {
-              GoRouter.of(context).pushReplacement(AppRouter.profileScreen);
+              GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
             });
           });
         }

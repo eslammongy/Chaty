@@ -19,7 +19,7 @@ class ProfileImageSection extends StatefulWidget {
 
 class _ProfileImageSectionState extends State<ProfileImageSection> {
   File? selectedImg;
-  
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -102,6 +102,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
   CachedNetworkImage _cachedNetworkImg(RoundedRectangleBorder roundedShape) {
     return CachedNetworkImage(
       imageUrl: widget.profileImgUrl ?? dummyImageUrl,
+      fadeInCurve: Curves.bounceInOut,
       imageBuilder: (context, imageProvider) => Card(
         shape: roundedShape,
         color: Colors.transparent,

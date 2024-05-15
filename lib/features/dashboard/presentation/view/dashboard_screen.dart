@@ -14,8 +14,8 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final listOfScreens = [
-    const ProfileScreen(),
     const ChatListScreen(),
+    const ProfileScreen(),
     const SettingScreen(),
   ];
   int _selectedPage = 0;
