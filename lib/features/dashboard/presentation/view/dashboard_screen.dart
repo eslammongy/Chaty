@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/features/setting/view/setting_screen.dart';
-import 'package:flutter_firebase/features/chats/presentation/view/chat_list_screen.dart';
+import 'package:flutter_firebase/features/chats/view/chat_list_screen.dart';
 import 'package:flutter_firebase/features/profile/presentation/cubit/profile_info_cubit.dart';
 import 'package:flutter_firebase/features/profile/presentation/view/screens/profile_screen.dart';
 import 'package:flutter_firebase/features/dashboard/presentation/view/widgets/bottom_nav_bar.dart';
