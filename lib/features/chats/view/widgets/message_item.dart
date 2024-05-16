@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/features/chats/data/message.dart';
 import 'package:flutter_firebase/features/chats/view/widgets/expandable_text.dart';
@@ -18,7 +19,7 @@ class MessageItem extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            msg.dateTime.toString(),
+            getDateTime(msg.dateTime),
             style: theme.textTheme.bodyMedium
                 ?.copyWith(color: theme.colorScheme.surfaceTint),
           ),
@@ -47,5 +48,11 @@ class MessageItem extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String getDateTime(DateTime dateTime) {
+    final formattedDate = DateFormat.yMMMEd().format(dateTime);
+    final formattedTime = DateFormat.jm().format(dateTime);
+    return "$formattedDate  $formattedTime";
   }
 }
