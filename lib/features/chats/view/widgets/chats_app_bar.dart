@@ -4,6 +4,7 @@ import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_firebase/core/widgets/cache_network_image.dart';
 import 'package:flutter_firebase/features/profile/cubit/profile_info_cubit.dart';
+import 'package:flutter_firebase/features/setting/view/settings_bottom_sheet.dart';
 import 'package:flutter_firebase/features/signin/view/widgets/custom_text_input_filed.dart';
 
 class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -33,7 +34,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CacheNetworkImg(
                       imgUrl: profileCubit.userModel?.imageUrl ?? dummyImageUrl,
@@ -51,7 +52,22 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                         prefix: const Icon(FontAwesomeIcons.magnifyingGlass),
                         hint: "Search for a chat...",
                       ),
-                    )
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        await _displaySettingSheet(context);
+                      },
+                      borderRadius: BorderRadius.circular(50),
+                      child: const Padding(
+                        padding: EdgeInsets.all(6),
+                        child: Icon(
+                          FontAwesomeIcons.gear,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -64,4 +80,23 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => heightOfAppBar;
+
+  Future<void> _displaySettingSheet(BuildContext context) async {
+    const borderRadius = Radius.circular(20.0);
+    final theme = Theme.of(context);
+
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: theme.colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: borderRadius,
+          topRight: borderRadius,
+        ),
+      ),
+      builder: (BuildContext context) {
+        return const SettingsBottomSheet();
+      },
+    );
+  }
 }
