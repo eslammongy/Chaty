@@ -43,7 +43,7 @@ class PhoneAuthScreen extends StatelessWidget {
             ),
             body: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -52,7 +52,7 @@ class PhoneAuthScreen extends StatelessWidget {
                     ),
                     Image.asset(
                       AppAssetsManager.phoneAuthImg,
-                      width: 60.w,
+                      width: 220.w,
                       fit: BoxFit.contain,
                     ),
                     const SizedBox(
@@ -97,7 +97,7 @@ class PhoneAuthScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 5.h,
+                      height: 30.h,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),

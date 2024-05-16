@@ -30,11 +30,11 @@ class SignUpScreen extends StatelessWidget {
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
             SizedBox(
-              height: 4.h,
+              height: 40.h,
             ),
             const LoginScreenIntroSection(
               introText: "Welcome",
@@ -49,36 +49,33 @@ class SignUpScreen extends StatelessWidget {
                     textEditingController: userNameTextEditor,
                     hint: "enter your nick name",
                     maxLines: 1,
-                    prefix: Icon(
+                    prefix: const Icon(
                       FontAwesomeIcons.userLarge,
-                      size: 5.w,
                     ),
                     isTextPassword: false,
                     autoFocus: false),
                 SizedBox(
-                  height: 2.h,
+                  height: 20.h,
                 ),
                 CustomTextInputField(
                     textEditingController: emailTextEditor,
                     hint: "enter your email",
                     maxLines: 1,
                     textInputType: TextInputType.emailAddress,
-                    prefix: Icon(
+                    prefix: const Icon(
                       Icons.email_rounded,
-                      size: 5.w,
                     ),
                     isTextPassword: false,
                     autoFocus: false),
                 SizedBox(
-                  height: 2.h,
+                  height: 20.h,
                 ),
                 CustomTextInputField(
                   textEditingController: passwordTextEditor,
                   hint: "enter your password",
                   maxLines: 1,
-                  prefix: Icon(
+                  prefix: const Icon(
                     FontAwesomeIcons.lock,
-                    size: 5.w,
                   ),
                   isTextPassword: true,
                   autoFocus: false,
@@ -87,7 +84,7 @@ class SignUpScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 5.h,
+              height: 40.h,
             ),
             CustomTextButton(
               backgroundColor: theme.colorScheme.primary,

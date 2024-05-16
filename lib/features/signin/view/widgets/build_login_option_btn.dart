@@ -22,45 +22,46 @@ class SignInOptionBtn extends StatelessWidget {
     return SizedBox(
       height: 50,
       width: double.infinity,
-      child: InkWell(
-          onTap: onPressed,
-          borderRadius: const BorderRadius.all(Radius.circular(100)),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 30,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 30,
+        ),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: publicRoundedRadius,
+            color: handleBtnBkColor(signInOption, theme),
+          ),
+          child: InkWell(
+            onTap: onPressed,
+            borderRadius: const BorderRadius.all(Radius.circular(100)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  width: 20,
+                ),
+                SvgPicture.asset(
+                  iconPath,
+                  width: 32,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  btnText,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                      color: signInOption == SignInOption.google
+                          ? theme.colorScheme.background
+                          : Colors.white,
+                      fontWeight: FontWeight.w700),
+                ),
+              ],
             ),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: publicRoundedRadius,
-                color: handleBtnBkColor(signInOption, theme),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  SvgPicture.asset(
-                    iconPath,
-                    width: 32,
-                    fit: BoxFit.contain,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    btnText,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                        color: signInOption == SignInOption.google
-                            ? theme.colorScheme.background
-                            : Colors.white,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ],
-              ),
-            ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 

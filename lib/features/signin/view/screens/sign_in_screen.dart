@@ -43,7 +43,7 @@ class SignInScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 8.h,
+                      height: 80.h,
                     ),
                     const LoginScreenIntroSection(
                       introText: "Welcome Back",
