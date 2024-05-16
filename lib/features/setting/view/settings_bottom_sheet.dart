@@ -1,7 +1,7 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_firebase/features/setting/view/message_font_toggels.dart';
+import 'package:flutter_firebase/features/setting/view/widgets/accent_color_toggels.dart';
 
 class SettingsBottomSheet extends StatelessWidget {
   const SettingsBottomSheet({super.key});
@@ -50,60 +50,12 @@ class SettingsBottomSheet extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Accent Color",
-                  style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600, letterSpacing: 1.2),
-                ),
-                ToggleButtons(
-                    borderColor: Colors.transparent,
-                    borderWidth: 0,
-                    disabledBorderColor: Colors.transparent,
-                    isSelected: const [
-                      true,
-                      false,
-                      false,
-                      false,
-                      false,
-                    ],
-                    children: [
-                      _buildAccentColorBtn(Colors.orange, true),
-                      _buildAccentColorBtn(Colors.indigo, false),
-                      _buildAccentColorBtn(Colors.purple, false),
-                      _buildAccentColorBtn(Colors.cyan, true),
-                      _buildAccentColorBtn(Colors.teal, false),
-                    ])
-              ],
-            )
+            const AccentColorToggles(),
+            SizedBox(
+              height: 20.h,
+            ),
+            const MessageFontToggles()
           ],
-        ),
-      ),
-    );
-  }
-
-  _buildAccentColorBtn(Color color, bool isSelected) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          border: Border.fromBorderSide(
-            isSelected
-                ? const BorderSide(width: 2, color: Colors.grey)
-                : BorderSide.none,
-          )),
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Card(
-          color: color,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
-          ),
-          child: SizedBox(
-            height: 22.w,
-            width: 22.w,
-          ),
         ),
       ),
     );
