@@ -9,7 +9,7 @@ import 'package:flutter_firebase/features/signin/view/widgets/custom_text_input_
 class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ChatsAppBar({super.key});
 
-  static Size heightOfAppBar = const Size.fromHeight(kToolbarHeight);
+  static Size heightOfAppBar = Size.fromHeight(kToolbarHeight + 30.h);
   @override
   Widget build(BuildContext context) {
     final profileCubit = ProfileInfoCubit.get(context);

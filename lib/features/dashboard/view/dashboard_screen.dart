@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_firebase/features/setting/view/setting_screen.dart';
 import 'package:flutter_firebase/features/chats/view/chat_list_screen.dart';
 import 'package:flutter_firebase/features/profile/cubit/profile_info_cubit.dart';

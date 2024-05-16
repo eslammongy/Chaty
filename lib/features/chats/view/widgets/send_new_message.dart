@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_firebase/features/signin/view/widgets/custom_text_input_filed.dart';
 
@@ -20,11 +21,29 @@ class SendNewMessage extends StatelessWidget {
           child: CustomTextInputField(
             textEditingController: msgController,
             focusColor: theme.colorScheme.surface,
+            fieldRoundedRadius: BorderRadius.circular(20),
             hint: "type something...",
-            prefix: InkWell(
+            prefix: IconButton(
+              onPressed: () {},
+              padding: EdgeInsets.zero,
+              icon: Card(
+                color: theme.colorScheme.primary,
+                child: const Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Icon(
+                    Icons.camera_alt_rounded,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            suffix: InkWell(
               onTap: () {},
-              borderRadius: BorderRadius.circular(100),
-              child: const Icon(FontAwesomeIcons.faceSmile),
+              radius: 8,
+              borderRadius: BorderRadius.circular(12),
+              child: const Icon(
+                FontAwesomeIcons.image,
+              ),
             ),
           ),
         ),

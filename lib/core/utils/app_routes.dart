@@ -37,7 +37,7 @@ abstract class AppRouter {
           if (!isUserLogin) {
             return const SignInScreen();
           } else {
-            return const ChatScreen();
+            return const DashboardScreen();
           }
         },
       ),
