@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:chaty/core/theme/common_palette.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_firebase/core/theme/common_palette.dart';
 
 typedef GetCurrentIndex = void Function(int index);
 

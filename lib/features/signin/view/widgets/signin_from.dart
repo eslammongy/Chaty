@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_firebase/core/utils/helper.dart';
-import 'package:flutter_firebase/core/utils/app_routes.dart';
-import 'package:flutter_firebase/features/signin/view/widgets/custom_text_button.dart';
-import 'package:flutter_firebase/features/signin/view/widgets/custom_text_input_filed.dart';
+import 'package:chaty/core/utils/helper.dart';
+import 'package:chaty/core/utils/app_routes.dart';
+import 'package:chaty/features/signin/view/widgets/custom_text_button.dart';
+import 'package:chaty/features/signin/view/widgets/custom_text_input_filed.dart';
 
 class SingInFrom extends StatelessWidget {
   const SingInFrom({

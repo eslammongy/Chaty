@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase/core/constants/app_assets.dart';
+import 'package:chaty/core/constants/app_assets.dart';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class LoginScreenIntroSection extends StatelessWidget {

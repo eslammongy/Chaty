@@ -1,4 +1,4 @@
-import 'package:flutter_firebase/features/chats/data/message.dart';
+import 'package:chaty/features/chats/data/message.dart';
 
 List<MessageModel> fakeMessages = [
   MessageModel(

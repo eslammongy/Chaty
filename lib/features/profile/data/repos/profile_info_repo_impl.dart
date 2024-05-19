@@ -3,12 +3,12 @@ import 'profile_info_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:chaty/core/errors/exp_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_firebase/core/errors/exp_enum.dart';
-import 'package:flutter_firebase/core/errors/auth_exceptions_handler.dart';
-import 'package:flutter_firebase/features/profile/data/models/user_model.dart';
+import 'package:chaty/core/errors/auth_exceptions_handler.dart';
+import 'package:chaty/features/profile/data/models/user_model.dart';
 
 class ProfileInfoRepoImpl implements ProfileInfoRepo {
   final FirebaseAuth firebaseAuth;

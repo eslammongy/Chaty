@@ -1,4 +1,4 @@
-# flutter_firebase
+# chaty
 
 A new Flutter project.
 
@@ -14,6 +14,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
 # Project Title
 
 Welcome to [Project Name]! This project is a [brief description of the project, e.g., web application, API, library, etc.]. It is built using [list the technologies and frameworks used, e.g., React, TypeScript, Node.js, etc.].

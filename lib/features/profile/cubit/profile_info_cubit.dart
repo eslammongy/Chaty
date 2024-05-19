@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase/core/errors/auth_exceptions_handler.dart';
-import 'package:flutter_firebase/features/profile/data/models/user_model.dart';
-import 'package:flutter_firebase/features/profile/data/repos/profile_info_repo.dart';
+import 'package:chaty/core/errors/auth_exceptions_handler.dart';
+import 'package:chaty/features/profile/data/models/user_model.dart';
+import 'package:chaty/features/profile/data/repos/profile_info_repo.dart';
 
 part 'profile_info_states.dart';
 

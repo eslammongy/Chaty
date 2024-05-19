@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_firebase/features/setting/view/message_font_toggels.dart';
-import 'package:flutter_firebase/features/setting/view/widgets/accent_color_toggels.dart';
+import 'package:chaty/features/setting/view/message_font_toggels.dart';
+import 'package:chaty/features/setting/view/widgets/accent_color_toggels.dart';
 
 class SettingsBottomSheet extends StatelessWidget {
   const SettingsBottomSheet({super.key});

@@ -1,14 +1,14 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter_firebase/core/utils/user_pref.dart';
-import 'package:flutter_firebase/features/chats/view/chat_screen.dart';
-import 'package:flutter_firebase/features/chats/view/chat_list_screen.dart';
-import 'package:flutter_firebase/features/dashboard/view/dashboard_screen.dart';
-import 'package:flutter_firebase/features/signin/view/screens/signup_screen.dart';
-import 'package:flutter_firebase/features/signin/view/screens/sign_in_screen.dart';
-import 'package:flutter_firebase/features/profile/view/screens/profile_screen.dart';
-import 'package:flutter_firebase/features/signin/view/widgets/forget_password.dart';
-import 'package:flutter_firebase/features/signin/view/screens/phone_auth_screen.dart';
-import 'package:flutter_firebase/features/signin/view/screens/verification_otp_screen.dart';
+import 'package:chaty/core/utils/user_pref.dart';
+import 'package:chaty/features/chats/view/chat_screen.dart';
+import 'package:chaty/features/chats/view/chat_list_screen.dart';
+import 'package:chaty/features/dashboard/view/dashboard_screen.dart';
+import 'package:chaty/features/signin/view/screens/signup_screen.dart';
+import 'package:chaty/features/signin/view/screens/sign_in_screen.dart';
+import 'package:chaty/features/profile/view/screens/profile_screen.dart';
+import 'package:chaty/features/signin/view/widgets/forget_password.dart';
+import 'package:chaty/features/signin/view/screens/phone_auth_screen.dart';
+import 'package:chaty/features/signin/view/screens/verification_otp_screen.dart';
 
 abstract class AppRouter {
   static String dashboardScreen = '/dashboard';

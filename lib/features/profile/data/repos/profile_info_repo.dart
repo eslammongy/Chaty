@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
-import 'package:flutter_firebase/core/errors/exp_enum.dart';
-import 'package:flutter_firebase/features/profile/data/models/user_model.dart';
+import 'package:chaty/core/errors/exp_enum.dart';
+import 'package:chaty/features/profile/data/models/user_model.dart';
 
 abstract class ProfileInfoRepo {
   Future<Either<AuthExceptionsTypes, UserModel>> createNewUserProfile(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_firebase/features/signin/view/widgets/custom_text_input_filed.dart';
+import 'package:chaty/features/signin/view/widgets/custom_text_input_filed.dart';
 
 class SendNewMessage extends StatelessWidget {
   const SendNewMessage({

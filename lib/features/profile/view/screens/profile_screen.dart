@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase/core/utils/helper.dart';
+import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_firebase/core/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_firebase/features/profile/cubit/profile_info_cubit.dart';
-import 'package:flutter_firebase/features/profile/view/widgets/profile_image_section.dart';
-import 'package:flutter_firebase/features/signin/view/widgets/custom_text_input_filed.dart';
-import 'package:flutter_firebase/features/profile/view/widgets/profile_info_field_item.dart';
+import 'package:chaty/features/profile/cubit/profile_info_cubit.dart';
+import 'package:chaty/features/profile/view/widgets/profile_image_section.dart';
+import 'package:chaty/features/signin/view/widgets/custom_text_input_filed.dart';
+import 'package:chaty/features/profile/view/widgets/profile_info_field_item.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

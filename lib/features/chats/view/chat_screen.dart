@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_firebase/features/chats/view/widgets/messages_appbar.dart';
-import 'package:flutter_firebase/features/chats/view/widgets/send_new_message.dart';
-import 'package:flutter_firebase/features/chats/view/widgets/messages_listview.dart';
+import 'package:chaty/features/chats/view/widgets/messages_appbar.dart';
+import 'package:chaty/features/chats/view/widgets/send_new_message.dart';
+import 'package:chaty/features/chats/view/widgets/messages_listview.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});

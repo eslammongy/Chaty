@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase/core/theme/dark_palette.dart';
-import 'package:flutter_firebase/core/theme/error_palette.dart';
-import 'package:flutter_firebase/core/theme/light_palette.dart';
-import 'package:flutter_firebase/core/theme/common_palette.dart';
+import 'package:chaty/core/theme/dark_palette.dart';
+import 'package:chaty/core/theme/error_palette.dart';
+import 'package:chaty/core/theme/light_palette.dart';
+import 'package:chaty/core/theme/common_palette.dart';
 
 ThemeData getDarkThemeData() => ThemeData(
       useMaterial3: true,

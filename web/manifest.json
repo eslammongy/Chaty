@@ -1,6 +1,6 @@
 {
-    "name": "flutter_firebase",
-    "short_name": "flutter_firebase",
+    "name": "chaty",
+    "short_name": "chaty",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

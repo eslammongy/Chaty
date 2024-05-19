@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_firebase/core/utils/helper.dart';
-import 'package:flutter_firebase/core/constants/constants.dart';
-import 'package:flutter_firebase/core/widgets/cache_network_image.dart';
-import 'package:flutter_firebase/features/profile/cubit/profile_info_cubit.dart';
-import 'package:flutter_firebase/features/profile/view/widgets/pick_image_sheet.dart';
+import 'package:chaty/core/constants/constants.dart';
+import 'package:chaty/core/widgets/cache_network_image.dart';
+import 'package:chaty/features/profile/cubit/profile_info_cubit.dart';
+import 'package:chaty/features/profile/view/widgets/pick_image_sheet.dart';
 
 class ProfileImageSection extends StatefulWidget {
   const ProfileImageSection({super.key, required this.profileImgUrl});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_firebase/core/utils/helper.dart';
+import 'package:chaty/core/utils/helper.dart';
 
 enum SignInOption { google, facebook, phone, apple }
 

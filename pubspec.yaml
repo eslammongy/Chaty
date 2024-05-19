@@ -1,4 +1,4 @@
-name: flutter_firebase
+name: chaty
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -78,6 +78,21 @@ flutter:
     - assets/fonts/
     - assets/images/
     - assets/svg/
+
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Light.ttf
+    - family: DancingScript
+      fonts:
+        - asset: assets/fonts/DancingScript-Medium.ttf
+          style: italic
+    - family: UbuntuSans
+      fonts:
+        - asset: assets/fonts/UbuntuSans_Condensed-Light.ttf
+    - family: ChakraPetch
+      fonts:
+        - asset: assets/fonts/ChakraPetch-Light.ttf
 
 icons_launcher:
   image_path: "assets/images/firebase.png"

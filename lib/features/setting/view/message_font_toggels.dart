@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_firebase/core/constants/constants.dart';
 
 class MessageFontToggles extends StatelessWidget {
   const MessageFontToggles({super.key});
@@ -15,9 +15,9 @@ class MessageFontToggles extends StatelessWidget {
         Text(
           "Msg Font",
           style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.2,
-              fontFamily: dancingScript),
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.2,
+          ),
         ),
         ToggleButtons(
             borderColor: Colors.transparent,
@@ -49,15 +49,17 @@ class MessageFontToggles extends StatelessWidget {
                 : BorderSide.none,
           )),
       child: Padding(
-        padding: const EdgeInsets.all(2.0),
+        padding: const EdgeInsets.all(4.0),
         child: SizedBox(
           height: 25.w,
           width: 25.w,
           child: Text("Aa",
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodyLarge?.copyWith(
+              style: theme.textTheme.titleLarge?.copyWith(
                   fontFamily: fontFamily,
-                  color: isSelected ? theme.colorScheme.primary : null)),
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600,
+                  color: isSelected ? theme.colorScheme.secondary : null)),
         ),
       ),
     );

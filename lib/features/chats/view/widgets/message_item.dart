@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase/features/chats/data/message.dart';
-import 'package:flutter_firebase/features/chats/view/widgets/expandable_text.dart';
+import 'package:chaty/features/chats/data/message.dart';
+import 'package:chaty/features/chats/view/widgets/expandable_text.dart';
 
 class MessageItem extends StatelessWidget {
   const MessageItem({

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:chaty/core/utils/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_firebase/core/utils/app_routes.dart';
-import 'package:flutter_firebase/features/chats/view/widgets/chat_list_item.dart';
+import 'package:chaty/features/chats/view/widgets/chat_list_item.dart';
 
 class ChatsList extends StatelessWidget {
   const ChatsList({

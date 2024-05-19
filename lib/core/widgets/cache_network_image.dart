@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:chaty/core/constants/app_assets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_firebase/core/constants/app_assets.dart';
 
 class CacheNetworkImg extends StatelessWidget {
   const CacheNetworkImg(

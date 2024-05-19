@@ -2,14 +2,14 @@ import 'package:pinput/pinput.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase/core/utils/helper.dart';
+import 'package:chaty/core/utils/user_pref.dart';
+import 'package:chaty/core/utils/app_routes.dart';
+import 'package:chaty/core/constants/app_assets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_firebase/core/utils/user_pref.dart';
-import 'package:flutter_firebase/core/utils/app_routes.dart';
-import 'package:flutter_firebase/core/constants/app_assets.dart';
-import 'package:flutter_firebase/features/signin/cubit/signin_cubit.dart';
-import 'package:flutter_firebase/features/profile/cubit/profile_info_cubit.dart';
+import 'package:chaty/features/signin/cubit/signin_cubit.dart';
+import 'package:chaty/features/profile/cubit/profile_info_cubit.dart';
 
 class VerificationOtpScreen extends StatelessWidget {
   final String verifyId;

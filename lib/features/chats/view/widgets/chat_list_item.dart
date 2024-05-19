@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_firebase/core/constants/constants.dart';
-import 'package:flutter_firebase/core/widgets/cache_network_image.dart';
+import 'package:chaty/core/widgets/cache_network_image.dart';
 
 class ChatListItem extends StatelessWidget {
   const ChatListItem({

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase/core/utils/helper.dart';
+import 'package:chaty/core/utils/helper.dart';
 
 class CustomTextButton extends StatelessWidget {
   const CustomTextButton(

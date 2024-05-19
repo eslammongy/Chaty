@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_firebase/core/constants/constants.dart';
+import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_firebase/core/widgets/cache_network_image.dart';
 
 class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MessagesAppBar({super.key});

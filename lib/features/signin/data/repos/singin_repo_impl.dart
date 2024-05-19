@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:chaty/core/errors/exp_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_firebase/core/errors/exp_enum.dart';
-import 'package:flutter_firebase/core/errors/auth_exceptions_handler.dart';
-import 'package:flutter_firebase/features/signin/data/repos/signin_repo.dart';
-import 'package:flutter_firebase/features/profile/data/models/user_model.dart';
+import 'package:chaty/core/errors/auth_exceptions_handler.dart';
+import 'package:chaty/features/signin/data/repos/signin_repo.dart';
+import 'package:chaty/features/profile/data/models/user_model.dart';
 
 class SignInRepoImplementation implements SignInRepo {
   FirebaseAuth firebaseAuth;
