@@ -20,6 +20,10 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
   @override
   Future<Either<AuthExceptionsTypes, UserModel>> createNewUserProfile(
       {required UserModel userModel}) async {
+    if (userModel.name == null) {
+      return left(AuthExceptionHandler.handleException(
+          AuthExceptionsTypes.authInvalidContinueUri));
+    }
     try {
       await databaseReference
           .child(firebaseAuth.currentUser!.uid)
