@@ -10,7 +10,7 @@ import 'package:chaty/features/profile/view/widgets/pick_image_sheet.dart';
 
 class ProfileImageSection extends StatefulWidget {
   const ProfileImageSection({super.key, required this.profileImgUrl});
-  final String? profileImgUrl;
+  final String profileImgUrl;
 
   @override
   State<ProfileImageSection> createState() => _ProfileImageSectionState();
@@ -38,8 +38,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
                   child: CircleAvatar(
                       radius: 80, backgroundImage: FileImage(selectedImg!)))
               : CacheNetworkImg(
-                  imgUrl: widget.profileImgUrl ?? dummyImageUrl,
-                  shapeBorder: roundedShape),
+                  imgUrl: widget.profileImgUrl, shapeBorder: roundedShape),
           Positioned(
             bottom: 5,
             right: 0,

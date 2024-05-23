@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chaty/core/constants/app_assets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class CacheNetworkImg extends StatelessWidget {
@@ -34,7 +35,14 @@ class CacheNetworkImg extends StatelessWidget {
           child: Image.asset(AppAssetsManager.firebaseLogo),
         ),
       ),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
+      errorWidget: (context, url, error) => Card(
+        shape: shapeBorder,
+        margin: EdgeInsets.zero,
+        child: CircleAvatar(
+          radius: radius,
+          child: Image.asset(AppAssetsManager.appPNGLogo),
+        ),
+      ),
     );
   }
 }

@@ -20,7 +20,7 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
   @override
   Future<Either<AuthExceptionsTypes, UserModel>> createNewUserProfile(
       {required UserModel userModel}) async {
-    if (userModel.name == null) {
+    if (userModel.uId == null) {
       return left(AuthExceptionHandler.handleException(
           AuthExceptionsTypes.notValidUserInput));
     }

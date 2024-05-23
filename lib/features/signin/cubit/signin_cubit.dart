@@ -40,6 +40,7 @@ class SignInCubit extends Cubit<SignInStates> {
       final errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
       emit(SignInGenericFailureState(errorMsg));
     }, (userModel) async {
+      userModel.name = name;
       emit(SignUpSuccessState(userModel: userModel));
     });
   }

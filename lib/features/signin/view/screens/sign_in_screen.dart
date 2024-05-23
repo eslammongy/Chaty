@@ -19,15 +19,29 @@ class SignInScreen extends StatelessWidget {
     final passwordTxtController = TextEditingController();
     final emailTxtController = TextEditingController();
     final userInfoCubit = ProfileInfoCubit.get(context);
-    return BlocConsumer<ProfileInfoCubit, ProfileInfoStates>(
-      listener: (context, state) {
-        if (state is ProfileInfoCreatedState) {
-          Future(() async {
-            _keepUserLoggedIn(context);
+    return BlocConsumer<SignInCubit, SignInStates>(
+      listener: (context, state) async {
+        if (state is SignInLoadingState) {
+          showLoadingDialog(context);
+        }
+        if (state is SignInWithGoogleSuccessState) {
+          await userInfoCubit
+              .createNewUserProfile(user: state.userModel)
+              .then((value) async {
+            await _keepUserLoggedIn(context);
           });
         }
-        if (state is ProfileInfoFailureState) {
-          displaySnackBar(context, state.errorMsg);
+        if (state is SignInSuccessState) {
+          Future(() async {
+            await _getUserInfo(context);
+          });
+        }
+        if (state is SignInGenericFailureState) {
+          Future(() {
+            //*pop the loading dialog
+            GoRouter.of(context).pop();
+            displaySnackBar(context, state.errorMsg);
+          });
         }
       },
       builder: (context, state) {
@@ -61,29 +75,15 @@ class SignInScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 20),
-                    BlocListener<SignInCubit, SignInStates>(
+                    BlocListener<ProfileInfoCubit, ProfileInfoStates>(
                       listener: (context, state) async {
-                        if (state is SignInLoadingState) {
-                          showLoadingDialog(context);
-                        }
-                        if (state is SignInWithGoogleSuccessState) {
-                          await userInfoCubit
-                              .createNewUserProfile(user: state.userModel)
-                              .then((value) async {
-                            await _keepUserLoggedIn(context);
-                          });
-                        }
-                        if (state is SignInSuccessState) {
+                        if (state is ProfileInfoFetchedState) {
                           Future(() async {
-                            await _getUserInfo(context);
+                            _keepUserLoggedIn(context);
                           });
                         }
-                        if (state is SignInGenericFailureState) {
-                          Future(() {
-                            //pop the loading dialog
-                            GoRouter.of(context).pop();
-                            displaySnackBar(context, state.errorMsg);
-                          });
+                        if (state is ProfileInfoFailureState) {
+                          displaySnackBar(context, state.errorMsg);
                         }
                       },
                       child: const SizedBox(),

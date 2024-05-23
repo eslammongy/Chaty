@@ -54,7 +54,8 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   SizedBox(height: 6.h),
                   ProfileImageSection(
-                    profileImgUrl: profileCubit.userModel?.imageUrl,
+                    profileImgUrl:
+                        profileCubit.userModel?.imageUrl ?? dummyImageUrl,
                   ),
                   const SizedBox(height: 20),
                   _buildBioSection(profileCubit, theme, pioTxtController),

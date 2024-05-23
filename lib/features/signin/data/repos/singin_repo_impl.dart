@@ -58,7 +58,8 @@ class SignInRepoImplementation implements SignInRepo {
       if (userCredential.user == null) {
         return left(AuthExceptionsTypes.undefined);
       }
-      final userModel = _fillUserModel(userCredential.user!);
+      final userModel = UserModel(
+          uId: userCredential.user?.uid, email: email, password: password);
       return right(userModel);
     } on FirebaseAuthException catch (error) {
       return left(AuthExceptionHandler.handleException(error.code));
