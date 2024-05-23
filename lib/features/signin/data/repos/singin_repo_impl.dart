@@ -72,15 +72,14 @@ class SignInRepoImplementation implements SignInRepo {
   Future<Either<AuthExceptionsTypes, UserModel>> signInWithEmailPass(
       {required String email, required String password}) async {
     try {
-      await firebaseAuth
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((userCredential) {
-        if (userCredential.user != null) {
-          final userModel = _fillUserModel(userCredential.user!);
-          return right(userModel);
-        }
-      });
-      return left(AuthExceptionsTypes.undefined);
+      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+
+      if (userCredential.user == null) {
+        return left(AuthExceptionsTypes.undefined);
+      }
+      final userModel = _fillUserModel(userCredential.user!);
+      return right(userModel);
     } on FirebaseAuthException catch (error) {
       return left(AuthExceptionHandler.handleException(error.code));
     } catch (error) {
