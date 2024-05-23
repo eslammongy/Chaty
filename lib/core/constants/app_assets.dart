@@ -1,5 +1,7 @@
 abstract class AppAssetsManager {
   static const String firebaseLogo = "assets/images/firebase.png";
+  static const String appLogo = "assets/svg/logo.svg";
+  static const String appPNGLogo = "assets/images/logo.png";
   static const String verificationCodeImg = "assets/svg/verify_otp.svg";
   static const String forgetPasswordImg = "assets/svg/forget_password.svg";
   static const String googleIcon = "assets/svg/google_icon.svg";

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
@@ -18,8 +19,8 @@ class LoginScreenIntroSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Center(
-          child: Image.asset(
-            AppAssetsManager.firebaseLogo,
+          child: SvgPicture.asset(
+            AppAssetsManager.appLogo,
             width: 80,
             fit: BoxFit.contain,
           ),

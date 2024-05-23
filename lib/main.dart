@@ -9,9 +9,8 @@ import 'package:chaty/features/signin/cubit/signin_cubit.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:chaty/features/signin/data/repos/signin_repo.dart';
 import 'package:chaty/features/profile/cubit/profile_info_cubit.dart';
-import 'package:chaty/core/utils/services_locator.dart'     as injectable;
+import 'package:chaty/core/utils/services_locator.dart' as injectable;
 import 'package:chaty/features/profile/data/repos/profile_info_repo.dart';
-
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -22,13 +21,13 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await injectable.initServices();
   await AppRouter.setInitialRoute();
-  runApp(const FlutterFirebase());
+  runApp(const Chaty());
   Future.delayed(
       const Duration(microseconds: 1000), FlutterNativeSplash.remove);
 }
 
-class FlutterFirebase extends StatelessWidget {
-  const FlutterFirebase({super.key});
+class Chaty extends StatelessWidget {
+  const Chaty({super.key});
 
   @override
   Widget build(BuildContext context) {

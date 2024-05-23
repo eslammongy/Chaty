@@ -110,11 +110,7 @@ class SignUpScreen extends StatelessWidget {
                   showLoadingDialog(context);
                 }
                 if (state is SignUpSuccessState) {
-                  await ProfileInfoCubit.get(context)
-                      .createNewUserProfile(user: state.userModel)
-                      .then((value) async {
-                    await _keepUserLoggedIn(context);
-                  });
+                  GoRouter.of(context).pushReplacement(AppRouter.loginScreen);
                 }
                 if (state is SignInGenericFailureState) {
                   Future(() {
@@ -164,17 +160,12 @@ class SignUpScreen extends StatelessWidget {
         passwordTextController.text.isEmpty ||
         userNTextController.text.isEmpty) {
       displaySnackBar(context, "please make sure you entered all info!");
+      return;
     }
 
     await SignInCubit.get(context).signUpWithEmailPassword(
         name: userNTextController.text,
         email: emailTextController.text,
         password: passwordTextController.text);
-  }
-
-  Future<void> _keepUserLoggedIn(BuildContext context) async {
-    await UserPref.keepUserAuthenticated(isLogged: true).then((value) {
-      GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
-    });
   }
 }
