@@ -22,7 +22,7 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
       {required UserModel userModel}) async {
     if (userModel.name == null) {
       return left(AuthExceptionHandler.handleException(
-          AuthExceptionsTypes.authInvalidContinueUri));
+          AuthExceptionsTypes.notValidUserInput));
     }
     try {
       await databaseReference

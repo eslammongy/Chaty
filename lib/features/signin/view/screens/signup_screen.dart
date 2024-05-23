@@ -6,6 +6,8 @@ import 'package:chaty/core/utils/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/signin/cubit/signin_cubit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:chaty/features/profile/data/models/user_model.dart';
+import 'package:chaty/features/profile/cubit/profile_info_cubit.dart';
 import 'package:chaty/features/signin/view/widgets/custom_text_button.dart';
 import 'package:chaty/features/signin/view/widgets/custom_text_input_filed.dart';
 import 'package:chaty/features/signin/view/widgets/login_screen_intro_section.dart';
@@ -39,7 +41,7 @@ class SignUpScreen extends StatelessWidget {
               subIntroText: "Sign up to continue",
             ),
             SizedBox(
-              height: 4.h,
+              height: 25.h,
             ),
             Column(
               children: [
@@ -82,7 +84,7 @@ class SignUpScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 40.h,
+              height: 50.h,
             ),
             CustomTextButton(
               backgroundColor: theme.colorScheme.primary,
@@ -108,7 +110,7 @@ class SignUpScreen extends StatelessWidget {
                   showLoadingDialog(context);
                 }
                 if (state is SignUpSuccessState) {
-                  GoRouter.of(context).pushReplacement(AppRouter.loginScreen);
+                  await _createUserProfileInfo(context, state.userModel);
                 }
                 if (state is SignInGenericFailureState) {
                   Future(() {
@@ -146,6 +148,15 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _createUserProfileInfo(
+      BuildContext context, UserModel userModel) async {
+    await ProfileInfoCubit.get(context)
+        .createNewUserProfile(user: userModel)
+        .then((value) async {
+      GoRouter.of(context).pushReplacement(AppRouter.loginScreen);
+    });
   }
 
   Future<void> userSignUp(
