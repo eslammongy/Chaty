@@ -52,15 +52,14 @@ class SignInRepoImplementation implements SignInRepo {
   Future<Either<AuthExceptionsTypes, UserModel>> signUpWithEmail(
       {required String email, required String password}) async {
     try {
-      await firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((userCredential) {
-        if (userCredential.user != null) {
-          final userModel = _fillUserModel(userCredential.user!);
-          return right(userModel);
-        }
-      });
-      return left(AuthExceptionsTypes.undefined);
+      final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+
+      if (userCredential.user == null) {
+        return left(AuthExceptionsTypes.undefined);
+      }
+      final userModel = _fillUserModel(userCredential.user!);
+      return right(userModel);
     } on FirebaseAuthException catch (error) {
       return left(AuthExceptionHandler.handleException(error.code));
     } catch (error) {
@@ -92,9 +91,7 @@ class SignInRepoImplementation implements SignInRepo {
   Future<Either<AuthExceptionsTypes, bool>> resetUserPassword(
       {required String email}) async {
     try {
-      await firebaseAuth.sendPasswordResetEmail(email: email).then((value) {
-        return right(true);
-      });
+      await firebaseAuth.sendPasswordResetEmail(email: email);
       return right(true);
     } on FirebaseAuthException catch (error) {
       return left(AuthExceptionHandler.handleException(error.code));
@@ -140,16 +137,16 @@ class SignInRepoImplementation implements SignInRepo {
     try {
       PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
           verificationId: verificationId, smsCode: otpCode);
-      await firebaseAuth
-          .signInWithCredential(phoneAuthCredential)
-          .then((userCredential) {
-        if (userCredential.user != null) {
-          final userModel = _fillUserModel(userCredential.user!);
-          return right(userModel);
-        }
-      });
 
-      return left(AuthExceptionsTypes.undefined);
+      final userCredential =
+          await firebaseAuth.signInWithCredential(phoneAuthCredential);
+
+      if (userCredential.user == null) {
+        return left(AuthExceptionsTypes.undefined);
+      }
+
+      final userModel = _fillUserModel(userCredential.user!);
+      return right(userModel);
     } on FirebaseAuthException catch (error) {
       return left(AuthExceptionHandler.handleException(error.code));
     } catch (error) {
