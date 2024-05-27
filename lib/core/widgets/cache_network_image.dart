@@ -14,7 +14,6 @@ class CacheNetworkImg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("imgUrl : $imgUrl");
     return CachedNetworkImage(
       imageUrl: imgUrl,
       fadeInCurve: Curves.bounceInOut,

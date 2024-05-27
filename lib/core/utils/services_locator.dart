@@ -10,8 +10,10 @@ Future<void> initServices() async {
   getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
 
   getIt.registerSingleton<SignInRepo>(
-      SignInRepoImplementation(firebaseAuth: getIt()));
+    SignInRepoImplementation(firebaseAuth: getIt()),
+  );
 
   getIt.registerSingleton<UserRepo>(
-      UserRepoImpl(firebaseAuth: getIt()));
+    UserRepoImpl(firebaseAuth: getIt()),
+  );
 }

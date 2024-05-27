@@ -7,9 +7,9 @@ import 'package:chaty/core/utils/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/signin/cubit/signin_cubit.dart';
+import 'package:chaty/features/users/data/repos/user_repo.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:chaty/features/signin/data/repos/signin_repo.dart';
-import 'package:chaty/features/users/data/repos/user_repo_impl.dart';
 import 'package:chaty/core/utils/services_locator.dart' as injectable;
 
 void main() async {
@@ -43,7 +43,7 @@ class Chaty extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => UserCubit(
-              userRepo: injectable.getIt<UserRepoImpl>(),
+              userRepo: injectable.getIt<UserRepo>(),
             ),
           )
         ],

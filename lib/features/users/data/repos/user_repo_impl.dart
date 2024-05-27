@@ -104,27 +104,27 @@ class UserRepoImpl implements UserRepo {
   ) async {
     try {
       final dbEvent = await databaseReference.once();
-      Map<dynamic, dynamic>? users =
-          dbEvent.snapshot.value as Map<dynamic, dynamic>?;
-      if (users == null) {
+      final usersMap = dbEvent.snapshot.value as Map<dynamic, dynamic>?;
+
+      if (usersMap == null) {
         return left(AuthExceptionHandler.handleException(
             AuthExceptionsTypes.userNotFound));
       }
       final friends = <UserModel>[];
-
-      users.forEach((key, values) {
-        if (key != firebaseAuth.currentUser!.uid) {
-          friends.add(UserModel.fromJson(values as Map<String, dynamic>));
+      for (var entry in usersMap.entries) {
+        if (entry.key != firebaseAuth.currentUser?.uid) {
+          friends.add(UserModel.fromJson(entry.value as Map<Object?, Object?>));
         } else {
           setCurrentUser
-              ?.call(UserModel.fromJson(values as Map<String, dynamic>));
+              ?.call(UserModel.fromJson(entry.value as Map<Object?, Object?>));
         }
-      });
+      }
+
       return right(friends);
     } on FirebaseException catch (error) {
       return left(AuthExceptionHandler.handleException(error.code));
     } catch (error) {
-      return left(AuthExceptionHandler.handleException(error));
+      return left(AuthExceptionHandler.handleException(error.toString()));
     }
   }
 }

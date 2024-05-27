@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
+import 'package:chaty/features/users/data/models/user_model.dart';
 
 class FriendsListItem extends StatelessWidget {
-  const FriendsListItem({super.key});
+  const FriendsListItem({super.key, required this.user});
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +32,16 @@ class FriendsListItem extends StatelessWidget {
               ),
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Eslam Mongy",
+                      user.name ?? dummyName,
                       style: theme.textTheme.bodyLarge
                           ?.copyWith(fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      "user email or bio",
+                      user.email ?? dummyEmail,
                       style: theme.textTheme.bodyMedium
                           ?.copyWith(color: theme.colorScheme.surfaceTint),
                     ),

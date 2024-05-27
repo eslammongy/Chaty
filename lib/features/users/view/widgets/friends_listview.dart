@@ -11,28 +11,28 @@ class FriendsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
+    final userCubit = UserCubit.get(context);
     return BlocBuilder<UserCubit, UserStates>(
       builder: (context, state) {
-      
-          return Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.only(bottom: 75.h),
-              physics: const BouncingScrollPhysics(),
-              itemExtent: 80.h,
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    GoRouter.of(context).push(AppRouter.chatScreen);
-                  },
-                  child: const FriendsListItem(),
-                );
-              },
-            ),
-          );
-        
-      
+        return Expanded(
+          child: ListView.builder(
+            padding: EdgeInsets.only(bottom: 75.h),
+            physics: const BouncingScrollPhysics(),
+            itemExtent: 80.h,
+            itemCount: userCubit.friendsList.length,
+            itemBuilder: (context, index) {
+              final user = userCubit.friendsList[index];
+              return InkWell(
+                onTap: () {
+                  GoRouter.of(context).push(AppRouter.chatScreen);
+                },
+                child: FriendsListItem(
+                  user: user,
+                ),
+              );
+            },
+          ),
+        );
       },
     );
   }
