@@ -8,8 +8,8 @@ import 'package:chaty/core/utils/user_pref.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/signin/cubit/signin_cubit.dart';
-import 'package:chaty/features/profile/cubit/profile_info_cubit.dart';
 
 class VerificationOtpScreen extends StatelessWidget {
   final String verifyId;
@@ -25,14 +25,14 @@ class VerificationOtpScreen extends StatelessWidget {
     final focusNode = FocusNode();
     final theme = Theme.of(context);
 
-    return BlocConsumer<ProfileInfoCubit, ProfileInfoStates>(
+    return BlocConsumer<UserCubit, UserStates>(
       listener: (context, state) async {
-        if (state is ProfileInfoCreatedState) {
+        if (state is UserCreatedState) {
           await UserPref.keepUserAuthenticated(isLogged: true).then((value) {
             GoRouter.of(context).pushReplacement(AppRouter.profileScreen);
           });
         }
-        if (state is ProfileInfoFailureState) {
+        if (state is UserFailureState) {
           Future(() {
             GoRouter.of(context).pop();
             displaySnackBar(context, state.errorMsg);
@@ -119,7 +119,7 @@ class VerificationOtpScreen extends StatelessWidget {
                     },
                     listener: (context, state) async {
                       if (state is PhoneOtpCodeVerifiedState) {
-                        await ProfileInfoCubit.get(context)
+                        await UserCubit.get(context)
                             .createNewUserProfile(user: state.userModel);
                       }
                       if (state is SignInGenericFailureState) {

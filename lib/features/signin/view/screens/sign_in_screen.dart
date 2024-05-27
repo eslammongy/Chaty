@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/user_pref.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/signin/cubit/signin_cubit.dart';
 import 'package:chaty/features/signin/view/widgets/signin_from.dart';
-import 'package:chaty/features/profile/cubit/profile_info_cubit.dart';
 import 'package:chaty/features/signin/view/widgets/login_screen_intro_section.dart';
 import 'package:chaty/features/signin/view/widgets/signin_with_social_accounts.dart';
 
@@ -18,7 +18,7 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final passwordTxtController = TextEditingController();
     final emailTxtController = TextEditingController();
-    final userInfoCubit = ProfileInfoCubit.get(context);
+    final userInfoCubit = UserCubit.get(context);
     return BlocConsumer<SignInCubit, SignInStates>(
       listener: (context, state) async {
         if (state is SignInLoadingState) {
@@ -75,14 +75,14 @@ class SignInScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 20),
-                    BlocListener<ProfileInfoCubit, ProfileInfoStates>(
+                    BlocListener<UserCubit, UserStates>(
                       listener: (context, state) async {
-                        if (state is ProfileInfoFetchedState) {
+                        if (state is UserFetchedState) {
                           Future(() async {
                             _keepUserLoggedIn(context);
                           });
                         }
-                        if (state is ProfileInfoFailureState) {
+                        if (state is UserFailureState) {
                           displaySnackBar(context, state.errorMsg);
                         }
                       },
@@ -98,9 +98,7 @@ class SignInScreen extends StatelessWidget {
   }
 
   Future<void> _getUserInfo(BuildContext context) async {
-    await ProfileInfoCubit.get(context)
-        .fetchUserProfileInfo()
-        .then((value) async {
+    await UserCubit.get(context).fetchUserInfo().then((value) async {
       await _keepUserLoggedIn(context);
     });
   }

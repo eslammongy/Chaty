@@ -8,8 +8,6 @@ class ChatLoadingState extends ChatStates {}
 
 class ChatFailureState extends ChatStates {}
 
-class ChatLoadAllFriendsState extends ChatStates {}
-
 class ChatLoadAllChatsState extends ChatStates {}
 
 class ChatLoadAllMessagesState extends ChatStates {}

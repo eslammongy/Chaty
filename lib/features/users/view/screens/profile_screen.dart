@@ -4,32 +4,32 @@ import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:chaty/features/profile/cubit/profile_info_cubit.dart';
-import 'package:chaty/features/profile/view/widgets/profile_image_section.dart';
+import 'package:chaty/features/users/view/widgets/profile_image_section.dart';
+import 'package:chaty/features/users/view/widgets/profile_info_field_item.dart';
 import 'package:chaty/features/signin/view/widgets/custom_text_input_filed.dart';
-import 'package:chaty/features/profile/view/widgets/profile_info_field_item.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final profileCubit = ProfileInfoCubit.get(context);
+    final profileCubit = UserCubit.get(context);
     final theme = Theme.of(context);
     final pioTxtController = TextEditingController();
     final nameTxtController = TextEditingController();
     final phoneTxtController = TextEditingController();
     final emailTxtController = TextEditingController();
 
-    return BlocConsumer<ProfileInfoCubit, ProfileInfoStates>(
+    return BlocConsumer<UserCubit, UserStates>(
       listener: (context, state) {
         if (state is ProfileImgUploadedState ||
-            state is ProfileInfoCreatedState) {
+            state is UserCreatedState) {
           Future(() => displaySnackBar(context, "Profile Info Uploaded",
               isFailState: false));
         }
-        if (state is ProfileInfoFailureState) {
+        if (state is UserFailureState) {
           //* dismiss the loading dialog
           GoRouter.of(context).pop();
           Future(() => displaySnackBar(context, state.errorMsg));
@@ -45,7 +45,7 @@ class ProfileScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: kToolbarHeight - 10),
-                  if (state is ProfileInfoLoadingState)
+                  if (state is UserLoadingState)
                     LinearProgressIndicator(
                       color: theme.colorScheme.primary,
                       backgroundColor: theme.colorScheme.surface,
@@ -66,7 +66,6 @@ class ProfileScreen extends StatelessWidget {
                     icon: FontAwesomeIcons.user,
                     onSubmitted: (value) async {
                       profileCubit.userModel?.name = value;
-                      debugPrint("Name: ${profileCubit.userModel?.name}");
                       await profileCubit.updateUserProfile();
                     },
                   ),
@@ -101,7 +100,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Card _buildBioSection(
-    ProfileInfoCubit profileCubit,
+    UserCubit profileCubit,
     ThemeData theme,
     TextEditingController pioTxtController,
   ) {

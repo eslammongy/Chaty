@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:chaty/features/profile/cubit/profile_info_cubit.dart';
+import 'package:chaty/features/users/cubit/user_cubit.dart';
+import 'package:chaty/features/users/view/screens/friends_screen.dart';
+import 'package:chaty/features/users/view/screens/profile_screen.dart';
 import 'package:chaty/features/chats/view/screen/chat_list_screen.dart';
-import 'package:chaty/features/profile/view/screens/friends_screen.dart';
-import 'package:chaty/features/profile/view/screens/profile_screen.dart';
 import 'package:chaty/features/dashboard/view/widgets/bottom_nav_bar.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   loadProfileInfo() async {
-    final profileCubit = ProfileInfoCubit.get(context);
-    await profileCubit.fetchUserProfileInfo();
+    final profileCubit = UserCubit.get(context);
+    await profileCubit.fetchAllFriends();
   }
 }

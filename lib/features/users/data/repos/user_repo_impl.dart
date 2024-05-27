@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'profile_info_repo.dart';
+import 'user_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -8,14 +8,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:chaty/core/errors/auth_exceptions_handler.dart';
-import 'package:chaty/features/profile/data/models/user_model.dart';
+import 'package:chaty/features/users/data/models/user_model.dart';
 
-class ProfileInfoRepoImpl implements ProfileInfoRepo {
+class UserRepoImpl implements UserRepo {
   final FirebaseAuth firebaseAuth;
   final DatabaseReference databaseReference =
       FirebaseDatabase.instance.ref("users");
 
-  ProfileInfoRepoImpl({required this.firebaseAuth});
+  UserRepoImpl({required this.firebaseAuth});
 
   @override
   Future<Either<AuthExceptionsTypes, UserModel>> createNewUserProfile(
@@ -96,5 +96,35 @@ class ProfileInfoRepoImpl implements ProfileInfoRepo {
     final deviceId = FirebaseAuth.instance.currentUser?.uid;
     final userName = FirebaseAuth.instance.currentUser?.displayName ?? "NONE";
     return "${userName}_$deviceId";
+  }
+
+  @override
+  Future<Either<AuthExceptionsTypes, List<UserModel>>> fetchAllFriends(
+    Function(UserModel currentUser)? setCurrentUser,
+  ) async {
+    try {
+      final dbEvent = await databaseReference.once();
+      Map<dynamic, dynamic>? users =
+          dbEvent.snapshot.value as Map<dynamic, dynamic>?;
+      if (users == null) {
+        return left(AuthExceptionHandler.handleException(
+            AuthExceptionsTypes.userNotFound));
+      }
+      final friends = <UserModel>[];
+
+      users.forEach((key, values) {
+        if (key != firebaseAuth.currentUser!.uid) {
+          friends.add(UserModel.fromJson(values as Map<String, dynamic>));
+        } else {
+          setCurrentUser
+              ?.call(UserModel.fromJson(values as Map<String, dynamic>));
+        }
+      });
+      return right(friends);
+    } on FirebaseException catch (error) {
+      return left(AuthExceptionHandler.handleException(error.code));
+    } catch (error) {
+      return left(AuthExceptionHandler.handleException(error));
+    }
   }
 }
