@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
@@ -13,7 +14,6 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
   static Size heightOfAppBar = Size.fromHeight(kToolbarHeight + 30.h);
   @override
   Widget build(BuildContext context) {
-    final profileCubit = ProfileInfoCubit.get(context);
     final controller = TextEditingController();
     final theme = Theme.of(context);
     return PreferredSize(
@@ -36,12 +36,19 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CacheNetworkImg(
-                      imgUrl: profileCubit.userModel?.imageUrl ?? dummyImageUrl,
-                      radius: 26,
-                      shapeBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(60),
-                      ),
+                    BlocBuilder<ProfileInfoCubit, ProfileInfoStates>(
+                      builder: (context, state) {
+                        return CacheNetworkImg(
+                          imgUrl: ProfileInfoCubit.get(context)
+                                  .userModel
+                                  ?.imageUrl ??
+                              dummyImageUrl,
+                          radius: 26,
+                          shapeBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(60),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(
                       width: 10,
