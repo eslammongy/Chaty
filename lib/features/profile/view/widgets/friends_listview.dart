@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/chats/view/widgets/friends_list_item.dart';
+import 'package:chaty/features/profile/view/widgets/friends_list_item.dart';
 
 class FriendsListView extends StatelessWidget {
   const FriendsListView({super.key});

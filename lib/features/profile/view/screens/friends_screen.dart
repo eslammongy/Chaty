@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/chats/view/widgets/chats_app_bar.dart';
-import 'package:chaty/features/chats/view/widgets/friends_listview.dart';
+import 'package:chaty/features/profile/view/widgets/friends_listview.dart';
 
 class FriendsScreen extends StatelessWidget {
   const FriendsScreen({super.key});
