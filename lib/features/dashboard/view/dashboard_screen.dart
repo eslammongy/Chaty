@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:chaty/features/chats/view/chat_list_screen.dart';
+import 'package:chaty/features/chats/view/screen/friends_screen.dart';
 import 'package:chaty/features/profile/cubit/profile_info_cubit.dart';
+import 'package:chaty/features/chats/view/screen/chat_list_screen.dart';
 import 'package:chaty/features/profile/view/screens/profile_screen.dart';
 import 'package:chaty/features/dashboard/view/widgets/bottom_nav_bar.dart';
 
@@ -14,6 +15,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final listOfScreens = [
     const ChatListScreen(),
+    const FriendsScreen(),
     const ProfileScreen(),
   ];
   int _selectedPage = 0;

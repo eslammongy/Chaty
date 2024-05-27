@@ -19,7 +19,7 @@ class FloatingBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 60.w, vertical: 10.h),
+      margin: EdgeInsets.symmetric(horizontal: 55.w, vertical: 10.h),
       elevation: 4,
       shadowColor: Colors.indigo.shade800,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -40,11 +40,20 @@ class FloatingBottomNavBar extends StatelessWidget {
             ),
             _buildBottomNavItem(
               context,
-              title: "Profile",
-              icon: FontAwesomeIcons.user,
+              title: "Friends",
+              icon: FontAwesomeIcons.userGroup,
               isActive: currentIndex == 1 ? true : false,
               onTap: () {
                 getCurrentIndex(1);
+              },
+            ),
+            _buildBottomNavItem(
+              context,
+              title: "Profile",
+              icon: FontAwesomeIcons.user,
+              isActive: currentIndex == 2 ? true : false,
+              onTap: () {
+                getCurrentIndex(2);
               },
             ),
           ],
