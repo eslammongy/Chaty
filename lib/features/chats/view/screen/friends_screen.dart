@@ -10,7 +10,9 @@ class FriendsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-        appBar: const ChatsAppBar(),
+        appBar: const ChatsAppBar(
+          searchHint: "Search for a friend...",
+        ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
           child: Column(

@@ -13,7 +13,7 @@ class FriendsListView extends StatelessWidget {
       child: ListView.builder(
         padding: EdgeInsets.only(bottom: 75.h),
         physics: const BouncingScrollPhysics(),
-        itemExtent: 90.h,
+        itemExtent: 80.h,
         itemCount: 15,
         itemBuilder: (context, index) {
           return InkWell(

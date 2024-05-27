@@ -12,7 +12,7 @@ class FriendsListItem extends StatelessWidget {
 
     return Card(
       child: SizedBox(
-        height: 90.h,
+        height: 80.h,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
           child: Row(
@@ -23,7 +23,7 @@ class FriendsListItem extends StatelessWidget {
                     side: BorderSide(
                         color: theme.scaffoldBackgroundColor, width: 2),
                     borderRadius: BorderRadius.circular(30)),
-                radius: 28,
+                radius: 25,
               ),
               const SizedBox(
                 width: 10,
@@ -39,7 +39,7 @@ class FriendsListItem extends StatelessWidget {
                           ?.copyWith(fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      "what are you doing",
+                      "user email or bio",
                       style: theme.textTheme.bodyMedium
                           ?.copyWith(color: theme.colorScheme.surfaceTint),
                     ),

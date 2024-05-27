@@ -9,7 +9,8 @@ import 'package:chaty/features/setting/view/settings_bottom_sheet.dart';
 import 'package:chaty/features/signin/view/widgets/custom_text_input_filed.dart';
 
 class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ChatsAppBar({super.key});
+  const ChatsAppBar({super.key, required this.searchHint});
+  final String searchHint;
 
   static Size heightOfAppBar = Size.fromHeight(kToolbarHeight + 30.h);
   @override
@@ -57,7 +58,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                       child: CustomTextInputField(
                         textEditingController: controller,
                         prefix: const Icon(FontAwesomeIcons.magnifyingGlass),
-                        hint: "Search for a chat...",
+                        hint: searchHint,
                       ),
                     ),
                     const SizedBox(
