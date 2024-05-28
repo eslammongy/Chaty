@@ -6,10 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
+import 'package:chaty/core/widgets/customized_text_btn.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:chaty/features/users/view/widgets/profile_bio.dart';
 import 'package:chaty/features/users/view/widgets/profile_image_section.dart';
 import 'package:chaty/features/users/view/widgets/profile_info_field_item.dart';
-import 'package:chaty/features/signin/view/widgets/custom_text_input_filed.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -39,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
         return Scaffold(
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                         profileCubit.userModel?.imageUrl ?? dummyImageUrl,
                   ),
                   const SizedBox(height: 20),
-                  _buildBioSection(profileCubit, theme, pioTxtController),
+                  ProfileBio(pioTxtController: pioTxtController),
                   const SizedBox(height: 20),
                   ProfileInfoFieldItem(
                     text: profileCubit.userModel?.name ?? dummyName,
@@ -90,50 +91,14 @@ class ProfileScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 45),
+                  CustomizedTextBtn(
+                      btnText: "Sign out", bkColor: theme.colorScheme.error)
                 ],
               ),
             ),
           ),
         );
       },
-    );
-  }
-
-  Widget _buildBioSection(
-    UserCubit profileCubit,
-    ThemeData theme,
-    TextEditingController pioTxtController,
-  ) {
-    return Card(
-      color: theme.colorScheme.surface,
-      elevation: 0,
-      margin: EdgeInsets.zero,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, top: 16),
-            child: Align(
-                alignment: Alignment.topLeft,
-                child: Icon(
-                  Icons.info_outline,
-                  color: theme.colorScheme.secondary,
-                )),
-          ),
-          Expanded(
-            child: CustomTextInputField(
-              textEditingController: pioTxtController,
-              initText: profileCubit.userModel?.bio ?? dummyBio,
-              maxLines: 5,
-              height: 125,
-              onSubmitted: (value) async {
-                profileCubit.userModel?.bio = value;
-                await profileCubit.updateUserProfile();
-              },
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

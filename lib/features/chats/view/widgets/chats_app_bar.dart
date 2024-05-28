@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:chaty/features/users/data/models/user_model.dart';
 import 'package:chaty/features/setting/view/settings_bottom_sheet.dart';
+import 'package:chaty/features/users/view/widgets/user_info_sheet_body.dart';
 import 'package:chaty/features/signin/view/widgets/custom_text_input_filed.dart';
 
 class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -40,9 +42,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                     BlocBuilder<UserCubit, UserStates>(
                       builder: (context, state) {
                         return CacheNetworkImg(
-                          imgUrl: UserCubit.get(context)
-                                  .userModel
-                                  ?.imageUrl ??
+                          imgUrl: UserCubit.get(context).userModel?.imageUrl ??
                               dummyImageUrl,
                           radius: 26,
                           shapeBorder: RoundedRectangleBorder(
@@ -96,6 +96,9 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
     await showModalBottomSheet(
       context: context,
       backgroundColor: theme.colorScheme.surface,
+      isScrollControlled: true,
+      constraints:
+          BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.85),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: borderRadius,
@@ -103,7 +106,9 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       builder: (BuildContext context) {
-        return const SettingsBottomSheet();
+        return UserInfoSheetBody(
+          user: UserModel(),
+        );
       },
     );
   }
