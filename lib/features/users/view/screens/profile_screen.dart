@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/helper.dart';
@@ -24,8 +25,7 @@ class ProfileScreen extends StatelessWidget {
 
     return BlocConsumer<UserCubit, UserStates>(
       listener: (context, state) {
-        if (state is ProfileImgUploadedState ||
-            state is UserCreatedState) {
+        if (state is ProfileImgUploadedState || state is UserCreatedState) {
           Future(() => displaySnackBar(context, "Profile Info Uploaded",
               isFailState: false));
         }
@@ -99,7 +99,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Card _buildBioSection(
+  Widget _buildBioSection(
     UserCubit profileCubit,
     ThemeData theme,
     TextEditingController pioTxtController,
@@ -125,7 +125,7 @@ class ProfileScreen extends StatelessWidget {
               textEditingController: pioTxtController,
               initText: profileCubit.userModel?.bio ?? dummyBio,
               maxLines: 5,
-              height: 130,
+              height: 125,
               onSubmitted: (value) async {
                 profileCubit.userModel?.bio = value;
                 await profileCubit.updateUserProfile();

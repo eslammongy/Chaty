@@ -31,7 +31,7 @@ class CacheNetworkImg extends StatelessWidget {
         margin: EdgeInsets.zero,
         child: CircleAvatar(
           radius: radius,
-          child: Image.asset(AppAssetsManager.firebaseLogo),
+          child: Image.asset(AppAssetsManager.placeholderImg),
         ),
       ),
       errorWidget: (context, url, error) => Card(
