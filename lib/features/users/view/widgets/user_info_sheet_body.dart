@@ -40,11 +40,12 @@ class UserInfoSheetBody extends StatelessWidget {
               height: 15,
             ),
             _buildInfoItem(theme, user.phone ?? ""),
+            const Spacer(),
+            CustomizedTextBtn(
+                btnText: "Close", bkColor: theme.colorScheme.error),
             const SizedBox(
               height: 30,
             ),
-            CustomizedTextBtn(
-                btnText: "Close", bkColor: theme.colorScheme.error)
           ],
         ),
       ),
@@ -63,13 +64,16 @@ class UserInfoSheetBody extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: SizedBox(
-        height: 40.h,
+        height: text.length >= 50 ? 124.h : 50.h,
         width: double.infinity,
         child: Center(
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.titleMedium,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              text,
+              textAlign: TextAlign.start,
+              style: theme.textTheme.titleMedium,
+            ),
           ),
         ),
       ),

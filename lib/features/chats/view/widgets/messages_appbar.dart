@@ -4,6 +4,8 @@ import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:chaty/features/users/data/models/user_model.dart';
+import 'package:chaty/features/users/view/widgets/user_info_sheet_body.dart';
 
 class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MessagesAppBar({super.key});
@@ -53,7 +55,9 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               const Spacer(),
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await _displayUserInfoSheet(context);
+                },
                 icon: const Icon(FontAwesomeIcons.circleInfo),
               ),
             ],
@@ -65,4 +69,28 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => heightOfAppBar;
+
+  Future<void> _displayUserInfoSheet(BuildContext context) async {
+    const borderRadius = Radius.circular(20.0);
+    final theme = Theme.of(context);
+
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: theme.colorScheme.surface,
+      isScrollControlled: true,
+      constraints:
+          BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.8),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: borderRadius,
+          topRight: borderRadius,
+        ),
+      ),
+      builder: (BuildContext context) {
+        return UserInfoSheetBody(
+          user: UserModel(),
+        );
+      },
+    );
+  }
 }

@@ -96,9 +96,6 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
     await showModalBottomSheet(
       context: context,
       backgroundColor: theme.colorScheme.surface,
-      isScrollControlled: true,
-      constraints:
-          BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.85),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: borderRadius,
@@ -106,9 +103,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       builder: (BuildContext context) {
-        return UserInfoSheetBody(
-          user: UserModel(),
-        );
+        return const SettingsBottomSheet();
       },
     );
   }
