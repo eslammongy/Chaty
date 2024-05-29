@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:chaty/firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:chaty/core/theme/theme_data.dart';
@@ -16,7 +15,6 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
   );
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await injectable.initServices();
