@@ -61,7 +61,7 @@ class SettingsRepoImpl extends SettingsRepo {
     if (theme == null) {
       return null;
     }
-    if (theme == "DARK") {
+    if (theme == "DARK_THEME") {
       return getDarkThemeData();
     }
     return getLightThemeData();

@@ -8,7 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/auth/data/repos/auth_repo.dart';
 import 'package:chaty/features/users/data/repos/user_repo.dart';
+import 'package:chaty/features/settings/data/settings_repo.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:chaty/features/settings/cubit/settings_cubit.dart';
 import 'package:chaty/core/utils/services_locator.dart' as injectable;
 
 void main() async {
@@ -47,13 +49,23 @@ class Chaty extends StatelessWidget {
             create: (context) => UserCubit(
               userRepo: injectable.getIt<UserRepo>(),
             ),
+          ),
+          BlocProvider(
+            create: (context) => SettingsCubit(
+              settingsRepo: injectable.getIt<SettingsRepo>(),
+            ),
           )
         ],
-        child: MaterialApp.router(
-          title: 'Chaty',
-          debugShowCheckedModeBanner: false,
-          theme: getDarkThemeData(),
-          routerConfig: AppRouter.appRoutes(),
+        child: BlocBuilder<SettingsCubit, SettingsStates>(
+          builder: (context, state) {
+            final currentTheme = SettingsCubit.get(context).currentTheme;
+            return MaterialApp.router(
+              title: 'Chaty',
+              debugShowCheckedModeBanner: false,
+              theme: currentTheme,
+              routerConfig: AppRouter.appRoutes(),
+            );
+          },
         ),
       ),
     );

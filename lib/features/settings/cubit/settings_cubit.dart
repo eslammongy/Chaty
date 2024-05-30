@@ -6,20 +6,32 @@ import 'package:chaty/features/settings/data/settings_repo.dart';
 part 'settings_states.dart';
 
 class SettingsCubit extends Cubit<SettingsStates> {
-  SettingsCubit(this.settingsRepo) : super(SettingsInitialState());
+  SettingsCubit({required this.settingsRepo}) : super(SettingsInitialState()) {
+    getSelectedTheme();
+  }
   static SettingsCubit get(context) => BlocProvider.of(context);
   final SettingsRepo settingsRepo;
 
   ThemeData currentTheme = getDarkThemeData();
+  bool isLight = false;
   String msgFont = ubuntuSans;
 
   switchAppTheme(ThemeData theme) {
     try {
       settingsRepo.switchAppTheme(theme: theme);
       currentTheme = theme;
+      setThemeSwitcher();
       emit(SettingsSwitchThemeState());
     } catch (e) {
       emit(SettingsFailureState(error: e.toString()));
+    }
+  }
+
+  void setThemeSwitcher() {
+    if (currentTheme == getLightThemeData()) {
+      isLight = true;
+    } else {
+      isLight = false;
     }
   }
 
