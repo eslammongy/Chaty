@@ -15,7 +15,7 @@ class SettingsRepoImpl extends SettingsRepo {
   }
 
   @override
-  switchAccentColorC({required Color color}) {
+  switchAccentColor({required Color color}) {
     try {
       SharedPref.saveSelectedAccentColor(color);
     } catch (e) {
@@ -35,5 +35,35 @@ class SettingsRepoImpl extends SettingsRepo {
       //* Indicate there is an exception happened when saving user preferred theme
       throw Exception("Failed to save the selected theme.");
     }
+  }
+
+  @override
+  Color? getAccentColor() {
+    final colorValue = SharedPref.getSelectedAccentColor();
+    if (colorValue == null) {
+      return null;
+    }
+    return Color(colorValue);
+  }
+
+  @override
+  String? getMessageFont() {
+    final msgFont = SharedPref.getSelectedMsgFont();
+    if (msgFont == null) {
+      return null;
+    }
+    return msgFont;
+  }
+
+  @override
+  ThemeData? getSelectedTheme() {
+    final theme = SharedPref.getSelectedTheme();
+    if (theme == null) {
+      return null;
+    }
+    if (theme == "DARK") {
+      return getDarkThemeData();
+    }
+    return getLightThemeData();
   }
 }

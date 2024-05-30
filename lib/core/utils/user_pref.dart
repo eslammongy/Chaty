@@ -22,7 +22,7 @@ class SharedPref {
     return await sharedPreferences.setString(selectedThemeKey, theme);
   }
 
-  static Future<String?> getSelectedThem() async {
+  static String? getSelectedTheme() {
     return sharedPreferences.getString(selectedThemeKey);
   }
 
@@ -30,7 +30,7 @@ class SharedPref {
     return await sharedPreferences.setString(selectedFontKey, font);
   }
 
-  static Future<String?> getSelectedMsgFont() async {
+  static String? getSelectedMsgFont() {
     return sharedPreferences.getString(selectedFontKey);
   }
 
@@ -38,7 +38,7 @@ class SharedPref {
     return await sharedPreferences.setInt(selectedAColorKey, color.value);
   }
 
-  static Future<bool?> getSelectedAccentColor() async {
-    return sharedPreferences.getBool(selectedAColorKey);
+  static int? getSelectedAccentColor() {
+    return sharedPreferences.getInt(selectedAColorKey);
   }
 }
