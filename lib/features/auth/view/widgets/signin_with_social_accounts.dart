@@ -1,10 +1,10 @@
+import '../../cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
-import '../../cubit/signin_cubit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/app_assets.dart';
-import 'package:chaty/features/signin/view/widgets/build_login_option_btn.dart';
+import 'package:chaty/features/auth/view/widgets/build_login_option_btn.dart';
 
 class SignInWithSocialAccounts extends StatelessWidget {
   const SignInWithSocialAccounts({
@@ -14,8 +14,8 @@ class SignInWithSocialAccounts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final signInCubit = SignInCubit.get(context);
-    return BlocBuilder<SignInCubit, SignInStates>(
+    final authCubit = AuthCubit.get(context);
+    return BlocBuilder<AuthCubit, AuthStates>(
       builder: (context, state) {
         return Column(
           children: [
@@ -72,7 +72,7 @@ class SignInWithSocialAccounts extends StatelessWidget {
               btnText: "SignIn With Google",
               signInOption: SignInOption.google,
               onPressed: () async {
-                signInCubit.signInWithGoogleAccount();
+                authCubit.signInWithGoogleAccount();
               },
             ),
             const SizedBox(

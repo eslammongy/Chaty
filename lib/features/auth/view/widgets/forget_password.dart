@@ -5,10 +5,10 @@ import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/features/auth/cubit/auth_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/signin/cubit/signin_cubit.dart';
-import 'package:chaty/features/signin/view/widgets/custom_text_button.dart';
-import 'package:chaty/features/signin/view/widgets/custom_text_input_filed.dart';
+import 'package:chaty/features/auth/view/widgets/custom_text_button.dart';
+import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
   const ForgetPasswordScreen({super.key});
@@ -65,23 +65,23 @@ class ForgetPasswordScreen extends StatelessWidget {
                   backgroundColor: theme.colorScheme.primary,
                   text: "Send Email",
                   onPressed: () async {
-                    await SignInCubit.get(context)
+                    await AuthCubit.get(context)
                         .resetUserPassword(eTextEmailController.text);
                   },
                 ),
               ),
-              BlocListener<SignInCubit, SignInStates>(
+              BlocListener<AuthCubit, AuthStates>(
                 listenWhen: (previous, current) {
                   return previous != current;
                 },
                 listener: (context, state) {
-                  if (state is SignInLoadingState) {
+                  if (state is AuthLoadingState) {
                     showLoadingDialog(context);
                   }
                   if (state is ResetPasswordSuccessState) {
                     GoRouter.of(context).pushReplacement(AppRouter.loginScreen);
                   }
-                  if (state is SignInGenericFailureState) {
+                  if (state is AuthGenericFailureState) {
                     // pop the loading dialog
                     GoRouter.of(context).pop();
                     displaySnackBar(context, state.errorMsg);

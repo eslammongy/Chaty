@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
-import 'package:chaty/features/signin/view/widgets/custom_text_input_filed.dart';
+import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
 class ProfileBio extends StatelessWidget {
   const ProfileBio({super.key, required this.pioTxtController});

@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:chaty/features/auth/data/repos/auth_repo.dart';
 import 'package:chaty/core/errors/auth_exceptions_handler.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
-import 'package:chaty/features/signin/data/repos/signin_repo.dart';
-part 'signin_state.dart';
+part 'auth_state.dart';
 
-class SignInCubit extends Cubit<SignInStates> {
-  SignInCubit({required this.signInRepo}) : super(SignInInitial());
+class AuthCubit extends Cubit<AuthStates> {
+  AuthCubit({required this.authRepo}) : super(AuthInitialState());
 
-  static SignInCubit get(context) => BlocProvider.of(context);
-  final SignInRepo signInRepo;
+  static AuthCubit get(context) => BlocProvider.of(context);
+  final AuthRepo authRepo;
 
   Future<void> signInWithGoogleAccount() async {
-    emit(SignInLoadingState());
+    emit(AuthLoadingState());
     try {
-      var result = await signInRepo.signInWithGoogle();
+      var result = await authRepo.signInWithGoogle();
       result.fold((errorCode) {
         var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
-        emit(SignInGenericFailureState(errorMsg));
+        emit(AuthGenericFailureState(errorMsg));
       }, (user) async {
         emit(SignInWithGoogleSuccessState(userModel: user));
       });
     } catch (exp) {
       final errorMsg = AuthExceptionHandler.generateExceptionMessage(exp);
       debugPrint("SignIn CUBIT Error-$errorMsg");
-      emit(SignInGenericFailureState(errorMsg));
+      emit(AuthGenericFailureState(errorMsg));
     }
   }
 
@@ -33,12 +33,12 @@ class SignInCubit extends Cubit<SignInStates> {
     required String email,
     required String password,
   }) async {
-    emit(SignInLoadingState());
+    emit(AuthLoadingState());
     var result =
-        await signInRepo.signUpWithEmail(email: email, password: password);
+        await authRepo.signUpWithEmail(email: email, password: password);
     result.fold((errorCode) {
       final errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
-      emit(SignInGenericFailureState(errorMsg));
+      emit(AuthGenericFailureState(errorMsg));
     }, (userModel) async {
       userModel.name = name;
       emit(SignUpSuccessState(userModel: userModel));
@@ -49,31 +49,31 @@ class SignInCubit extends Cubit<SignInStates> {
     required String email,
     required String password,
   }) async {
-    emit(SignInLoadingState());
+    emit(AuthLoadingState());
     var result =
-        await signInRepo.signInWithEmailPass(email: email, password: password);
+        await authRepo.signInWithEmailPass(email: email, password: password);
     result.fold((errorCode) {
       final errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
-      emit(SignInGenericFailureState(errorMsg));
+      emit(AuthGenericFailureState(errorMsg));
     }, (userModel) async {
       emit(SignInSuccessState(userModel: userModel));
     });
   }
 
   Future resetUserPassword(String email) async {
-    emit(SignInLoadingState());
-    var result = await signInRepo.resetUserPassword(email: email);
+    emit(AuthLoadingState());
+    var result = await authRepo.resetUserPassword(email: email);
     result.fold((errorCode) {
       final errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
-      emit(SignInGenericFailureState(errorMsg));
+      emit(AuthGenericFailureState(errorMsg));
     }, (right) {
       emit(ResetPasswordSuccessState());
     });
   }
 
   Future<void> submitUserPhoneNumber(String phoneNumber) async {
-    emit(SignInLoadingState());
-    await signInRepo.submitUserPhoneNumber(
+    emit(AuthLoadingState());
+    await authRepo.submitUserPhoneNumber(
       phoneNumber: phoneNumber,
       setVerificationCode: (verifyCode) {
         emit(PhoneNumberSubmittedState(verificationId: verifyCode));
@@ -81,22 +81,22 @@ class SignInCubit extends Cubit<SignInStates> {
       verificationFailed: (authException) {
         final errorMsg =
             AuthExceptionHandler.generateExceptionMessage(authException);
-        emit(SignInGenericFailureState(errorMsg));
+        emit(AuthGenericFailureState(errorMsg));
       },
     );
   }
 
   Future<void> signInWithPhoneNumber(
       String otpCode, String verificationId) async {
-    emit(SignInLoadingState());
+    emit(AuthLoadingState());
 
-    var result = await signInRepo.signInWithPhoneNumber(
+    var result = await authRepo.signInWithPhoneNumber(
       otpCode: otpCode,
       verificationId: verificationId,
     );
     result.fold((errorCode) {
       var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
-      emit(SignInGenericFailureState(errorMsg));
+      emit(AuthGenericFailureState(errorMsg));
     }, (userModel) async {
       emit(PhoneOtpCodeVerifiedState(userModel: userModel));
     });
