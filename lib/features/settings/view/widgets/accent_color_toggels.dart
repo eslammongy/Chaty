@@ -49,7 +49,7 @@ class AccentColorToggles extends StatelessWidget {
     return InkWell(
       onTap: () {
         settingsCubit.primaryColor = color;
-        settingsCubit.switchAppAccentColor(color);
+        settingsCubit.switchMsgBKColor(color);
       },
       child: DecoratedBox(
         decoration: BoxDecoration(

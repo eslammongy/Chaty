@@ -15,7 +15,7 @@ class SettingsRepoImpl extends SettingsRepo {
   }
 
   @override
-  switchAccentColor({required Color color}) {
+  switchMsgBKColor({required Color color}) {
     try {
       SharedPref.saveSelectedAccentColor(color);
     } catch (e) {
@@ -38,7 +38,7 @@ class SettingsRepoImpl extends SettingsRepo {
   }
 
   @override
-  Color? getAccentColor() {
+  Color? getMsgBKColor() {
     final colorValue = SharedPref.getSelectedAccentColor();
     if (colorValue == null) {
       return null;

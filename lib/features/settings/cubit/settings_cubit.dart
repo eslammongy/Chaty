@@ -9,7 +9,7 @@ part 'settings_states.dart';
 class SettingsCubit extends Cubit<SettingsStates> {
   SettingsCubit({required this.settingsRepo}) : super(SettingsInitialState()) {
     getSelectedTheme();
-    getSelectedAccentColor();
+    getMsgBKColor();
   }
   static SettingsCubit get(context) => BlocProvider.of(context);
   final SettingsRepo settingsRepo;
@@ -38,9 +38,9 @@ class SettingsCubit extends Cubit<SettingsStates> {
     }
   }
 
-  switchAppAccentColor(Color color) {
+  switchMsgBKColor(Color color) {
     try {
-      settingsRepo.switchAccentColor(color: color);
+      settingsRepo.switchMsgBKColor(color: color);
       final scheme = currentTheme.colorScheme.copyWith(primary: color);
       currentTheme = currentTheme.copyWith(colorScheme: scheme);
       emit(SettingsSwitchAccentColorState());
@@ -74,9 +74,9 @@ class SettingsCubit extends Cubit<SettingsStates> {
     }
   }
 
-  getSelectedAccentColor() {
+  getMsgBKColor() {
     try {
-      final color = settingsRepo.getAccentColor();
+      final color = settingsRepo.getMsgBKColor();
       if (color == null) {
         emit(SettingsFailureState(
             error: "There is an error happened when set your selected color"));
