@@ -3,7 +3,7 @@ import 'package:chaty/core/errors/exp_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
 
-abstract class SignInRepo {
+abstract class AuthRepo {
   Future<Either<AuthExceptionsTypes, UserModel>> signInWithGoogle();
 
   Future<Either<AuthExceptionsTypes, UserModel>> signUpWithEmail(

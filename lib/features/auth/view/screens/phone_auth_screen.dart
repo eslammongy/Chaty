@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widgets/custom_text_input_filed.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/features/auth/cubit/auth_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/auth/cubit/signin_cubit.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_button.dart';
 
@@ -18,9 +18,9 @@ class PhoneAuthScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     String countryCode = '+20';
-    return BlocConsumer<SignInCubit, SignInStates>(
+    return BlocConsumer<AuthCubit, AuthStates>(
       listener: (context, state) {
-        if (state is SignInLoadingState) {
+        if (state is AuthLoadingState) {
           showLoadingDialog(context);
         }
         if (state is PhoneNumberSubmittedState) {
@@ -29,7 +29,7 @@ class PhoneAuthScreen extends StatelessWidget {
           GoRouter.of(context).pushReplacement(AppRouter.verifyingPhoneScreen,
               extra: state.verificationId);
         }
-        if (state is SignInGenericFailureState) {
+        if (state is AuthGenericFailureState) {
           // pop the loading dialog
           GoRouter.of(context).pop();
           displaySnackBar(context, state.errorMsg);
@@ -113,7 +113,7 @@ class PhoneAuthScreen extends StatelessWidget {
                             final String phoneWithCountryCode =
                                 "$countryCode${phoneNumController.value.text}";
 
-                            await SignInCubit.get(context)
+                            await AuthCubit.get(context)
                                 .submitUserPhoneNumber(phoneWithCountryCode);
                           }
                         },

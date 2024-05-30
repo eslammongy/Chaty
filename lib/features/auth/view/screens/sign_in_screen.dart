@@ -4,9 +4,9 @@ import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/user_pref.dart';
 import 'package:chaty/core/utils/app_routes.dart';
+import 'package:chaty/features/auth/cubit/auth_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
-import 'package:chaty/features/auth/cubit/signin_cubit.dart';
 import 'package:chaty/features/auth/view/widgets/signin_from.dart';
 import 'package:chaty/features/auth/view/widgets/login_screen_intro_section.dart';
 import 'package:chaty/features/auth/view/widgets/signin_with_social_accounts.dart';
@@ -19,9 +19,9 @@ class SignInScreen extends StatelessWidget {
     final passwordTxtController = TextEditingController();
     final emailTxtController = TextEditingController();
     final userInfoCubit = UserCubit.get(context);
-    return BlocConsumer<SignInCubit, SignInStates>(
+    return BlocConsumer<AuthCubit, AuthStates>(
       listener: (context, state) async {
-        if (state is SignInLoadingState) {
+        if (state is AuthLoadingState) {
           showLoadingDialog(context);
         }
         if (state is SignInWithGoogleSuccessState) {
@@ -36,7 +36,7 @@ class SignInScreen extends StatelessWidget {
             await _getUserInfo(context);
           });
         }
-        if (state is SignInGenericFailureState) {
+        if (state is AuthGenericFailureState) {
           Future(() {
             //*pop the loading dialog
             GoRouter.of(context).pop();
@@ -114,7 +114,7 @@ class SignInScreen extends StatelessWidget {
     TextEditingController emailController,
     TextEditingController passwordController,
   ) async {
-    final signInCubit = SignInCubit.get(context);
+    final authCubit = AuthCubit.get(context);
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       displaySnackBar(context, "please make sure you entered all info!");
       return;
@@ -123,7 +123,7 @@ class SignInScreen extends StatelessWidget {
       displaySnackBar(context, "please make sure you entered a valid email!");
       return;
     }
-    await signInCubit.signInWithEmailPassword(
+    await authCubit.signInWithEmailPassword(
         email: emailController.text, password: passwordController.text);
   }
 }

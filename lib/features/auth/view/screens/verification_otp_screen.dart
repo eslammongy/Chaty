@@ -7,9 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/user_pref.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/features/auth/cubit/auth_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
-import 'package:chaty/features/auth/cubit/signin_cubit.dart';
 
 class VerificationOtpScreen extends StatelessWidget {
   final String verifyId;
@@ -79,7 +79,7 @@ class VerificationOtpScreen extends StatelessWidget {
                     hapticFeedbackType: HapticFeedbackType.lightImpact,
                     onCompleted: (code) {
                       showLoadingDialog(context);
-                      SignInCubit.get(context)
+                      AuthCubit.get(context)
                           .signInWithPhoneNumber(code, verifyId);
                     },
                     cursor: Column(
@@ -113,7 +113,7 @@ class VerificationOtpScreen extends StatelessWidget {
                       border: Border.all(color: theme.colorScheme.error),
                     ),
                   ),
-                  BlocListener<SignInCubit, SignInStates>(
+                  BlocListener<AuthCubit, AuthStates>(
                     listenWhen: (previous, current) {
                       return previous != current;
                     },
@@ -122,7 +122,7 @@ class VerificationOtpScreen extends StatelessWidget {
                         await UserCubit.get(context)
                             .createNewUserProfile(user: state.userModel);
                       }
-                      if (state is SignInGenericFailureState) {
+                      if (state is AuthGenericFailureState) {
                         Future(() {
                           GoRouter.of(context).pop();
                           displaySnackBar(context, state.errorMsg);

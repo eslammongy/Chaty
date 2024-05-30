@@ -5,9 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
 import 'package:chaty/features/settings/view/settings_bottom_sheet.dart';
-import 'package:chaty/features/users/view/widgets/user_info_sheet_body.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
 class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
