@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:chaty/features/settings/cubit/settings_cubit.dart';
 
 class ExpendableTextWidget extends StatefulWidget {
   final String expendedText;
@@ -20,6 +21,7 @@ class _ExpendableTextWidgetState extends State<ExpendableTextWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final settingsCubit = SettingsCubit.get(context);
     final theme = Theme.of(context);
 
     setExpandedTestLen();
@@ -28,16 +30,14 @@ class _ExpendableTextWidgetState extends State<ExpendableTextWidget> {
           ? Text(
               firstHalf,
               maxLines: 3,
-              style:
-                  theme.textTheme.bodyLarge?.copyWith(color: widget.textColor),
+              style: msgTextFont(theme, settingsCubit.msgFont),
             )
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   hiddenText ? ('$firstHalf...') : (firstHalf + secondHalf),
-                  style: theme.textTheme.bodyLarge
-                      ?.copyWith(color: widget.textColor),
+                  style: msgTextFont(theme, settingsCubit.msgFont),
                 ),
                 InkWell(
                   onTap: () {
@@ -66,6 +66,10 @@ class _ExpendableTextWidgetState extends State<ExpendableTextWidget> {
             ),
     );
   }
+
+  TextStyle? msgTextFont(ThemeData theme, String font) =>
+      theme.textTheme.bodyLarge
+          ?.copyWith(color: widget.textColor, fontFamily: font);
 
   setExpandedTestLen() {
     if (widget.expendedText.length > textLength) {

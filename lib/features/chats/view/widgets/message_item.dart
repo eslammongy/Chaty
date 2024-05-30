@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:chaty/features/chats/data/message.dart';
+import 'package:chaty/features/settings/cubit/settings_cubit.dart';
 import 'package:chaty/features/chats/view/widgets/expandable_text.dart';
 
 class MessageItem extends StatelessWidget {
@@ -35,7 +36,7 @@ class MessageItem extends StatelessWidget {
               onPressed: () {},
               child: Card(
                 color: msg.isSenderMsg
-                    ? theme.colorScheme.primary
+                    ? SettingsCubit.get(context).msgBkColor
                     : theme.colorScheme.surface,
                 margin: EdgeInsets.zero,
                 child: Padding(

@@ -9,7 +9,7 @@ class AccentColorToggles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settingsCubit = SettingsCubit.get(context);
-    final selectedColor = settingsCubit.primaryColor;
+    final selectedColor = settingsCubit.msgBkColor;
     final theme = Theme.of(context);
 
     return Row(
@@ -48,7 +48,7 @@ class AccentColorToggles extends StatelessWidget {
     final settingsCubit = SettingsCubit.get(context);
     return InkWell(
       onTap: () {
-        settingsCubit.primaryColor = color;
+        settingsCubit.msgBkColor = color;
         settingsCubit.switchMsgBKColor(color);
       },
       child: DecoratedBox(

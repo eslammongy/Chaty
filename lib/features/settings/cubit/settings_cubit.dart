@@ -16,7 +16,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
 
   ThemeData currentTheme = getDarkThemeData();
   bool isLight = false;
-  Color primaryColor = CommonColorPalette.primaryColor;
+  Color msgBkColor = CommonColorPalette.primaryColor;
   String msgFont = ubuntuSans;
 
   switchAppTheme(ThemeData theme) {
@@ -41,8 +41,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
   switchMsgBKColor(Color color) {
     try {
       settingsRepo.switchMsgBKColor(color: color);
-      final scheme = currentTheme.colorScheme.copyWith(primary: color);
-      currentTheme = currentTheme.copyWith(colorScheme: scheme);
+      msgBkColor = color;
       emit(SettingsSwitchAccentColorState());
     } catch (e) {
       emit(SettingsFailureState(error: e.toString()));
@@ -82,8 +81,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
             error: "There is an error happened when set your selected color"));
         return;
       }
-      final scheme = currentTheme.colorScheme.copyWith(primary: color);
-      currentTheme = currentTheme.copyWith(colorScheme: scheme);
+      msgBkColor = color;
     } catch (e) {
       emit(SettingsFailureState(error: e.toString()));
     }
