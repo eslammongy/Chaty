@@ -56,7 +56,7 @@ class SettingsRepoImpl extends SettingsRepo {
   }
 
   @override
-  ThemeData? getSelectedTheme() {
+  ThemeData? getThemeData() {
     final theme = SharedPref.getSelectedTheme();
     if (theme == null) {
       return null;

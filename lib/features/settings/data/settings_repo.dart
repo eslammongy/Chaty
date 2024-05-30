@@ -4,7 +4,7 @@ abstract class SettingsRepo {
   void switchAppTheme({required ThemeData theme});
   void switchAccentColor({required Color color});
   void changeMessageFont({required String font});
-  ThemeData? getSelectedTheme();
+  ThemeData? getThemeData();
   Color? getAccentColor();
   String? getMessageFont();
 }
