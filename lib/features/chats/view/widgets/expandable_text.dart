@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ExpendableTextWidget extends StatefulWidget {
   final String expendedText;
-  const ExpendableTextWidget({super.key, required this.expendedText});
+  final Color textColor;
+  const ExpendableTextWidget(
+      {super.key, required this.expendedText, required this.textColor});
 
   @override
   State<ExpendableTextWidget> createState() => _ExpendableTextWidgetState();
@@ -26,14 +28,16 @@ class _ExpendableTextWidgetState extends State<ExpendableTextWidget> {
           ? Text(
               firstHalf,
               maxLines: 3,
-              style: theme.textTheme.bodyLarge,
+              style:
+                  theme.textTheme.bodyLarge?.copyWith(color: widget.textColor),
             )
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   hiddenText ? ('$firstHalf...') : (firstHalf + secondHalf),
-                  style: theme.textTheme.bodyLarge,
+                  style: theme.textTheme.bodyLarge
+                      ?.copyWith(color: widget.textColor),
                 ),
                 InkWell(
                   onTap: () {

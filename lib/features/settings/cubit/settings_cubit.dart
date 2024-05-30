@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/theme/theme_data.dart';
 import 'package:chaty/core/constants/constants.dart';
+import 'package:chaty/core/theme/common_palette.dart';
 import 'package:chaty/features/settings/data/settings_repo.dart';
 part 'settings_states.dart';
 
 class SettingsCubit extends Cubit<SettingsStates> {
   SettingsCubit({required this.settingsRepo}) : super(SettingsInitialState()) {
     getSelectedTheme();
+    getSelectedAccentColor();
   }
   static SettingsCubit get(context) => BlocProvider.of(context);
   final SettingsRepo settingsRepo;
 
   ThemeData currentTheme = getDarkThemeData();
   bool isLight = false;
+  Color primaryColor = CommonColorPalette.primaryColor;
   String msgFont = ubuntuSans;
 
   switchAppTheme(ThemeData theme) {
@@ -38,7 +41,8 @@ class SettingsCubit extends Cubit<SettingsStates> {
   switchAppAccentColor(Color color) {
     try {
       settingsRepo.switchAccentColor(color: color);
-      currentTheme = currentTheme.copyWith(primaryColor: color);
+      final scheme = currentTheme.colorScheme.copyWith(primary: color);
+      currentTheme = currentTheme.copyWith(colorScheme: scheme);
       emit(SettingsSwitchAccentColorState());
     } catch (e) {
       emit(SettingsFailureState(error: e.toString()));
@@ -64,6 +68,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
         return;
       }
       currentTheme = theme;
+      setThemeSwitcher();
     } catch (e) {
       emit(SettingsFailureState(error: e.toString()));
     }
@@ -77,7 +82,8 @@ class SettingsCubit extends Cubit<SettingsStates> {
             error: "There is an error happened when set your selected color"));
         return;
       }
-      currentTheme = currentTheme.copyWith(primaryColor: color);
+      final scheme = currentTheme.colorScheme.copyWith(primary: color);
+      currentTheme = currentTheme.copyWith(colorScheme: scheme);
     } catch (e) {
       emit(SettingsFailureState(error: e.toString()));
     }

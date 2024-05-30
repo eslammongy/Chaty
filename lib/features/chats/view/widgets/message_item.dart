@@ -40,7 +40,10 @@ class MessageItem extends StatelessWidget {
                 margin: EdgeInsets.zero,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ExpendableTextWidget(expendedText: msg.text),
+                  child: ExpendableTextWidget(
+                    expendedText: msg.text,
+                    textColor: msg.isSenderMsg ? Colors.white : Colors.black,
+                  ),
                 ),
               ),
             ),
