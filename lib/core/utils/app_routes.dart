@@ -23,8 +23,8 @@ abstract class AppRouter {
 
   static bool isUserLogin = false;
   static setInitialRoute() async {
-    await UserPref.init();
-    await UserPref.checkIsUserAuthenticated().then((isLogged) {
+    await SharedPref.init();
+    await SharedPref.isUserAuthenticated().then((isLogged) {
       isUserLogin = isLogged;
     });
   }
