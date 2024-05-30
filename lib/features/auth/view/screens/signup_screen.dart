@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
-import 'package:chaty/features/signin/cubit/signin_cubit.dart';
+import 'package:chaty/features/auth/cubit/signin_cubit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
-import 'package:chaty/features/signin/view/widgets/custom_text_button.dart';
-import 'package:chaty/features/signin/view/widgets/custom_text_input_filed.dart';
-import 'package:chaty/features/signin/view/widgets/login_screen_intro_section.dart';
+import 'package:chaty/features/auth/view/widgets/custom_text_button.dart';
+import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
+import 'package:chaty/features/auth/view/widgets/login_screen_intro_section.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});

@@ -6,9 +6,9 @@ import '../widgets/custom_text_input_filed.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:chaty/features/auth/cubit/signin_cubit.dart';
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:chaty/features/signin/cubit/signin_cubit.dart';
-import 'package:chaty/features/signin/view/widgets/custom_text_button.dart';
+import 'package:chaty/features/auth/view/widgets/custom_text_button.dart';
 
 class PhoneAuthScreen extends StatelessWidget {
   const PhoneAuthScreen({super.key});

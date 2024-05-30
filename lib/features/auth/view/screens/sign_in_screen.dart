@@ -6,10 +6,10 @@ import 'package:chaty/core/utils/user_pref.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
-import 'package:chaty/features/signin/cubit/signin_cubit.dart';
-import 'package:chaty/features/signin/view/widgets/signin_from.dart';
-import 'package:chaty/features/signin/view/widgets/login_screen_intro_section.dart';
-import 'package:chaty/features/signin/view/widgets/signin_with_social_accounts.dart';
+import 'package:chaty/features/auth/cubit/signin_cubit.dart';
+import 'package:chaty/features/auth/view/widgets/signin_from.dart';
+import 'package:chaty/features/auth/view/widgets/login_screen_intro_section.dart';
+import 'package:chaty/features/auth/view/widgets/signin_with_social_accounts.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
