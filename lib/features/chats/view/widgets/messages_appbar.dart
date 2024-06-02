@@ -38,12 +38,9 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
               const SizedBox(
                 width: 20,
               ),
-              CacheNetworkImg(
+              const CacheNetworkImg(
                 imgUrl: dummyImageUrl,
                 radius: 28,
-                shapeBorder: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(60),
-                ),
               ),
               const SizedBox(
                 width: 10,

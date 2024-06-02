@@ -19,12 +19,8 @@ class ChatListItem extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
           child: Row(
             children: [
-              CacheNetworkImg(
+              const CacheNetworkImg(
                 imgUrl: dummyImageUrl,
-                shapeBorder: RoundedRectangleBorder(
-                    side: BorderSide(
-                        color: theme.scaffoldBackgroundColor, width: 2),
-                    borderRadius: BorderRadius.circular(30)),
                 radius: 28,
               ),
               const SizedBox(

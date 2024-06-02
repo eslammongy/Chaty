@@ -21,7 +21,6 @@ class UserInfoSheetBody extends StatelessWidget {
           children: [
             CacheNetworkImg(
               imgUrl: user.imageUrl ?? dummyImageUrl,
-              shapeBorder: roundedShape,
               radius: 45,
             ),
             const SizedBox(

@@ -14,6 +14,7 @@ class MessageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settingsCubit = SettingsCubit.get(context);
     final theme = Theme.of(context);
     return Column(
       children: [
@@ -36,14 +37,16 @@ class MessageItem extends StatelessWidget {
               onPressed: () {},
               child: Card(
                 color: msg.isSenderMsg
-                    ? SettingsCubit.get(context).msgBkColor
+                    ? settingsCubit.msgBkColor
                     : theme.colorScheme.surface,
                 margin: EdgeInsets.zero,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ExpendableTextWidget(
                     expendedText: msg.text,
-                    textColor: msg.isSenderMsg ? Colors.white : Colors.black,
+                    textColor: settingsCubit.isLight && !msg.isSenderMsg
+                        ? Colors.black
+                        : Colors.white,
                   ),
                 ),
               ),

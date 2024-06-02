@@ -68,8 +68,10 @@ class _ExpendableTextWidgetState extends State<ExpendableTextWidget> {
   }
 
   TextStyle? msgTextFont(ThemeData theme, String font) =>
-      theme.textTheme.bodyLarge
-          ?.copyWith(color: widget.textColor, fontFamily: font);
+      theme.textTheme.bodyLarge?.copyWith(
+          color: widget.textColor,
+          fontFamily: font,
+          fontWeight: FontWeight.w600);
 
   setExpandedTestLen() {
     if (widget.expendedText.length > textLength) {

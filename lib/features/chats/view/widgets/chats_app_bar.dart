@@ -43,9 +43,6 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                           imgUrl: UserCubit.get(context).userModel?.imageUrl ??
                               dummyImageUrl,
                           radius: 26,
-                          shapeBorder: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(60),
-                          ),
                         );
                       },
                     ),
