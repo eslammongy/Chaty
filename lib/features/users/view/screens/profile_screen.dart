@@ -91,7 +91,10 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 45),
                   CustomizedTextBtn(
-                      btnText: "Sign out", bkColor: theme.colorScheme.error)
+                    btnText: "Sign out",
+                    bkColor: theme.colorScheme.error,
+                    textColor: Colors.white,
+                  )
                 ],
               ),
             ),

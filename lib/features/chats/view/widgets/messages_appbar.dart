@@ -24,7 +24,7 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: PreferredSize(
         preferredSize: Size.fromHeight(90.h),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.h),
+          padding: EdgeInsets.symmetric(vertical: 10.h),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -76,7 +76,7 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: theme.colorScheme.surface,
       isScrollControlled: true,
       constraints:
-          BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.8),
+          BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.85),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: borderRadius,

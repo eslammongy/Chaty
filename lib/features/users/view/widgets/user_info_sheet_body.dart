@@ -41,7 +41,10 @@ class UserInfoSheetBody extends StatelessWidget {
             _buildInfoItem(theme, user.phone ?? ""),
             const Spacer(),
             CustomizedTextBtn(
-                btnText: "Close", bkColor: theme.colorScheme.error),
+                btnText: "Close",
+                bkColor: theme.colorScheme.error,
+                textColor: Colors.white,
+                onPressed: () => Navigator.pop(context)),
             const SizedBox(
               height: 30,
             ),

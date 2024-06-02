@@ -8,10 +8,12 @@ class CustomizedTextBtn extends StatelessWidget {
     required this.btnText,
     required this.bkColor,
     this.hasBorderSide = false,
+    required this.textColor,
   });
   final Function()? onPressed;
   final String btnText;
   final Color bkColor;
+  final Color textColor;
   final bool hasBorderSide;
 
   @override
@@ -31,7 +33,7 @@ class CustomizedTextBtn extends StatelessWidget {
         ),
         child: Text(
           btnText,
-          style: theme.textTheme.titleMedium,
+          style: theme.textTheme.titleMedium?.copyWith(color: textColor),
         ));
   }
 }
