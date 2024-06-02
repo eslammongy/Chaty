@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/utils/fake_msg.dart';
 import 'package:chaty/core/utils/debouncer.dart';
-import 'package:chaty/features/chats/data/message.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/view/widgets/message_item.dart';
 
 class MessagesListView extends StatefulWidget {

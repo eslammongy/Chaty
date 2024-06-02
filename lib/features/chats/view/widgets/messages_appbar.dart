@@ -19,6 +19,7 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
     final theme = Theme.of(context);
     return AppBar(
       toolbarHeight: 90.h,
+      elevation: 3,
       leadingWidth: double.infinity,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
