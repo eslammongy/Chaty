@@ -39,38 +39,38 @@ void displaySnackBar(BuildContext context, String msg,
 /// Shows a loading dialog in the given [BuildContext].
 ///
 /// The [context] parameter is the [BuildContext] in which the dialog is shown.
-/// This function does not return anything.
-void showLoadingDialog(BuildContext context) {
-  showDialog(
+// This function does not return anything./*
+showLoadingDialog(BuildContext context) {
+  return showDialog(
       useSafeArea: true,
       barrierDismissible: false,
       barrierColor: Colors.grey.withOpacity(0.3),
       context: context,
       builder: (context) {
-        return generateAlertDialog();
+        return SizedBox(
+          height: 140,
+          width: 140,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Image.asset(
+                AppAssetsManager.loading,
+                width: 100,
+              ),
+            ),
+          ),
+        );
       });
 }
 
-AlertDialog generateAlertDialog() {
-  return AlertDialog(
-    key: GlobalKey(),
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-    content: SizedBox(
-      height: 140,
-      width: 140,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Image.asset(
-            AppAssetsManager.loading,
-            width: 100,
-          ),
-        ),
-      ),
-    ),
-  );
-}
+// AlertDialog generateAlertDialog() {
+//   return AlertDialog(
+//     key: GlobalKey(),
+//     backgroundColor: Colors.transparent,
+//     elevation: 0,
+//     content:
+//   );
+// } */
 
 /// Checks if the given [value] is a valid email address.
 /// The [value] parameter should be a string representing the email address to validate.

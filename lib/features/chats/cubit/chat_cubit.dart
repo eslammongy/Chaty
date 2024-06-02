@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
@@ -24,6 +25,7 @@ class ChatCubit extends Cubit<ChatStates> {
       }
       emit(ChatFailureState(errorMsg: exp.toString()));
     }, (chats) {
+      debugPrint("List of Chats Cubit: $chats");
       listOFChats.addAll(chats);
       emit(ChatLoadAllChatsState());
     });

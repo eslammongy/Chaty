@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
@@ -12,6 +13,7 @@ class ChatRepoImpl extends ChatRepo {
       final userChats = await chats.get();
       final listOfChats =
           userChats.docs.map((item) => ChatModel.fromMap(item.data())).toList();
+      debugPrint("List of Chats : $listOfChats");
       return right(listOfChats);
     } on FirebaseException catch (ex) {
       return left(ex);

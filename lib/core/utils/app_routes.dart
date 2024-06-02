@@ -38,8 +38,6 @@ abstract class AppRouter {
           if (!isUserLogin) {
             return const SignInScreen();
           } else {
-            /*  final receiver = state.extra;
-            return ChatScreen(receiver: receiver as UserModel); */
             return const DashboardScreen();
           }
         },
