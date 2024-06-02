@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/features/auth/cubit/auth_cubit.dart';
+import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
+import 'package:chaty/features/chats/data/repo/chat_repo.dart';
 import 'package:chaty/features/auth/data/repos/auth_repo.dart';
 import 'package:chaty/features/users/data/repos/user_repo.dart';
 import 'package:chaty/features/settings/data/settings_repo.dart';
@@ -52,6 +54,11 @@ class Chaty extends StatelessWidget {
           BlocProvider(
             create: (context) => SettingsCubit(
               settingsRepo: injectable.getIt<SettingsRepo>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => ChatCubit(
+              chatRepo: injectable.getIt<ChatRepo>(),
             ),
           )
         ],

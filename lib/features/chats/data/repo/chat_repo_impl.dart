@@ -7,19 +7,21 @@ import 'package:chaty/features/chats/data/models/chat_model.dart';
 class ChatRepoImpl extends ChatRepo {
   final chats = FirebaseFirestore.instance.collection("chats");
   @override
-  Future<Either<String, List<ChatModel>>> fetchAllUserChats() async {
+  Future<Either<Exception, List<ChatModel>>> fetchAllUserChats() async {
     try {
       final userChats = await chats.get();
       final listOfChats =
           userChats.docs.map((item) => ChatModel.fromMap(item.data())).toList();
       return right(listOfChats);
+    } on FirebaseException catch (ex) {
+      return left(ex);
     } catch (e) {
-      return left(e.toString());
+      return left(e as Exception);
     }
   }
 
   @override
-  Future<Either<String, List<MessageModel>>> fetchAllChatMsgs({
+  Future<Either<Exception, List<MessageModel>>> fetchAllChatMsgs({
     required String chatId,
   }) async {
     try {
@@ -30,8 +32,38 @@ class ChatRepoImpl extends ChatRepo {
           .map((item) => MessageModel.fromMap(item.data()))
           .toList();
       return right(listOfMsgs);
+    } on FirebaseException catch (ex) {
+      return left(ex);
     } catch (e) {
-      return left(e.toString());
+      return left(e as Exception);
+    }
+  }
+
+  @override
+  Future<Either<Exception, MessageModel>> sendNewTextMsg({
+    required String chatId,
+    required MessageModel msg,
+  }) async {
+    try {
+      await chats.doc(chatId).set(msg.toMap());
+      return right(msg);
+    } on FirebaseException catch (ex) {
+      return left(ex);
+    } catch (e) {
+      return left(e as Exception);
+    }
+  }
+
+  @override
+  Future<Either<Exception, ChatModel>> createNewChatDoc(
+      {required ChatModel chat}) async {
+    try {
+      await chats.add(chat.toMap());
+      return right(chat);
+    } on FirebaseException catch (ex) {
+      return left(ex);
+    } catch (e) {
+      return left(e as Exception);
     }
   }
 }

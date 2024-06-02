@@ -3,12 +3,18 @@ import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 
 abstract class ChatRepo {
-  Future<Either<String, List<ChatModel>>> fetchAllUserChats();
+  Future<Either<Exception, List<ChatModel>>> fetchAllUserChats();
 
   ///* This function responsible for fetching all the messages of specific chat
-  Future<Either<String, List<MessageModel>>> fetchAllChatMsgs({
+  Future<Either<Exception, List<MessageModel>>> fetchAllChatMsgs({
     required String chatId,
   });
-  // Future<void> sendNewTextMsg();
-  // Future<void> sendNewImageMsg();
+
+  Future<Either<Exception, MessageModel>> sendNewTextMsg({
+    required String chatId,
+    required MessageModel msg,
+  });
+
+  Future<Either<Exception, ChatModel>> createNewChatDoc(
+      {required ChatModel chat});
 }
