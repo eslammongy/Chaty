@@ -3,6 +3,7 @@ import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/customized_text_btn.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
 
 class UserInfoSheetBody extends StatelessWidget {
@@ -21,24 +22,26 @@ class UserInfoSheetBody extends StatelessWidget {
           children: [
             CacheNetworkImg(
               imgUrl: user.imageUrl ?? dummyImageUrl,
-              radius: 45,
+              radius: 60,
             ),
             const SizedBox(
               height: 30,
             ),
-            _buildInfoItem(theme, user.bio ?? dummyBio),
+            _buildInfoItem(
+                theme, user.bio ?? dummyBio, Icons.info_outline_rounded),
             const SizedBox(
               height: 15,
             ),
-            _buildInfoItem(theme, user.name ?? ""),
+            _buildInfoItem(theme, user.name ?? "", FontAwesomeIcons.user),
             const SizedBox(
               height: 15,
             ),
-            _buildInfoItem(theme, user.email ?? ""),
+            _buildInfoItem(theme, user.email ?? "", FontAwesomeIcons.envelope),
             const SizedBox(
               height: 15,
             ),
-            _buildInfoItem(theme, user.phone ?? ""),
+            _buildInfoItem(
+                theme, user.phone ?? dummyPhone, FontAwesomeIcons.phone),
             const Spacer(),
             CustomizedTextBtn(
                 btnText: "Close",
@@ -59,7 +62,7 @@ class UserInfoSheetBody extends StatelessWidget {
         side: const BorderSide(width: 2, color: Colors.white),
       );
 
-  Widget _buildInfoItem(ThemeData theme, String text) {
+  Widget _buildInfoItem(ThemeData theme, String text, IconData icon) {
     return Card(
       color: theme.colorScheme.background,
       shape: RoundedRectangleBorder(
@@ -71,10 +74,18 @@ class UserInfoSheetBody extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              text,
-              textAlign: TextAlign.start,
-              style: theme.textTheme.titleMedium,
+            child: Row(
+              children: [
+                Icon(icon, color: theme.colorScheme.primary),
+                const SizedBox(
+                  width: 6,
+                ),
+                Text(
+                  text,
+                  textAlign: TextAlign.start,
+                  style: theme.textTheme.titleMedium,
+                ),
+              ],
             ),
           ),
         ),

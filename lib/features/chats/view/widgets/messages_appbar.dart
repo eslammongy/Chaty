@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/constants/constants.dart';
+import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,11 +9,13 @@ import 'package:chaty/features/users/data/models/user_model.dart';
 import 'package:chaty/features/users/view/widgets/user_info_sheet_body.dart';
 
 class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MessagesAppBar({super.key});
+  const MessagesAppBar({super.key, required this.receiver});
+  final UserModel receiver;
   static Size heightOfAppBar = Size.fromHeight(kToolbarHeight + 20.h);
 
   @override
   Widget build(BuildContext context) {
+    final userCubit = UserCubit.get(context);
     final theme = Theme.of(context);
     return AppBar(
       toolbarHeight: 90.h,
@@ -38,15 +41,15 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
               const SizedBox(
                 width: 20,
               ),
-              const CacheNetworkImg(
-                imgUrl: dummyImageUrl,
+              CacheNetworkImg(
+                imgUrl: userCubit.userModel?.imageUrl ?? dummyImageUrl,
                 radius: 28,
               ),
               const SizedBox(
                 width: 10,
               ),
               Text(
-                "Eslam Mongy",
+                userCubit.userModel?.name ?? "",
                 style: theme.textTheme.bodyLarge
                     ?.copyWith(fontWeight: FontWeight.w600),
               ),
@@ -85,7 +88,7 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       builder: (BuildContext context) {
         return UserInfoSheetBody(
-          user: UserModel(),
+          user: receiver,
         );
       },
     );
