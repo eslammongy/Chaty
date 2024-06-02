@@ -149,3 +149,10 @@ void displayToastMsg(BuildContext context, String msg,
     autoCloseDuration: const Duration(seconds: 2),
   );
 }
+
+/// Generates a chat ID by concatenating the given `id1` and `id2` strings.
+/// Returns the generated chat ID as a string.
+String generateChatId({required String id1, required String id2}) {
+  final chatId = [id1, id2].fold("", (id, uid) => "$id$uid");
+  return chatId;
+}
