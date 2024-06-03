@@ -44,7 +44,7 @@ class Chaty extends StatelessWidget {
           BlocProvider(
             create: (context) => AuthCubit(
               authRepo: injectable.getIt<AuthRepo>(),
-            ),
+            ), 
           ),
           BlocProvider(
             create: (context) => UserCubit(

@@ -35,9 +35,12 @@ class CacheNetworkImg extends StatelessWidget {
         shape: shapeBorder(theme.scaffoldBackgroundColor),
         margin: EdgeInsets.zero,
         color: Colors.transparent,
-        child: CircleAvatar(
-          radius: radius,
-          child: Image.asset(AppAssetsManager.appPNGLogo),
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: CircleAvatar(
+            radius: radius,
+            child: Image.asset(AppAssetsManager.appPNGLogo),
+          ),
         ),
       ),
     );

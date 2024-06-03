@@ -6,12 +6,12 @@ class MessageModel {
   final String? text;
   final String? senderId;
   final DateTime? dateTime;
-  final MsgType msgType;
+  final String? msgType;
 
   MessageModel({
     this.text,
     this.senderId,
-    this.msgType = MsgType.text,
+    this.msgType,
     this.dateTime,
   });
 
@@ -20,7 +20,7 @@ class MessageModel {
       'text': text,
       'senderId': senderId,
       'dateTime': dateTime?.millisecondsSinceEpoch,
-      'msgType': msgType,
+      'msgType': msgType ?? MsgType.text.name,
     };
   }
 

@@ -11,7 +11,6 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final msgController = TextEditingController();
     return Scaffold(
       appBar: MessagesAppBar(
@@ -25,7 +24,7 @@ class ChatScreen extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            SendNewMessage(msgController: msgController, theme: theme)
+            SendNewMessage(msgController: msgController, receiver: receiver)
           ],
         ),
       ),

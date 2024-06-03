@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/utils/fake_msg.dart';
 import 'package:chaty/core/utils/debouncer.dart';
+import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/view/widgets/message_item.dart';
@@ -49,7 +50,9 @@ class _MessagesListViewState extends State<MessagesListView> {
   }
 
   void _fetchMoreMsg({int limit = 12}) async {
+    final chatCubit = ChatCubit.get(context);
     // Simulate data fetching with delay
+    chatCubit.extractChatMsgs(chatId: "");
     await Future.delayed(const Duration(milliseconds: 300));
 
     final startIndex = messages.length;
