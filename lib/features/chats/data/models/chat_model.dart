@@ -4,7 +4,7 @@ import 'package:chaty/features/chats/data/models/message.dart';
 
 class ChatModel {
   String? id;
-  List<String>? participants;
+  List<dynamic>? participants;
   List<MessageModel>? messages;
   ChatModel({
     this.id,
@@ -16,7 +16,7 @@ class ChatModel {
     return <String, dynamic>{
       'id': id,
       'participants': participants,
-      'messages': messages?.map((msg) => msg.toMap()).toList(),
+      'messages': messages,
     };
   }
 
@@ -24,12 +24,12 @@ class ChatModel {
     return ChatModel(
       id: map['id'] != null ? map['id'] as String : null,
       participants: map['participants'] != null
-          ? List<String>.from((map['participants'] as List<String>))
+          ? List<dynamic>.from((map['participants'] as List<dynamic>))
           : null,
       messages: map['messages'] != null
           ? List<MessageModel>.from(
-              (map['messages'] as List<int>).map<MessageModel?>(
-                (x) => MessageModel.fromMap(x as Map<String, dynamic>),
+              (map['messages'] as List<dynamic>).map<MessageModel?>(
+                (msg) => MessageModel.fromMap(msg as Map<String, dynamic>),
               ),
             )
           : null,

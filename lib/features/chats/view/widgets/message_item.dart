@@ -22,7 +22,7 @@ class MessageItem extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            getDateTime(msg.dateTime ?? DateTime.now()),
+            getDateTime(msg.dateTime!.toDate()),
             style: theme.textTheme.bodyMedium
                 ?.copyWith(color: theme.colorScheme.surfaceTint),
           ),

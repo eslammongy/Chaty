@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/core/widgets/empty_state_ui.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/chats/view/widgets/chats_app_bar.dart';
@@ -13,6 +16,7 @@ class ChatListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final chatCubit = ChatCubit.get(context);
     return Scaffold(
         appBar: const ChatsAppBar(
           searchHint: "Search for a chat...",
@@ -43,7 +47,16 @@ class ChatListScreen extends StatelessWidget {
                   }
                 },
                 builder: (context, state) {
-                  return const ChatsList();
+                  if (chatCubit.listOFChats.isNotEmpty) {
+                    return const EmptyStateUI(
+                      imgPath: AppAssetsManager.emptyInbox,
+                      text:
+                          "Currently, your inbox is empty and you don't have any messages",
+                    );
+                  }
+                  return ChatsList(
+                    listOFChats: chatCubit.listOFChats,
+                  );
                 },
               )
             ],

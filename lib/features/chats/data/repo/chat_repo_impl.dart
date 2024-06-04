@@ -17,8 +17,8 @@ class ChatRepoImpl extends ChatRepo {
       return right(listOfChats);
     } on FirebaseException catch (ex) {
       return left(ex);
-    } catch (e) {
-      return left(e as Exception);
+    } on Exception catch (e) {
+      return left(e);
     }
   }
 
@@ -36,8 +36,8 @@ class ChatRepoImpl extends ChatRepo {
       return right(listOfMsgs);
     } on FirebaseException catch (ex) {
       return left(ex);
-    } catch (e) {
-      return left(e as Exception);
+    } on Exception catch (e) {
+      return left(e);
     }
   }
 
@@ -59,8 +59,9 @@ class ChatRepoImpl extends ChatRepo {
   }
 
   @override
-  Future<Either<Exception, ChatModel>> createNewChatDoc(
-      {required ChatModel chat}) async {
+  Future<Either<Exception, ChatModel>> createNewChatDoc({
+    required ChatModel chat,
+  }) async {
     try {
       await chats.doc(chat.id).set(chat.toMap());
       return right(chat);

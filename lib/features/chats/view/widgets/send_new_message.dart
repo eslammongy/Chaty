@@ -68,6 +68,11 @@ class SendNewMessage extends StatelessWidget {
                 if (userCubit.userModel?.uId != null && receiver.uId != null) {
                   final chatId = generateChatId(
                       id1: userCubit.userModel!.uId!, id2: receiver.uId!);
+                  final msg = MessageModel(
+                    text: msgController.text,
+                    senderId: userCubit.userModel!.uId!,
+                    dateTime: Timestamp.fromDate(DateTime.now()),
+                  );
                   if (chatCubit.isChatExist(chatId) == null) {
                     await chatCubit.createNewChat(
                         chat: ChatModel(id: chatId, participants: [
@@ -75,13 +80,6 @@ class SendNewMessage extends StatelessWidget {
                       receiver.uId!
                     ], messages: []));
                   }
-
-                  final msg = MessageModel(
-                    text: msgController.text,
-                    senderId: userCubit.userModel!.uId!,
-                    dateTime: Timestamp.fromDate(DateTime.now()),
-                  );
-
                   await chatCubit.sendNewTextMsg(chatId: chatId, msg: msg);
                 }
               },
