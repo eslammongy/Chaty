@@ -69,6 +69,7 @@ class ChatCubit extends Cubit<ChatStates> {
     if (chat == null || chat.messages == null) {
       return;
     }
+    listOFMsgs.clear();
     listOFMsgs.addAll(chat.messages!);
   }
 

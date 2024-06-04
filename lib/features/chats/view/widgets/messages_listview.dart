@@ -25,6 +25,7 @@ class _MessagesListViewState extends State<MessagesListView> {
   @override
   void initState() {
     super.initState();
+    _fetchChatMessages();
     _fetchMoreMsg();
     _listenToScrollController();
   }
@@ -51,18 +52,22 @@ class _MessagesListViewState extends State<MessagesListView> {
 
   void _fetchMoreMsg({int limit = 12}) async {
     final chatCubit = ChatCubit.get(context);
-    // Simulate data fetching with delay
-    chatCubit.extractChatMsgs(chatId: "");
-    await Future.delayed(const Duration(milliseconds: 300));
 
     final startIndex = messages.length;
-    final endIndex = min(startIndex + limit, fakeMessages.length);
-    if (messages.length >= fakeMessages.length) {
+    final endIndex = min(startIndex + limit, chatCubit.listOFMsgs.length);
+    if (messages.length >= chatCubit.listOFMsgs.length) {
       Future(() => displayToastMsg(context, "all messages are loaded"));
     } else {
-      messages.addAll(fakeMessages.sublist(startIndex, endIndex));
+      messages.addAll(chatCubit.listOFMsgs.sublist(startIndex, endIndex));
     }
     setState(() => _isLoading = false);
+  }
+
+  _fetchChatMessages() async {
+    final chatCubit = ChatCubit.get(context);
+    await Future.delayed(const Duration(milliseconds: 200), () {
+      chatCubit.extractChatMsgs(chatId: chatCubit.openedChat.id ?? "");
+    });
   }
 
   void _listenToScrollController() {

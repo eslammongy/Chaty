@@ -18,7 +18,8 @@ class ChatsList extends StatelessWidget {
     final chatCubit = ChatCubit.get(context);
     return BlocBuilder<ChatCubit, ChatStates>(
       builder: (context, state) {
-        if (state is! ChatLoadingState && chatCubit.listOFChats.isEmpty) {
+        final chats = chatCubit.listOFChats;
+        if (state is! ChatLoadingState && chats.isEmpty) {
           return const EmptyStateUI(
             imgPath: AppAssetsManager.emptyInbox,
             text:
@@ -31,12 +32,11 @@ class ChatsList extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 75.h),
             physics: const BouncingScrollPhysics(),
             itemExtent: 90.h,
-            itemCount: chatCubit.listOFChats.length,
+            itemCount: chats.length,
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  chatCubit.extractChatMsgs(
-                      chatId: chatCubit.listOFChats[index].id!);
+                  chatCubit.extractChatMsgs(chatId: chats[index].id ?? "");
                   GoRouter.of(context).push(AppRouter.chatScreen,
                       extra: chatCubit.listOFChats[index]);
                 },

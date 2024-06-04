@@ -12,11 +12,11 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chatCubit = ChatCubit.get(context);
+    final receiver = ChatCubit.get(context).getChatReceiver(context, chat);
     final msgController = TextEditingController();
     return Scaffold(
       appBar: MessagesAppBar(
-        receiver: chatCubit.getChatReceiver(context, chat),
+        receiver: receiver,
       ),
       body: Padding(
         padding: EdgeInsets.only(left: 15.w, right: 15.w, bottom: 20.h),
@@ -26,9 +26,7 @@ class ChatScreen extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            SendNewMessage(
-                msgController: msgController,
-                receiver: chatCubit.getChatReceiver(context, chat))
+            SendNewMessage(msgController: msgController, receiver: receiver)
           ],
         ),
       ),
