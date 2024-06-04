@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/app_assets.dart';
@@ -47,16 +46,15 @@ class ChatListScreen extends StatelessWidget {
                   }
                 },
                 builder: (context, state) {
-                  if (chatCubit.listOFChats.isNotEmpty) {
+                  if (state is! ChatLoadingState &&
+                      chatCubit.listOFChats.isEmpty) {
                     return const EmptyStateUI(
                       imgPath: AppAssetsManager.emptyInbox,
                       text:
                           "Currently, your inbox is empty and you don't have any messages",
                     );
                   }
-                  return ChatsList(
-                    listOFChats: chatCubit.listOFChats,
-                  );
+                  return const ChatsList();
                 },
               )
             ],

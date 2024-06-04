@@ -1,6 +1,5 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
-import 'package:chaty/core/constants/app_assets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EmptyStateUI extends StatelessWidget {

@@ -1,5 +1,5 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/settings/cubit/settings_cubit.dart';
@@ -61,11 +61,6 @@ class MessageItem extends StatelessWidget {
     );
   }
 
-  String getDateTime(DateTime dateTime) {
-    final formattedDate = DateFormat.yMMMEd().format(dateTime);
-    final formattedTime = DateFormat.jm().format(dateTime);
-    return "$formattedDate  $formattedTime";
-  }
 
   bool isCurUserMsgSender(String? userId) {
     final currentUserId = FirebaseAuth.instance.currentUser?.uid;

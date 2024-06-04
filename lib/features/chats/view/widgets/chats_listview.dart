@@ -3,14 +3,12 @@ import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/chats/view/widgets/chat_list_item.dart';
 
 class ChatsList extends StatelessWidget {
   const ChatsList({
-    super.key, required this.listOFChats,
+    super.key,
   });
-  final List<ChatModel> listOFChats;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +22,13 @@ class ChatsList extends StatelessWidget {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
+              chatCubit.extractChatMsgs(
+                  chatId: chatCubit.listOFChats[index].id!);
               GoRouter.of(context).push(AppRouter.chatScreen);
             },
-            child: const ChatListItem(),
+            child: ChatListItem(
+              chat: chatCubit.listOFChats[index],
+            ),
           );
         },
       ),

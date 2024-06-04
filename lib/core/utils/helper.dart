@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 import 'package:chaty/core/constants/app_assets.dart';
@@ -155,4 +156,16 @@ void displayToastMsg(BuildContext context, String msg,
 String generateChatId({required String id1, required String id2}) {
   final chatId = [id1, id2].fold("", (id, uid) => "$id$uid");
   return chatId;
+}
+
+String getDateTime(DateTime dateTime) {
+  final formattedDate = DateFormat.yMMMEd().format(dateTime);
+  final formattedTime = DateFormat.jm().format(dateTime);
+  return "$formattedDate  $formattedTime";
+}
+
+String getMsgDateOnly(DateTime dateTime) {
+  final formattedDate = DateFormat.yMMMEd().format(dateTime);
+
+  return formattedDate;
 }

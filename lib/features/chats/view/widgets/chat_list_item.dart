@@ -1,16 +1,24 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/constants/constants.dart';
+import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
+import 'package:chaty/features/users/data/models/user_model.dart';
+import 'package:chaty/features/chats/data/models/chat_model.dart';
 
 class ChatListItem extends StatelessWidget {
   const ChatListItem({
     super.key,
+    required this.chat,
   });
+  final ChatModel chat;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final receiver = getChatReceiver(context);
 
     return Card(
       elevation: 0,
@@ -20,8 +28,8 @@ class ChatListItem extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
           child: Row(
             children: [
-              const CacheNetworkImg(
-                imgUrl: dummyImageUrl,
+              CacheNetworkImg(
+                imgUrl: receiver.imageUrl ?? dummyImageUrl,
                 radius: 28,
               ),
               const SizedBox(
@@ -37,12 +45,14 @@ class ChatListItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Eslam Mongy",
+                          receiver.name ?? dummyName,
                           style: theme.textTheme.bodyLarge
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          "12:00 PM",
+                          getMsgDateOnly(
+                              chat.messages?.last.dateTime?.toDate() ??
+                                  DateTime.now()),
                           style: theme.textTheme.bodyMedium
                               ?.copyWith(color: theme.colorScheme.surfaceTint),
                         )
@@ -54,10 +64,13 @@ class ChatListItem extends StatelessWidget {
                           Icons.done_all_outlined,
                           color: theme.colorScheme.surfaceTint,
                         ),
-                        Text(
-                          "what are you doing",
-                          style: theme.textTheme.bodyMedium
-                              ?.copyWith(color: theme.colorScheme.surfaceTint),
+                        Expanded(
+                          child: Text(
+                            chat.messages?.last.text ?? "",
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.surfaceTint),
+                          ),
                         ),
                       ],
                     ),
@@ -69,5 +82,13 @@ class ChatListItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  UserModel getChatReceiver(BuildContext context) {
+    if (chat.participants?.isEmpty == true) return UserModel();
+    final userCubit = UserCubit.get(context);
+    final receiver = userCubit.friendsList
+        .firstWhere((element) => element.uId == chat.participants?.last);
+    return receiver;
   }
 }
