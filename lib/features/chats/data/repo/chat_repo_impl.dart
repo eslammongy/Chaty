@@ -47,7 +47,9 @@ class ChatRepoImpl extends ChatRepo {
     required MessageModel msg,
   }) async {
     try {
-      await chats.doc(chatId).set(msg.toMap());
+      await chats.doc(chatId).update({
+        'messages': FieldValue.arrayUnion([msg.toMap()])
+      });
       return right(msg);
     } on FirebaseException catch (ex) {
       return left(ex);

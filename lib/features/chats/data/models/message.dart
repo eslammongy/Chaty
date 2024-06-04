@@ -1,17 +1,18 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum MsgType { text, image }
 
 class MessageModel {
   final String? text;
   final String? senderId;
-  final DateTime? dateTime;
-  final String? msgType;
+  final Timestamp? dateTime;
+  final MsgType msgType;
 
   MessageModel({
     this.text,
     this.senderId,
-    this.msgType,
+    this.msgType = MsgType.text,
     this.dateTime,
   });
 
@@ -19,19 +20,17 @@ class MessageModel {
     return <String, dynamic>{
       'text': text,
       'senderId': senderId,
-      'dateTime': dateTime?.millisecondsSinceEpoch,
-      'msgType': msgType ?? MsgType.text.name,
+      'dateTime': dateTime,
+      'msgType': msgType.name,
     };
   }
 
   factory MessageModel.fromMap(Map<String, dynamic> map) {
     return MessageModel(
-      text: map['text'] != null ? map['text'] as String : null,
-      senderId: map['senderId'] != null ? map['senderId'] as String : null,
-      dateTime: map['dateTime'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['dateTime'] as int)
-          : null,
-      msgType: map['msgType'],
+      text: map['text'],
+      senderId: map['senderId'],
+      dateTime: map['dateTime'],
+      msgType: MsgType.values.byName(map['msgType']),
     );
   }
 
