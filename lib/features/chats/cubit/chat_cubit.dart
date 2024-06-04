@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
+import 'package:chaty/features/users/data/models/user_model.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 
 part 'chat_states.dart';
@@ -13,6 +16,7 @@ class ChatCubit extends Cubit<ChatStates> {
 
   final List<ChatModel> listOFChats = [];
   final listOFMsgs = <MessageModel>[];
+  ChatModel openedChat = ChatModel();
 
   /// Use this function to fetch all the user chats so, user can select and open any chat from the list
   Future<void> fetchAllUserChats() async {
@@ -73,8 +77,16 @@ class ChatCubit extends Cubit<ChatStates> {
   /// else return null, in this case may be the chat need to created
   ChatModel? isChatExist(String chatId) {
     for (var element in listOFChats) {
-      if (element.id == chatId) return element;
+      if (element.id == chatId) return openedChat = element;
     }
     return null;
+  }
+
+  UserModel getChatReceiver(BuildContext context, ChatModel chat) {
+    if (chat.participants?.isEmpty == true) return UserModel();
+    final userCubit = UserCubit.get(context);
+    final receiver = userCubit.friendsList
+        .firstWhere((element) => element.uId == chat.participants?.last);
+    return receiver;
   }
 }

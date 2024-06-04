@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/user_pref.dart';
+import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
 import 'package:chaty/features/chats/view/screen/chat_screen.dart';
 import 'package:chaty/features/dashboard/view/dashboard_screen.dart';
@@ -77,8 +78,8 @@ abstract class AppRouter {
       GoRoute(
         path: chatScreen,
         builder: (context, state) {
-          final receiver = state.extra;
-          return ChatScreen(receiver: receiver as UserModel);
+          final chat = state.extra;
+          return ChatScreen(chat: chat as ChatModel);
         },
       ),
     ]);

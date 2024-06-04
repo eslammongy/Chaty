@@ -1,11 +1,9 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/constants/constants.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
+import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 
 class ChatListItem extends StatelessWidget {
@@ -18,7 +16,7 @@ class ChatListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final receiver = getChatReceiver(context);
+    final receiver = ChatCubit.get(context).getChatReceiver(context, chat);
 
     return Card(
       elevation: 0,
@@ -82,13 +80,5 @@ class ChatListItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  UserModel getChatReceiver(BuildContext context) {
-    if (chat.participants?.isEmpty == true) return UserModel();
-    final userCubit = UserCubit.get(context);
-    final receiver = userCubit.friendsList
-        .firstWhere((element) => element.uId == chat.participants?.last);
-    return receiver;
   }
 }

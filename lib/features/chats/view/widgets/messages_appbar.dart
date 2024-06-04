@@ -43,14 +43,14 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
                 width: 20,
               ),
               CacheNetworkImg(
-                imgUrl: userCubit.userModel?.imageUrl ?? dummyImageUrl,
+                imgUrl: receiver.imageUrl ?? dummyImageUrl,
                 radius: 28,
               ),
               const SizedBox(
                 width: 10,
               ),
               Text(
-                userCubit.userModel?.name ?? "",
+                receiver.name ?? "",
                 style: theme.textTheme.bodyLarge
                     ?.copyWith(fontWeight: FontWeight.w600),
               ),
