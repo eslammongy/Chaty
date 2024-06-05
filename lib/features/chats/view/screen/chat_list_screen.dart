@@ -39,7 +39,7 @@ class ChatListScreen extends StatelessWidget {
                 },
                 listener: (context, state) {
                   if (state is ChatLoadingState) {
-                    showLoadingDialog(context);
+                    showLoadingDialog(context, text: "loading your chats...");
                   }
                 },
                 child: const ChatsList(),

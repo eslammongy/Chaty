@@ -63,6 +63,22 @@ class ChatCubit extends Cubit<ChatStates> {
     });
   }
 
+  Future<void> fetchChatMessages() async {
+    emit(ChatLoadingState());
+    final fetchingResult =
+        await chatRepo.fetchAllChatMsgs(chatId: openedChat.id ?? '');
+    fetchingResult.fold((exp) {
+      if (exp is FirebaseException) {
+        emit(ChatFailureState(errorMsg: exp.message));
+      }
+      emit(ChatFailureState(errorMsg: exp.toString()));
+    }, (messages) {
+      listOFMsgs.clear();
+      listOFMsgs.addAll(messages);
+      emit(ChatLoadAllMessagesState());
+    });
+  }
+
   /// Use this function to extract the chat messages when user select the chat from the list and want to chatting with friend
   void extractChatMsgs({required String chatId}) {
     final chat = isChatExist(chatId);

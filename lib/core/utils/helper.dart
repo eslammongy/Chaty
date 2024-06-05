@@ -41,7 +41,7 @@ void displaySnackBar(BuildContext context, String msg,
 ///
 /// The [context] parameter is the [BuildContext] in which the dialog is shown.
 // This function does not return anything./*
-showLoadingDialog(BuildContext context) {
+showLoadingDialog(BuildContext context, {String text = "Loading..."}) {
   return showDialog(
       useSafeArea: true,
       barrierDismissible: false,
@@ -54,9 +54,21 @@ showLoadingDialog(BuildContext context) {
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(10),
-              child: Image.asset(
-                AppAssetsManager.loading,
-                width: 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    AppAssetsManager.loading,
+                    width: 100,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    text,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  )
+                ],
               ),
             ),
           ),

@@ -15,7 +15,6 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userCubit = UserCubit.get(context);
     final theme = Theme.of(context);
     return AppBar(
       toolbarHeight: 90.h,

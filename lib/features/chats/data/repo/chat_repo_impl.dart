@@ -27,13 +27,16 @@ class ChatRepoImpl extends ChatRepo {
     required String chatId,
   }) async {
     try {
+      final messages = <MessageModel>[];
       final chatRes = await chats.doc(chatId).get();
       final chatModel = chatRes.data() ?? {};
       if (chatModel['messages'] == null) return right([]);
-      final listOfMsgs = chatModel['messages']
-          .map((item) => MessageModel.fromMap(item.data()))
-          .toList();
-      return right(listOfMsgs);
+      final List chatMessages = chatModel['messages'];
+      for (var element in chatMessages) {
+        messages.add(MessageModel.fromMap(element));
+      }
+
+      return right(messages);
     } on FirebaseException catch (ex) {
       return left(ex);
     } on Exception catch (e) {

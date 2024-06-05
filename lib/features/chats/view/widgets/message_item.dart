@@ -62,9 +62,9 @@ class MessageItem extends StatelessWidget {
   }
 
 
-  bool isCurUserMsgSender(String? userId) {
+  bool isCurUserMsgSender(String? senderId) {
     final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-    if (currentUserId == userId) return true;
+    if (currentUserId == senderId) return true;
     return false;
   }
 }

@@ -48,10 +48,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   loadProfileInfo() async {
-    Future(() async {
-      await UserCubit.get(context).fetchAllFriends().then((value) async {
-        await ChatCubit.get(context).fetchAllUserChats();
-      });
+    await UserCubit.get(context).fetchAllFriends().then((value) async {
+      await ChatCubit.get(context).fetchAllUserChats();
     });
   }
 }
