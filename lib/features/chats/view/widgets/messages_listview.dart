@@ -1,7 +1,5 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:chaty/core/utils/helper.dart';
-import 'package:chaty/core/utils/fake_msg.dart';
 import 'package:chaty/core/utils/debouncer.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,7 +69,8 @@ class _MessagesListViewState extends State<MessagesListView> {
 
   _fetchChatMessages() async {
     final chatCubit = ChatCubit.get(context);
-    await chatCubit.fetchChatMessages();
+    if (chatCubit.openedChat == null) return;
+    await ChatCubit.get(context).fetchChatMessages();
   }
 
   void _listenToScrollController() {

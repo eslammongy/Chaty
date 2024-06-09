@@ -6,6 +6,8 @@ class ChatInitialState extends ChatStates {}
 
 class ChatLoadingState extends ChatStates {}
 
+class ChatLoadingMsgState extends ChatStates {}
+
 class ChatCreatedState extends ChatStates {
   final ChatModel chat;
 

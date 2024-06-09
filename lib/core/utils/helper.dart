@@ -181,3 +181,12 @@ String getMsgDateOnly(DateTime dateTime) {
 
   return formattedDate;
 }
+
+LinearProgressIndicator displayLinearIndicator(ThemeData theme) {
+  return LinearProgressIndicator(
+    color: theme.colorScheme.primary,
+    backgroundColor: theme.colorScheme.surface,
+    minHeight: 8,
+    borderRadius: BorderRadius.circular(10),
+  );
+}

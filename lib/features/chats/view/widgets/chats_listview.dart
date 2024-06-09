@@ -36,12 +36,12 @@ class ChatsList extends StatelessWidget {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  chatCubit.extractChatMsgs(chatId: chats[index].id ?? "");
+                  chatCubit.extractChatMsgs(chats[index]);
                   GoRouter.of(context).push(AppRouter.chatScreen,
                       extra: chatCubit.listOFChats[index]);
                 },
                 child: ChatListItem(
-                  chat: chatCubit.listOFChats[index],
+                  chat: chats[index],
                 ),
               );
             },

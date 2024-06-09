@@ -16,7 +16,7 @@ class ChatCubit extends Cubit<ChatStates> {
 
   final List<ChatModel> listOFChats = [];
   final listOFMsgs = <MessageModel>[];
-  ChatModel openedChat = ChatModel();
+  ChatModel? openedChat;
 
   /// Use this function to fetch all the user chats so, user can select and open any chat from the list
   Future<void> fetchAllUserChats() async {
@@ -64,9 +64,9 @@ class ChatCubit extends Cubit<ChatStates> {
   }
 
   Future<void> fetchChatMessages() async {
-    emit(ChatLoadingState());
+    emit(ChatLoadingMsgState());
     final fetchingResult =
-        await chatRepo.fetchAllChatMsgs(chatId: openedChat.id ?? '');
+        await chatRepo.fetchAllChatMsgs(chatId: openedChat?.id ?? '');
     fetchingResult.fold((exp) {
       if (exp is FirebaseException) {
         emit(ChatFailureState(errorMsg: exp.message));
@@ -80,13 +80,13 @@ class ChatCubit extends Cubit<ChatStates> {
   }
 
   /// Use this function to extract the chat messages when user select the chat from the list and want to chatting with friend
-  void extractChatMsgs({required String chatId}) {
-    final chat = isChatExist(chatId);
-    if (chat == null || chat.messages == null) {
+  void extractChatMsgs(ChatModel chat) {
+    openedChat = chat;
+    if (openedChat == null || openedChat?.messages == null) {
       return;
     }
     listOFMsgs.clear();
-    listOFMsgs.addAll(chat.messages!);
+    listOFMsgs.addAll(openedChat!.messages!);
   }
 
   /// check if the generated chatId exist in the list of chats fetched from the cloud firestore or not
@@ -96,7 +96,7 @@ class ChatCubit extends Cubit<ChatStates> {
     for (var element in listOFChats) {
       if (element.id == chatId) return openedChat = element;
     }
-    return null;
+    return openedChat = null;
   }
 
   UserModel getChatReceiver(BuildContext context, ChatModel chat) {
