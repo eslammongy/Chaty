@@ -15,7 +15,6 @@ class FriendsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userCubit = UserCubit.get(context);
-    final chatCubit = ChatCubit.get(context);
     return BlocBuilder<UserCubit, UserStates>(
       builder: (context, state) {
         return Expanded(
@@ -25,27 +24,15 @@ class FriendsListView extends StatelessWidget {
             itemExtent: 80.h,
             itemCount: userCubit.friendsList.length,
             itemBuilder: (context, index) {
-              final myFriend = userCubit.friendsList[index];
+              final friend = userCubit.friendsList[index];
               return InkWell(
                 onTap: () {
                   final userId = userCubit.userModel?.uId;
-                  if (userId == null || myFriend.uId == null) return;
-                  final chatId =
-                      generateChatId(id1: userId, id2: myFriend.uId!);
-                  final chatModel = chatCubit.isChatExist(chatId);
-                  if (chatModel == null) {
-                    chatCubit.listOFMsgs.clear();
-                    final chatModel = ChatModel(
-                        id: chatId, participants: [userId, myFriend.uId]);
-                    GoRouter.of(context)
-                        .push(AppRouter.chatScreen, extra: chatModel);
-                  } else {
-                    GoRouter.of(context).push(AppRouter.chatScreen,
-                        extra: chatCubit.openedChat);
-                  }
+                  if (userId == null || friend.uId == null) return;
+                  _handleNavToChattingScreen(context, userId, friend.uId!);
                 },
                 child: FriendsListItem(
-                  user: myFriend,
+                  user: friend,
                 ),
               );
             },
@@ -53,5 +40,20 @@ class FriendsListView extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _handleNavToChattingScreen(
+      BuildContext context, String userId1, String userId2) {
+    final chatCubit = ChatCubit.get(context);
+    final chatId = generateChatId(id1: userId1, id2: userId2);
+    final chatModel = chatCubit.isChatExist(chatId);
+
+    if (chatModel == null) {
+      final chatModel =
+          ChatModel(id: chatId, participants: [userId1, userId2], messages: []);
+      GoRouter.of(context).push(AppRouter.chatScreen, extra: chatModel);
+    } else {
+      GoRouter.of(context).push(AppRouter.chatScreen, extra: chatModel);
+    }
   }
 }

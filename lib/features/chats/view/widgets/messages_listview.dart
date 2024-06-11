@@ -53,7 +53,7 @@ class _MessagesListViewState extends State<MessagesListView> {
     final chatCubit = ChatCubit.get(context);
     final messagesSource = chatCubit.listOFMsgs;
 
-    if (messages.length >= messagesSource.length) {
+    if (messages.length >= messagesSource.length && messages.isNotEmpty) {
       Future(() => displayToastMsg(context, "All messages are loaded"));
       setState(() => _isLoading = false);
       return;
@@ -69,8 +69,17 @@ class _MessagesListViewState extends State<MessagesListView> {
 
   _fetchChatMessages() async {
     final chatCubit = ChatCubit.get(context);
+    chatCubit.listOFMsgs.clear();
     if (chatCubit.openedChat == null) return;
+    _setCachedMessages(chatCubit);
     await ChatCubit.get(context).fetchChatMessages();
+  }
+
+  void _setCachedMessages(ChatCubit chatCubit) {
+    if (chatCubit.openedChat!.messages != null &&
+        chatCubit.openedChat!.messages!.isNotEmpty) {
+      chatCubit.listOFMsgs.addAll(chatCubit.openedChat!.messages!);
+    }
   }
 
   void _listenToScrollController() {

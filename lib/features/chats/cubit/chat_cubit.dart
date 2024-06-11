@@ -14,9 +14,9 @@ class ChatCubit extends Cubit<ChatStates> {
   final ChatRepo chatRepo;
   static ChatCubit get(context) => BlocProvider.of(context);
 
+  ChatModel? openedChat;
   final List<ChatModel> listOFChats = [];
   final listOFMsgs = <MessageModel>[];
-  ChatModel? openedChat;
 
   /// Use this function to fetch all the user chats so, user can select and open any chat from the list
   Future<void> fetchAllUserChats() async {
@@ -73,20 +73,9 @@ class ChatCubit extends Cubit<ChatStates> {
       }
       emit(ChatFailureState(errorMsg: exp.toString()));
     }, (messages) {
-      listOFMsgs.clear();
       listOFMsgs.addAll(messages);
       emit(ChatLoadAllMessagesState());
     });
-  }
-
-  /// Use this function to extract the chat messages when user select the chat from the list and want to chatting with friend
-  void extractChatMsgs(ChatModel chat) {
-    openedChat = chat;
-    if (openedChat == null || openedChat?.messages == null) {
-      return;
-    }
-    listOFMsgs.clear();
-    listOFMsgs.addAll(openedChat!.messages!);
   }
 
   /// check if the generated chatId exist in the list of chats fetched from the cloud firestore or not
