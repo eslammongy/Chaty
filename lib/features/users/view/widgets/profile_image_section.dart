@@ -37,7 +37,8 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
                   child: CircleAvatar(
                       radius: 80, backgroundImage: FileImage(selectedImg!)))
               : CacheNetworkImg(
-                  imgUrl: widget.profileImgUrl, shapeBorder: roundedShape),
+                  imgUrl: widget.profileImgUrl,
+                ),
           Positioned(
             bottom: 5,
             right: 0,
@@ -83,8 +84,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
     });
   }
 
-  Future displayPickGalleryImg(
-      XFile imgFile, UserCubit profileCubit) async {
+  Future displayPickGalleryImg(XFile imgFile, UserCubit profileCubit) async {
     Future(() {
       displayPickImageDialog(
         context,

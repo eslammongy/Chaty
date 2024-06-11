@@ -28,7 +28,7 @@ class VerificationOtpScreen extends StatelessWidget {
     return BlocConsumer<UserCubit, UserStates>(
       listener: (context, state) async {
         if (state is UserCreatedState) {
-          await UserPref.keepUserAuthenticated(isLogged: true).then((value) {
+          await SharedPref.keepUserAuthenticated(isLogged: true).then((value) {
             GoRouter.of(context).pushReplacement(AppRouter.profileScreen);
           });
         }

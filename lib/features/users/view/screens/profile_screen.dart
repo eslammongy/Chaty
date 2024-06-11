@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/helper.dart';
@@ -92,7 +91,10 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 45),
                   CustomizedTextBtn(
-                      btnText: "Sign out", bkColor: theme.colorScheme.error)
+                    btnText: "Sign out",
+                    bkColor: theme.colorScheme.error,
+                    textColor: Colors.white,
+                  )
                 ],
               ),
             ),

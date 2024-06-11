@@ -25,6 +25,7 @@ dependencies:
   firebase_core: ^2.7.0
   firebase_database: ^10.0.16
   firebase_storage: ^11.7.3
+  cloud_firestore: ^4.17.5
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
@@ -81,8 +82,7 @@ flutter:
     - family: ChakraPetch
       fonts:
         - asset: assets/fonts/ChakraPetch-Light.ttf
-        
-        
+
 flutter_native_splash:
   color: "#121212"
   image: assets/images/logo.png

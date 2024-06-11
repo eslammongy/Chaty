@@ -9,3 +9,7 @@ const String cairoFM = "Cairo";
 const String dancingScript = "DancingScript";
 const String ubuntuSans = "UbuntuSans";
 const String chakraPetch = "ChakraPetch";
+
+const String selectedThemeKey = "SELECTED_THEME_KEY";
+const String selectedFontKey = "SELECTED_FONT_KEY";
+const String selectedAColorKey = "SELECTED_ACCENT_COLOR_KEY";

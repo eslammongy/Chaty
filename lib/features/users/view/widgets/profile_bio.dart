@@ -32,7 +32,8 @@ class ProfileBio extends StatelessWidget {
               textEditingController: pioTxtController,
               initText: profileCubit.userModel?.bio ?? dummyBio,
               maxLines: 5,
-              height: 126,
+              height:
+                  setProfileBioHight(profileCubit.userModel?.bio ?? dummyBio),
               onSubmitted: (value) async {
                 profileCubit.userModel?.bio = value;
                 await profileCubit.updateUserProfile();
@@ -42,5 +43,12 @@ class ProfileBio extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  double setProfileBioHight(String bio) {
+    if (bio.length > 60) {
+      return 125;
+    }
+    return 60;
   }
 }
