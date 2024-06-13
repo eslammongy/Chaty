@@ -14,7 +14,6 @@ import 'package:chaty/core/utils/services_locator.dart' as injectable;
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
   await _setupAppConfiguration(widgetsBinding);
 }
 
@@ -29,7 +28,7 @@ Future<void> _setupAppConfiguration(WidgetsBinding widgetsBinding) async {
   });
 }
 
-class Chaty extends StatelessWidget {
+class Chaty extends StatelessWidget {//arch -x86_64 pod install
   const Chaty({super.key});
 
   @override
