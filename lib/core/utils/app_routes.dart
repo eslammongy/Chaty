@@ -1,14 +1,15 @@
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/user_pref.dart';
+import 'package:chaty/features/users/data/models/user_model.dart';
 import 'package:chaty/features/chats/view/screen/chat_screen.dart';
 import 'package:chaty/features/dashboard/view/dashboard_screen.dart';
-import 'package:chaty/features/signin/view/screens/signup_screen.dart';
+import 'package:chaty/features/auth/view/screens/signup_screen.dart';
+import 'package:chaty/features/auth/view/screens/sign_in_screen.dart';
 import 'package:chaty/features/users/view/screens/profile_screen.dart';
+import 'package:chaty/features/auth/view/widgets/forget_password.dart';
 import 'package:chaty/features/chats/view/screen/chat_list_screen.dart';
-import 'package:chaty/features/signin/view/screens/sign_in_screen.dart';
-import 'package:chaty/features/signin/view/widgets/forget_password.dart';
-import 'package:chaty/features/signin/view/screens/phone_auth_screen.dart';
-import 'package:chaty/features/signin/view/screens/verification_otp_screen.dart';
+import 'package:chaty/features/auth/view/screens/phone_auth_screen.dart';
+import 'package:chaty/features/auth/view/screens/verification_otp_screen.dart';
 
 abstract class AppRouter {
   static String dashboardScreen = '/dashboard';
@@ -23,8 +24,8 @@ abstract class AppRouter {
 
   static bool isUserLogin = false;
   static setInitialRoute() async {
-    await UserPref.init();
-    await UserPref.checkIsUserAuthenticated().then((isLogged) {
+    await SharedPref.init();
+    await SharedPref.isUserAuthenticated().then((isLogged) {
       isUserLogin = isLogged;
     });
   }
@@ -37,6 +38,8 @@ abstract class AppRouter {
           if (!isUserLogin) {
             return const SignInScreen();
           } else {
+            /*  final receiver = state.extra;
+            return ChatScreen(receiver: receiver as UserModel); */
             return const DashboardScreen();
           }
         },
@@ -75,7 +78,10 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: chatScreen,
-        builder: (context, state) => const ChatScreen(),
+        builder: (context, state) {
+          final receiver = state.extra;
+          return ChatScreen(receiver: receiver as UserModel);
+        },
       ),
     ]);
   }

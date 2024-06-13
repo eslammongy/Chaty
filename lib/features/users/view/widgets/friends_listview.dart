@@ -24,7 +24,7 @@ class FriendsListView extends StatelessWidget {
               final user = userCubit.friendsList[index];
               return InkWell(
                 onTap: () {
-                  GoRouter.of(context).push(AppRouter.chatScreen);
+                  GoRouter.of(context).push(AppRouter.chatScreen, extra: user);
                 },
                 child: FriendsListItem(
                   user: user,
