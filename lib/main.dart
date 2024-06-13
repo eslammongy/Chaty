@@ -13,9 +13,7 @@ import 'package:chaty/core/utils/services_locator.dart' as injectable;
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp(
-  );
+  await Firebase.initializeApp();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await injectable.initServices();
   await AppRouter.setInitialRoute();
@@ -24,7 +22,7 @@ void main() async {
       const Duration(microseconds: 1000), FlutterNativeSplash.remove);
 }
 
-class Chaty extends StatelessWidget {
+class Chaty extends StatelessWidget {//arch -x86_64 pod install
   const Chaty({super.key});
 
   @override
