@@ -68,18 +68,8 @@ class SendNewMessage extends StatelessWidget {
                 if (userCubit.userModel?.uId != null && receiver.uId != null) {
                   final chatId = generateChatId(
                       id1: userCubit.userModel!.uId!, id2: receiver.uId!);
-                  final msg = MessageModel(
-                    text: msgController.text,
-                    senderId: userCubit.userModel!.uId!,
-                    dateTime: Timestamp.fromDate(DateTime.now()),
-                  );
-                  if (chatCubit.isChatExist(chatId) == null) {
-                    await chatCubit.createNewChat(
-                        chat: ChatModel(id: chatId, participants: [
-                      userCubit.userModel!.uId!,
-                      receiver.uId!
-                    ], messages: []));
-                  }
+                  final msg = msgModel(userCubit);
+                  _createNewChatDoc(chatCubit, userCubit, receiver, chatId);
                   await chatCubit.sendNewTextMsg(chatId: chatId, msg: msg);
                 }
               },
@@ -96,5 +86,28 @@ class SendNewMessage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  MessageModel msgModel(UserCubit userCubit) {
+    return MessageModel(
+      text: msgController.text,
+      senderId: userCubit.userModel!.uId!,
+      dateTime: Timestamp.fromDate(DateTime.now()),
+    );
+  }
+
+  _createNewChatDoc(
+    ChatCubit chatCubit,
+    UserCubit userCubit,
+    UserModel receiver,
+    String chatId,
+  ) async {
+    if (chatCubit.isChatExist(chatId) == null) {
+      await chatCubit.createNewChat(
+          chat: ChatModel(
+              id: chatId,
+              participants: [userCubit.userModel!.uId!, receiver.uId!],
+              messages: []));
+    }
   }
 }

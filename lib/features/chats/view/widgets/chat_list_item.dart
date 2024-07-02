@@ -27,7 +27,7 @@ class ChatListItem extends StatelessWidget {
           child: Row(
             children: [
               CacheNetworkImg(
-                imgUrl: receiver.imageUrl ?? dummyImageUrl,
+                imgUrl: receiver?.imageUrl ?? dummyImageUrl,
                 radius: 28,
               ),
               const SizedBox(
@@ -43,7 +43,7 @@ class ChatListItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          receiver.name ?? dummyName,
+                          receiver?.name ?? dummyName,
                           style: theme.textTheme.bodyLarge
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),

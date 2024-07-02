@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/utils/debouncer.dart';
-import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/view/widgets/message_item.dart';
 
 class MessagesListView extends StatefulWidget {
-  const MessagesListView({super.key});
+  const MessagesListView({super.key, required this.msgSource});
+  final List<MessageModel> msgSource;
 
   @override
   State<MessagesListView> createState() => _MessagesListViewState();
@@ -17,13 +17,11 @@ class _MessagesListViewState extends State<MessagesListView> {
   final ScrollController _scrollController = ScrollController();
   final Debounce _debounce = Debounce(delay: const Duration(milliseconds: 300));
   bool _isLoading = false;
-
   List<MessageModel> messages = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchChatMessages();
     _fetchMoreMessages();
     _listenToScrollController();
   }
@@ -50,36 +48,18 @@ class _MessagesListViewState extends State<MessagesListView> {
   }
 
   void _fetchMoreMessages({int limit = 15}) async {
-    final chatCubit = ChatCubit.get(context);
-    final messagesSource = chatCubit.listOFMsgs;
-
-    if (messages.length >= messagesSource.length && messages.isNotEmpty) {
+    if (messages.length >= widget.msgSource.length && messages.isNotEmpty) {
       Future(() => displayToastMsg(context, "All messages are loaded"));
       setState(() => _isLoading = false);
       return;
     }
 
-    final start = (messagesSource.length - messages.length - limit)
-        .clamp(0, messagesSource.length);
-    final end = messagesSource.length;
+    final start = (widget.msgSource.length - messages.length - limit)
+        .clamp(0, widget.msgSource.length);
+    final end = widget.msgSource.length;
 
-    messages.addAll(messagesSource.sublist(start, end));
+    messages.addAll(widget.msgSource.sublist(start, end));
     setState(() => _isLoading = false);
-  }
-
-  _fetchChatMessages() async {
-    final chatCubit = ChatCubit.get(context);
-    chatCubit.listOFMsgs.clear();
-    if (chatCubit.openedChat == null) return;
-    _setCachedMessages(chatCubit);
-    await ChatCubit.get(context).fetchChatMessages();
-  }
-
-  void _setCachedMessages(ChatCubit chatCubit) {
-    if (chatCubit.openedChat!.messages != null &&
-        chatCubit.openedChat!.messages!.isNotEmpty) {
-      chatCubit.listOFMsgs.addAll(chatCubit.openedChat!.messages!);
-    }
   }
 
   void _listenToScrollController() {

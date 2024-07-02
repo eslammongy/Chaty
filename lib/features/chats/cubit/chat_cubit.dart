@@ -63,19 +63,17 @@ class ChatCubit extends Cubit<ChatStates> {
     });
   }
 
-  Future<void> fetchChatMessages() async {
+  Future<void> fetchChatMessages({required String chatId}) async {
     emit(ChatLoadingMsgState());
-    final fetchingResult =
-        await chatRepo.fetchAllChatMsgs(chatId: openedChat?.id ?? '');
-    fetchingResult.fold((exp) {
-      if (exp is FirebaseException) {
-        emit(ChatFailureState(errorMsg: exp.message));
-      }
-      emit(ChatFailureState(errorMsg: exp.toString()));
-    }, (messages) {
-      listOFMsgs.addAll(messages);
-      emit(ChatLoadAllMessagesState());
-    });
+
+    chatRepo.fetchAllChatMsgs(chatId: chatId).listen(
+      (event) {
+        event.fold(
+          (error) => emit(ChatFailureState(errorMsg: error.toString(error))),
+          (messages) => emit(ChatLoadAllMessagesState(messages: messages)),
+        );
+      },
+    );
   }
 
   /// check if the generated chatId exist in the list of chats fetched from the cloud firestore or not
@@ -88,8 +86,10 @@ class ChatCubit extends Cubit<ChatStates> {
     return openedChat = null;
   }
 
-  UserModel getChatReceiver(BuildContext context, ChatModel chat) {
-    if (chat.participants?.isEmpty == true) return UserModel();
+  UserModel? getChatReceiver(BuildContext context, ChatModel chat) {
+    if (chat.participants == null || chat.participants?.isEmpty == true) {
+      return null;
+    }
     final userCubit = UserCubit.get(context);
     final receiver = userCubit.friendsList
         .firstWhere((element) => element.uId == chat.participants?.last);

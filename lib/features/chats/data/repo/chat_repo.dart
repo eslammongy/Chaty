@@ -6,7 +6,7 @@ abstract class ChatRepo {
   Future<Either<Exception, List<ChatModel>>> fetchAllUserChats();
 
   ///* This function responsible for fetching all the messages of specific chat
-  Future<Either<Exception, List<MessageModel>>> fetchAllChatMsgs({
+   Stream<Either<dynamic, List<MessageModel>>>  fetchAllChatMsgs({
     required String chatId,
   });
 

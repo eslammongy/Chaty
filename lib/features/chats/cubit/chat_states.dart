@@ -29,4 +29,8 @@ class ChatFailureState extends ChatStates {
 
 class ChatLoadAllChatsState extends ChatStates {}
 
-class ChatLoadAllMessagesState extends ChatStates {}
+class ChatLoadAllMessagesState extends ChatStates {
+  final List<MessageModel> messages;
+
+  ChatLoadAllMessagesState({required this.messages});
+}
