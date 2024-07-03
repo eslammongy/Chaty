@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:chaty/features/chats/cubit/chat_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/users/view/screens/friends_screen.dart';
 import 'package:chaty/features/users/view/screens/profile_screen.dart';
@@ -24,7 +24,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    loadProfileInfo();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<UserCubit>().fetchAllFriends();
+    });
   }
 
   @override
@@ -44,12 +46,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   onTapNavClicked(int index) {
     setState(() {
       _selectedPage = index;
-    });
-  }
-
-  loadProfileInfo() async {
-    await UserCubit.get(context).fetchAllFriends().then((value) async {
-      await ChatCubit.get(context).fetchAllUserChats();
     });
   }
 }

@@ -87,10 +87,13 @@ class ChatCubit extends Cubit<ChatStates> {
   }
 
   UserModel? getChatReceiver(BuildContext context, ChatModel chat) {
-    if (chat.participants == null || chat.participants?.isEmpty == true) {
+    final userCubit = UserCubit.get(context);
+    if (userCubit.friendsList.isEmpty ||
+        chat.participants == null ||
+        chat.participants!.isEmpty) {
       return null;
     }
-    final userCubit = UserCubit.get(context);
+
     final receiver = userCubit.friendsList
         .firstWhere((element) => element.uId == chat.participants?.last);
     return receiver;

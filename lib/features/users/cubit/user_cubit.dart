@@ -58,7 +58,6 @@ class UserCubit extends Cubit<UserStates> {
     var result = await userRepo.fetchAllFriends(
       (currentUser) {
         userModel = currentUser;
-        debugPrint("Current User : ${userModel?.name}");
         emit(UserFetchedState(userModel: userModel));
       },
     );
@@ -66,6 +65,7 @@ class UserCubit extends Cubit<UserStates> {
       var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (friends) {
+      debugPrint("****Your friends list::$friends");
       friendsList.addAll(friends);
       emit(UserLoadAllFriendsState());
     });
