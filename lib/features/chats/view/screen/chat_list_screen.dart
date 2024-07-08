@@ -13,6 +13,7 @@ class ChatListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final chatList = ChatCubit.get(context).listOFChats;
     return Scaffold(
       appBar: const ChatsAppBar(
         searchHint: "Search for a chat...",
@@ -39,7 +40,7 @@ class ChatListScreen extends StatelessWidget {
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 Visibility(
-                  visible: state is ChatLoadAllChatsState,
+                  visible: state is ChatLoadAllChatsState || chatList.isNotEmpty,
                   child: const ChatsList(),
                 ),
                 Visibility(

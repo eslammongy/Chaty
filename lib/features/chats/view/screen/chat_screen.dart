@@ -22,11 +22,9 @@ class ChatScreen extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.only(left: 15.w, right: 15.w, bottom: 20.h),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const ChatMessages(),
-            const SizedBox(
-              height: 5,
-            ),
             SendNewMessage(
               msgController: msgController,
               receiver: receiver ?? UserModel(),
