@@ -79,11 +79,11 @@ class ChatCubit extends Cubit<ChatStates> {
   /// check if the generated chatId exist in the list of chats fetched from the cloud firestore or not
   /// if exist return it so we don't have to fetch the again
   /// else return null, in this case may be the chat need to created
-  ChatModel? isChatExist(String chatId) {
-    for (var element in listOFChats) {
-      if (element.id == chatId) return openedChat = element;
-    }
-    return openedChat = null;
+  ChatModel isChatExist(String chatId) {
+    return listOFChats.firstWhere(
+      (element) => element.id == chatId,
+      orElse: () => ChatModel(),
+    );
   }
 
   UserModel? getChatReceiver(BuildContext context, ChatModel chat) {

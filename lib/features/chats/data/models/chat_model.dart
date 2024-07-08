@@ -36,6 +36,7 @@ class ChatModel {
     );
   }
 
+
   String toJson() => json.encode(toMap());
 
   factory ChatModel.fromJson(String source) =>

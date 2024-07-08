@@ -4,7 +4,7 @@ import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/view/widgets/messages_listview.dart';
 
 class ChatMessages extends StatefulWidget {
-  const ChatMessages({super.key});
+  const ChatMessages({super.key, });
 
   @override
   State<ChatMessages> createState() => _ChatMessagesState();

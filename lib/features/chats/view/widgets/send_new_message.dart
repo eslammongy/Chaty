@@ -102,7 +102,7 @@ class SendNewMessage extends StatelessWidget {
     UserModel receiver,
     String chatId,
   ) async {
-    if (chatCubit.isChatExist(chatId) == null) {
+    if (chatCubit.isChatExist(chatId).id == null) {
       await chatCubit.createNewChat(
           chat: ChatModel(
               id: chatId,
