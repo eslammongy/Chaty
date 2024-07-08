@@ -8,6 +8,7 @@ import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/core/widgets/customized_text_btn.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/users/view/widgets/profile_bio.dart';
+import 'package:chaty/features/users/view/widgets/confirm_user_logout.dart';
 import 'package:chaty/features/users/view/widgets/profile_image_section.dart';
 import 'package:chaty/features/users/view/widgets/profile_info_field_item.dart';
 
@@ -88,12 +89,30 @@ class ProfileScreen extends StatelessWidget {
                     btnText: "Sign out",
                     bkColor: theme.colorScheme.error,
                     textColor: Colors.white,
+                    onPressed: () {
+                      _showLogoutAlertDialog(context);
+                    },
                   )
                 ],
               ),
             ),
           ),
         );
+      },
+    );
+  }
+
+  Future<void> _showLogoutAlertDialog(
+    BuildContext context,
+  ) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Theme.of(context).colorScheme.surface.withOpacity(0.6),
+      builder: (context) {
+        return confirmUserLogout(context, userLogout: () async {
+          ///TODO: logout
+        });
       },
     );
   }
