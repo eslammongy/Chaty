@@ -37,14 +37,16 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                 showLoadingDialog(context, text: "loading info...");
               }
               if (state is UserLoadAllFriendsState) {
-                await ChatCubit.get(context).fetchAllUserChats();
+                Future(() async {
+                  _closeLoadingIndicator(context);
+                  await ChatCubit.get(context).fetchAllUserChats();
+                });
               }
               if (state is UserFailureState) {
                 Future(() {
                   _closeLoadingIndicator(context);
                   displayToastMsg(context, state.errorMsg);
                 });
-                await ChatCubit.get(context).fetchAllUserChats();
               }
             },
             builder: (context, state) {

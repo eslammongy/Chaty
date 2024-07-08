@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
-import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/core/widgets/loading_state_ui.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/view/widgets/custom_text_btn.dart';
 
 /// this is the default box shadow for the card items
@@ -42,7 +42,7 @@ void displaySnackBar(BuildContext context, String msg,
 ///
 /// The [context] parameter is the [BuildContext] in which the dialog is shown.
 // This function does not return anything./*
-showLoadingDialog(BuildContext context, {String text = "Loading..."}) {
+showLoadingDialog(BuildContext context, {String text = "please wait..."}) {
   return showDialog(
       useSafeArea: true,
       barrierDismissible: false,
@@ -50,6 +50,7 @@ showLoadingDialog(BuildContext context, {String text = "Loading..."}) {
       context: context,
       builder: (context) {
         return Dialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 90.w),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
           ),
@@ -59,7 +60,6 @@ showLoadingDialog(BuildContext context, {String text = "Loading..."}) {
         );
       });
 }
-
 
 /// Checks if the given [value] is a valid email address.
 /// The [value] parameter should be a string representing the email address to validate.

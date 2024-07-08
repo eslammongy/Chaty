@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/core/widgets/loading_state_ui.dart';
@@ -27,40 +26,35 @@ class ChatListScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Visibility(
+                  visible: state is ChatLoadingState,
+                  child: const LinearProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                    backgroundColor: Colors.grey,
+                    minHeight: 10,
+                  ),
+                ),
                 Text(
                   "Messages",
                   style: theme.textTheme.headlineMedium
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                _handleStatePresented(theme, state)
+                Visibility(
+                  visible: state is ChatLoadAllChatsState,
+                  child: const ChatsList(),
+                ),
+                Visibility(
+                  visible: state is ChatFailureState,
+                  child: const FailureStateUI(
+                    imgPath: AppAssetsManager.emptyInbox,
+                    text: "Something went wrong, please try again",
+                  ),
+                ),
               ],
             );
           },
         ),
       ),
     );
-  }
-
-  /// close loading dialog
-  void _closeLoadingIndicator(BuildContext context) =>
-      GoRouter.of(context).pop();
-
-  _handleStatePresented(ThemeData theme, ChatStates state) {
-    if (state is ChatFailureState) {
-      return const LoadingStateUI(
-        text: 'loading chats...',
-      );
-    } else if (state is ChatFailureState) {
-      return const FailureStateUI(
-        imgPath: AppAssetsManager.emptyInbox,
-        text: "Something went wrong, please try again",
-      );
-    } else {
-      return const ChatsList();
-    }
-  }
-
-  bool isAllChatsLoaded(ChatStates previous, ChatStates current) {
-    return previous is ChatLoadingState && current is ChatLoadAllChatsState;
   }
 }

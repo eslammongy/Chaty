@@ -10,7 +10,7 @@ class LoadingStateUI extends StatelessWidget {
     final theme = Theme.of(context);
     return SizedBox(
       height: 160,
-      width: 90,
+      width: 185,
       child: DecoratedBox(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.0),
