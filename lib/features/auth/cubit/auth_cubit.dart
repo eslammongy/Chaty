@@ -101,4 +101,15 @@ class AuthCubit extends Cubit<AuthStates> {
       emit(PhoneOtpCodeVerifiedState(userModel: userModel));
     });
   }
+
+  Future<void> logout() async {
+    emit(AuthLoadingState());
+    var result = await authRepo.logout();
+    result.fold((errorCode) {
+      var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
+      emit(AuthGenericFailureState(errorMsg));
+    }, (userId) async {
+      emit(UserLogoutState(userId: userId));
+    });
+  }
 }

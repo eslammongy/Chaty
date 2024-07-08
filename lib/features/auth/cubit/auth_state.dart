@@ -43,3 +43,8 @@ class AuthGenericFailureState extends AuthStates {
 
   AuthGenericFailureState(this.errorMsg);
 }
+
+class UserLogoutState extends AuthStates {
+  final String? userId;
+  UserLogoutState({this.userId});
+}

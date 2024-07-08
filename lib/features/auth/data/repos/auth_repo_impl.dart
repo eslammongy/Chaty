@@ -154,4 +154,17 @@ class AuthRepoImplementation implements AuthRepo {
       return left(AuthExceptionsTypes.undefined);
     }
   }
+
+  @override
+  Future<Either<AuthExceptionsTypes, String?>> logout() async {
+    try {
+      final userId = firebaseAuth.currentUser?.uid;
+      await firebaseAuth.signOut();
+      return right(userId);
+    } on FirebaseAuthException catch (error) {
+      return left(AuthExceptionHandler.handleException(error.code));
+    } catch (error) {
+      return left(AuthExceptionsTypes.undefined);
+    }
+  }
 }

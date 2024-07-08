@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:chaty/core/utils/user_pref.dart';
+import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/constants.dart';
+import 'package:chaty/features/auth/cubit/auth_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/core/widgets/customized_text_btn.dart';
@@ -74,6 +77,19 @@ class ProfileScreen extends StatelessWidget {
                       await profileCubit.updateUserProfile();
                     },
                   ),
+                  BlocListener<AuthCubit, AuthStates>(
+                    listener: (context, state) {
+                      if (state is AuthLoadingState) {
+                        showLoadingDialog(context);
+                      }
+                      if (state is UserLogoutState) {
+                        UserCubit.get(context).userModel = null;
+                        GoRouter.of(context)
+                            .pushReplacement(AppRouter.loginScreen);
+                      }
+                    },
+                    child: const SizedBox.shrink(),
+                  ),
                   const SizedBox(height: 15),
                   ProfileInfoFieldItem(
                     text: profileCubit.userModel?.phone ?? dummyPhone,
@@ -105,13 +121,16 @@ class ProfileScreen extends StatelessWidget {
   Future<void> _showLogoutAlertDialog(
     BuildContext context,
   ) async {
+    final authCubit = AuthCubit.get(context);
     showDialog(
       context: context,
       barrierDismissible: false,
       barrierColor: Theme.of(context).colorScheme.surface.withOpacity(0.6),
       builder: (context) {
         return confirmUserLogout(context, userLogout: () async {
-          ///TODO: logout
+          await authCubit.logout().whenComplete(() {
+            SharedPref.keepUserAuthenticated(isLogged: false);
+          });
         });
       },
     );

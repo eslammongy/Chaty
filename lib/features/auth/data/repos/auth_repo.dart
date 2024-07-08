@@ -25,4 +25,6 @@ abstract class AuthRepo {
     required String otpCode,
     required String verificationId,
   });
+
+  Future<Either<AuthExceptionsTypes, String?>> logout();
 }

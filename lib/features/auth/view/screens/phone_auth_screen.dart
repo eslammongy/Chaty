@@ -38,7 +38,7 @@ class PhoneAuthScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
-              backgroundColor: theme.colorScheme.surface,
+              backgroundColor: theme.scaffoldBackgroundColor,
               title: const Text("Phone Auth"),
             ),
             body: SingleChildScrollView(
