@@ -22,7 +22,7 @@ class SignInScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthStates>(
       listener: (context, state) async {
         if (state is AuthLoadingState) {
-          showLoadingDialog(context);
+          showLoadingDialog(context, text: "please wait...");
         }
         if (state is SignInWithGoogleSuccessState) {
           await userInfoCubit

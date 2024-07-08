@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/constants.dart';
+import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
@@ -28,58 +31,83 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                   bottomLeft: Radius.circular(25),
                   bottomRight: Radius.circular(25))),
           margin: EdgeInsets.zero,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
+          child: BlocConsumer<UserCubit, UserStates>(
+            listener: (context, state) async {
+              if (state is UserLoadingState) {
+                showLoadingDialog(context, text: "loading info...");
+              }
+              if (state is UserLoadAllFriendsState) {
+                await ChatCubit.get(context).fetchAllUserChats();
+              }
+              if (state is UserFailureState) {
+                Future(() {
+                  _closeLoadingIndicator(context);
+                  displayToastMsg(context, state.errorMsg);
+                });
+                await ChatCubit.get(context).fetchAllUserChats();
+              }
+            },
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    BlocBuilder<UserCubit, UserStates>(
-                      builder: (context, state) {
-                        return CacheNetworkImg(
-                          imgUrl: UserCubit.get(context).userModel?.imageUrl ??
-                              dummyImageUrl,
-                          radius: 26,
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: CustomTextInputField(
-                        textEditingController: controller,
-                        prefix: const Icon(FontAwesomeIcons.magnifyingGlass),
-                        hint: searchHint,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        await _displaySettingSheet(context);
-                      },
-                      borderRadius: BorderRadius.circular(50),
-                      child: const Padding(
-                        padding: EdgeInsets.all(6),
-                        child: Icon(
-                          FontAwesomeIcons.gear,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        BlocBuilder<UserCubit, UserStates>(
+                          builder: (context, state) {
+                            return CacheNetworkImg(
+                              imgUrl:
+                                  UserCubit.get(context).userModel?.imageUrl ??
+                                      dummyImageUrl,
+                              radius: 26,
+                            );
+                          },
                         ),
-                      ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextInputField(
+                            textEditingController: controller,
+                            prefix:
+                                const Icon(FontAwesomeIcons.magnifyingGlass),
+                            hint: searchHint,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            await _displaySettingSheet(context);
+                          },
+                          borderRadius: BorderRadius.circular(50),
+                          child: const Padding(
+                            padding: EdgeInsets.all(6),
+                            child: Icon(
+                              FontAwesomeIcons.gear,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
     );
   }
+
+  /// close loading dialog
+  void _closeLoadingIndicator(BuildContext context) =>
+      GoRouter.of(context).pop();
 
   @override
   Size get preferredSize => heightOfAppBar;

@@ -15,9 +15,7 @@ class EmptyStateUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Expanded(
-        child: Center(
-            child: Column(
+    return Column(
       children: [
         SvgPicture.asset(
           imgPath,
@@ -30,6 +28,6 @@ class EmptyStateUI extends StatelessWidget {
               theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
         ),
       ],
-    )));
+    );
   }
 }

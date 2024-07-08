@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/core/widgets/loading_state_ui.dart';
 import 'package:chaty/features/users/view/widgets/custom_text_btn.dart';
 
 /// this is the default box shadow for the card items
@@ -48,42 +49,17 @@ showLoadingDialog(BuildContext context, {String text = "Loading..."}) {
       barrierColor: Colors.grey.withOpacity(0.3),
       context: context,
       builder: (context) {
-        return SizedBox(
-          height: 140,
-          width: 140,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    AppAssetsManager.loading,
-                    width: 100,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    text,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  )
-                ],
-              ),
-            ),
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: LoadingStateUI(
+            text: text,
           ),
         );
       });
 }
 
-// AlertDialog generateAlertDialog() {
-//   return AlertDialog(
-//     key: GlobalKey(),
-//     backgroundColor: Colors.transparent,
-//     elevation: 0,
-//     content:
-//   );
-// } */
 
 /// Checks if the given [value] is a valid email address.
 /// The [value] parameter should be a string representing the email address to validate.

@@ -21,7 +21,7 @@ class PhoneAuthScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthStates>(
       listener: (context, state) {
         if (state is AuthLoadingState) {
-          showLoadingDialog(context);
+          showLoadingDialog(context, text: 'please wait...');
         }
         if (state is PhoneNumberSubmittedState) {
           // pop the loading dialog
@@ -38,7 +38,7 @@ class PhoneAuthScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
-              backgroundColor: theme.colorScheme.background,
+              backgroundColor: theme.colorScheme.surface,
               title: const Text("Phone Auth"),
             ),
             body: SingleChildScrollView(
@@ -69,15 +69,14 @@ class PhoneAuthScreen extends StatelessWidget {
                             favorite: const ['+20', 'EG'],
                             showCountryOnly: false,
                             backgroundColor: theme.colorScheme.surface,
-                            dialogBackgroundColor:
-                                theme.colorScheme.onBackground,
+                            dialogBackgroundColor: theme.colorScheme.surface,
                             showOnlyCountryWhenClosed: false,
                             dialogTextStyle: theme.textTheme.bodyMedium,
                             textStyle: theme.textTheme.titleMedium,
                             barrierColor:
-                                theme.colorScheme.surface.withOpacity(0.8),
+                                theme.colorScheme.surface.withOpacity(0.2),
                             alignLeft: false,
-                            dialogSize: Size(300, 60.h),
+                            dialogSize: Size(300, 360.h),
                             onChanged: (value) {
                               countryCode = value.dialCode!.trim();
                             },
