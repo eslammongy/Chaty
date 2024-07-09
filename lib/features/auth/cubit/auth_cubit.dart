@@ -60,14 +60,14 @@ class AuthCubit extends Cubit<AuthStates> {
     });
   }
 
-  Future resetUserPassword(String email) async {
+  Future resetUserPassword({required String email}) async {
     emit(AuthLoadingState());
     var result = await authRepo.resetUserPassword(email: email);
     result.fold((errorCode) {
       final errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
       emit(AuthGenericFailureState(errorMsg));
-    }, (right) {
-      emit(ResetPasswordSuccessState());
+    }, (email) {
+      emit(UserRestPasswordState(email: email));
     });
   }
 
@@ -112,4 +112,5 @@ class AuthCubit extends Cubit<AuthStates> {
       emit(UserLogoutState(userId: userId));
     });
   }
+
 }

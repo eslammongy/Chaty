@@ -89,20 +89,6 @@ class AuthRepoImplementation implements AuthRepo {
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, bool>> resetUserPassword(
-      {required String email}) async {
-    try {
-      await firebaseAuth.sendPasswordResetEmail(email: email);
-      return right(true);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
-    } catch (e) {
-      return left(
-          AuthExceptionHandler.handleException(AuthExceptionsTypes.undefined));
-    }
-  }
-
-  @override
   Future<Either<AuthExceptionsTypes, bool>> submitUserPhoneNumber({
     required String phoneNumber,
     required Function(String verifyCode) setVerificationCode,
@@ -161,6 +147,19 @@ class AuthRepoImplementation implements AuthRepo {
       final userId = firebaseAuth.currentUser?.uid;
       await firebaseAuth.signOut();
       return right(userId);
+    } on FirebaseAuthException catch (error) {
+      return left(AuthExceptionHandler.handleException(error.code));
+    } catch (error) {
+      return left(AuthExceptionsTypes.undefined);
+    }
+  }
+
+  @override
+  Future<Either<AuthExceptionsTypes, String?>> resetUserPassword(
+      {required String email}) async {
+    try {
+      await firebaseAuth.sendPasswordResetEmail(email: email);
+      return right(email);
     } on FirebaseAuthException catch (error) {
       return left(AuthExceptionHandler.handleException(error.code));
     } catch (error) {

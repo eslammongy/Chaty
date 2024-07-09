@@ -6,6 +6,7 @@ import 'package:chaty/core/utils/user_pref.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/features/auth/cubit/auth_cubit.dart';
+import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/core/widgets/customized_text_btn.dart';
@@ -84,6 +85,9 @@ class ProfileScreen extends StatelessWidget {
                       }
                       if (state is UserLogoutState) {
                         UserCubit.get(context).userModel = null;
+                        ChatCubit.get(context).openedChat = null;
+                        ChatCubit.get(context).listOFChats.clear();
+                        UserCubit.get(context).friendsList.clear();
                         GoRouter.of(context)
                             .pushReplacement(AppRouter.loginScreen);
                       }

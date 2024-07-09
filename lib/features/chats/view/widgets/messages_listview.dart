@@ -32,7 +32,6 @@ class _MessagesListViewState extends State<MessagesListView> {
     return Expanded(
       child: ListView.builder(
         controller: _scrollController,
-        reverse: true,
         padding: EdgeInsets.only(bottom: 10.h, left: 0, right: 0),
         physics: const BouncingScrollPhysics(),
         itemCount: messages.length + (_isLoading ? 1 : 0),

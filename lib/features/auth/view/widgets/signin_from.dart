@@ -57,7 +57,7 @@ class SingInFrom extends StatelessWidget {
           child: CustomTextButton(
               backgroundColor: theme.colorScheme.primary,
               text: "Sign In",
-              textColor: theme.colorScheme.background,
+              textColor: theme.scaffoldBackgroundColor,
               onPressed: onPressed),
         ),
         const SizedBox(height: 15),

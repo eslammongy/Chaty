@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/features/auth/cubit/auth_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +20,7 @@ class ForgetPasswordScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Forget Password"),
-        backgroundColor: theme.colorScheme.background,
+        backgroundColor: theme.scaffoldBackgroundColor,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -30,11 +29,11 @@ class ForgetPasswordScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const SizedBox(
-                height: 20,
+                height: 50,
               ),
               SvgPicture.asset(
                 AppAssetsManager.forgetPasswordImg,
-                width: 65.w,
+                height: 220.h,
                 fit: BoxFit.cover,
               ),
               const SizedBox(
@@ -44,7 +43,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                   "Enter the email associated with your account and we well send an email with instructions to reset your password.",
                   style: theme.textTheme.bodyLarge),
               const SizedBox(
-                height: 15,
+                height: 35,
               ),
               CustomTextInputField(
                   textEditingController: eTextEmailController,
@@ -57,7 +56,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                   autoFocus: false,
                   maxLines: 1),
               const SizedBox(
-                height: 15,
+                height: 35,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -66,7 +65,10 @@ class ForgetPasswordScreen extends StatelessWidget {
                   text: "Send Email",
                   onPressed: () async {
                     await AuthCubit.get(context)
-                        .resetUserPassword(eTextEmailController.text);
+                        .resetUserPassword(
+                          email: eTextEmailController.text,
+                        )
+                        .whenComplete(() => GoRouter.of(context).pop());
                   },
                 ),
               ),
@@ -78,12 +80,14 @@ class ForgetPasswordScreen extends StatelessWidget {
                   if (state is AuthLoadingState) {
                     showLoadingDialog(context);
                   }
-                  if (state is ResetPasswordSuccessState) {
-                    GoRouter.of(context).pushReplacement(AppRouter.loginScreen);
+
+                  if (state is UserRestPasswordState) {
+                    GoRouter.of(context).pop();
+                    displaySnackBar(context,
+                        "the rest password link sent to your email please check your email",
+                        isFailState: false);
                   }
                   if (state is AuthGenericFailureState) {
-                    // pop the loading dialog
-                    GoRouter.of(context).pop();
                     displaySnackBar(context, state.errorMsg);
                   }
                 },

@@ -12,9 +12,6 @@ abstract class AuthRepo {
   Future<Either<AuthExceptionsTypes, UserModel>> signInWithEmailPass(
       {required String email, required String password});
 
-  Future<Either<AuthExceptionsTypes, bool>> resetUserPassword(
-      {required String email});
-
   Future<Either<AuthExceptionsTypes, bool>> submitUserPhoneNumber({
     required String phoneNumber,
     required Function(String verifyCode) setVerificationCode,
@@ -27,4 +24,6 @@ abstract class AuthRepo {
   });
 
   Future<Either<AuthExceptionsTypes, String?>> logout();
+  Future<Either<AuthExceptionsTypes, String?>> resetUserPassword(
+      {required String email});
 }

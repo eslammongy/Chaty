@@ -24,8 +24,6 @@ class SignInWithGoogleSuccessState extends AuthStates {
   SignInWithGoogleSuccessState({required this.userModel});
 }
 
-class ResetPasswordSuccessState extends AuthStates {}
-
 class PhoneNumberSubmittedState extends AuthStates {
   final String verificationId;
 
@@ -47,4 +45,9 @@ class AuthGenericFailureState extends AuthStates {
 class UserLogoutState extends AuthStates {
   final String? userId;
   UserLogoutState({this.userId});
+}
+
+class UserRestPasswordState extends AuthStates {
+  final String? email;
+  UserRestPasswordState({this.email});
 }
