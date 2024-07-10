@@ -53,5 +53,9 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>sms</string>
+		</array>
 	</dict>
 </plist>

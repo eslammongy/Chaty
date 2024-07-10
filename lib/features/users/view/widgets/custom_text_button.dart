@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 Widget buildTextBtnWidget(BuildContext context,
     {required Function() onPressed,
     required String btnText,
-    bool isBtnCancel = false,
+    bool hasBorderSide = false,
     Color? textColor,
     Color? bkColor}) {
   /// define default style for button
   final theme = Theme.of(context);
   final textBtnStyle = TextButton.styleFrom(
     shape: RoundedRectangleBorder(
-        side: isBtnCancel
+        side: hasBorderSide
             ? BorderSide(width: 2, color: theme.colorScheme.error)
             : BorderSide.none,
         borderRadius: const BorderRadius.all(Radius.circular(12))),

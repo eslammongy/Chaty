@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:chaty/features/auth/view/widgets/custom_text_button.dart';
 import 'package:chaty/features/users/view/widgets/custom_text_button.dart';
 
 confirmUserLogout(BuildContext context, {required Function() userLogout}) {
@@ -8,7 +7,6 @@ confirmUserLogout(BuildContext context, {required Function() userLogout}) {
   return AlertDialog(
       backgroundColor: theme.colorScheme.scrim,
       elevation: 3,
-      
       titlePadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       title: Row(
         children: [
@@ -39,7 +37,7 @@ confirmUserLogout(BuildContext context, {required Function() userLogout}) {
             buildTextBtnWidget(
               context,
               btnText: "Cancel",
-              isBtnCancel: true,
+              hasBorderSide: true,
               onPressed: () {
                 GoRouter.of(context).pop();
               },

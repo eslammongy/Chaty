@@ -67,7 +67,7 @@ class AuthCubit extends Cubit<AuthStates> {
       final errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
       emit(AuthGenericFailureState(errorMsg));
     }, (email) {
-      emit(UserRestPasswordState(email: email));
+      emit(UserResetPasswordState(email: email));
     });
   }
 
@@ -112,5 +112,4 @@ class AuthCubit extends Cubit<AuthStates> {
       emit(UserLogoutState(userId: userId));
     });
   }
-
 }

@@ -47,7 +47,7 @@ class UserLogoutState extends AuthStates {
   UserLogoutState({this.userId});
 }
 
-class UserRestPasswordState extends AuthStates {
+class UserResetPasswordState extends AuthStates {
   final String? email;
-  UserRestPasswordState({this.email});
+  UserResetPasswordState({this.email});
 }
