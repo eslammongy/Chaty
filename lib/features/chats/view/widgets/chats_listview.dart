@@ -37,7 +37,6 @@ class ChatsList extends StatelessWidget {
         return InkWell(
           onTap: () {
             chatCubit.openedChat = chats[index];
-            _setCachedMessages(chatCubit);
             GoRouter.of(context)
                 .push(AppRouter.chatScreen, extra: chats[index]);
           },
@@ -49,10 +48,5 @@ class ChatsList extends StatelessWidget {
     );
   }
 
-  void _setCachedMessages(ChatCubit chatCubit) {
-    if (chatCubit.openedChat!.messages != null &&
-        chatCubit.openedChat!.messages!.isNotEmpty) {
-      chatCubit.listOFMsgs.addAll(chatCubit.openedChat!.messages!);
-    }
-  }
+
 }

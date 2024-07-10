@@ -66,12 +66,9 @@ class SendNewMessage extends StatelessWidget {
             child: InkWell(
               onTap: () async {
                 if (userCubit.userModel?.uId != null && receiver.uId != null) {
-                  final chatId = generateChatId(
-                      id1: userCubit.userModel!.uId!, id2: receiver.uId!);
-                  final msg = msgModel(userCubit);
-                  _createNewChatDoc(chatCubit, userCubit, receiver, chatId);
-                  await chatCubit.sendNewTextMsg(chatId: chatId, msg: msg);
+                  return;
                 }
+                await _sendNewTextMsg(userCubit, chatCubit);
               },
               borderRadius: BorderRadius.circular(100),
               child: const Padding(
@@ -88,6 +85,17 @@ class SendNewMessage extends StatelessWidget {
     );
   }
 
+  Future<void> _sendNewTextMsg(UserCubit userCubit, ChatCubit chatCubit) async {
+    final chatId =
+        generateChatId(id1: userCubit.userModel!.uId!, id2: receiver.uId!);
+    final msg = msgModel(userCubit);
+    if (chatCubit.isChatExist(chatId).id == null) {
+      _createNewChatDoc(chatCubit, userCubit, receiver, chatId);
+    }
+    await chatCubit.sendNewTextMsg(chatId: chatId, msg: msg);
+    msgController.clear();
+  }
+
   MessageModel msgModel(UserCubit userCubit) {
     return MessageModel(
       text: msgController.text,
@@ -102,12 +110,10 @@ class SendNewMessage extends StatelessWidget {
     UserModel receiver,
     String chatId,
   ) async {
-    if (chatCubit.isChatExist(chatId).id == null) {
-      await chatCubit.createNewChat(
-          chat: ChatModel(
-              id: chatId,
-              participants: [userCubit.userModel!.uId!, receiver.uId!],
-              messages: []));
-    }
+    await chatCubit.createNewChat(
+        chat: ChatModel(
+            id: chatId,
+            participants: [userCubit.userModel!.uId!, receiver.uId!],
+            messages: []));
   }
 }

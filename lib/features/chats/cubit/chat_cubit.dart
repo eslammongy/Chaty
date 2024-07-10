@@ -16,7 +16,6 @@ class ChatCubit extends Cubit<ChatStates> {
 
   ChatModel? openedChat;
   final List<ChatModel> listOFChats = [];
-  final listOFMsgs = <MessageModel>[];
 
   /// Use this function to fetch all the user chats so, user can select and open any chat from the list
   Future<void> fetchAllUserChats() async {
@@ -59,6 +58,7 @@ class ChatCubit extends Cubit<ChatStates> {
       }
       emit(ChatFailureState(errorMsg: exp.toString()));
     }, (msg) {
+      debugPrint("sendNewTextMsg: $msg");
       emit(ChatMsgSendedState(msg: msg));
     });
   }

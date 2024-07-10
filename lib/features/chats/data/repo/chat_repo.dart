@@ -5,7 +5,7 @@ import 'package:chaty/features/chats/data/models/chat_model.dart';
 abstract class ChatRepo {
   Future<Either<Exception, List<ChatModel>>> fetchAllUserChats();
 
-  ///* This function responsible for fetching all the messages of specific chat
+  /// This function responsible for fetching all the messages of specific chat
    Stream<Either<dynamic, List<MessageModel>>>  fetchAllChatMsgs({
     required String chatId,
   });
