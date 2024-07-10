@@ -32,6 +32,7 @@ class _MessagesListViewState extends State<MessagesListView> {
     return Expanded(
       child: ListView.builder(
         controller: _scrollController,
+        reverse: true,
         padding: EdgeInsets.only(bottom: 10.h, left: 0, right: 0),
         physics: const BouncingScrollPhysics(),
         itemCount: messages.length + (_isLoading ? 1 : 0),
@@ -48,7 +49,6 @@ class _MessagesListViewState extends State<MessagesListView> {
 
   void _fetchMoreMessages({int limit = 15}) async {
     if (messages.length >= widget.msgSource.length && messages.isNotEmpty) {
-      Future(() => displayToastMsg(context, "All messages are loaded"));
       setState(() => _isLoading = false);
       return;
     }
@@ -57,16 +57,25 @@ class _MessagesListViewState extends State<MessagesListView> {
         .clamp(0, widget.msgSource.length);
     final end = widget.msgSource.length;
 
-    messages.addAll(widget.msgSource.sublist(start, end));
+    debugPrint("start : $start, end : $end");
+    _reverseMessages(widget.msgSource.sublist(start, end));
     setState(() => _isLoading = false);
+  }
+
+  _reverseMessages(List<MessageModel> source) {
+    for (var i = source.length - 1; i >= 0; i--) {
+      messages.add(widget.msgSource[i]);
+    }
   }
 
   void _listenToScrollController() {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
-        setState(() => _isLoading = true);
-        _debounce.call(() => _fetchMoreMessages());
+        if (messages.length != widget.msgSource.length) {
+          setState(() => _isLoading = true);
+          _debounce.call(() => _fetchMoreMessages());
+        }
       }
     });
   }

@@ -65,7 +65,7 @@ class SendNewMessage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(100)),
             child: InkWell(
               onTap: () async {
-                if (userCubit.userModel?.uId != null && receiver.uId != null) {
+                if (userCubit.userModel?.uId == null || receiver.uId == null) {
                   return;
                 }
                 await _sendNewTextMsg(userCubit, chatCubit);

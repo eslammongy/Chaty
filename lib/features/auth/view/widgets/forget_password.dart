@@ -1,17 +1,13 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:chaty/core/constants/app_assets.dart';
-import 'package:android_intent_plus/android_intent.dart';
 import 'package:chaty/features/auth/cubit/auth_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/auth/view/widgets/open_gmail_button.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_button.dart';
-import 'package:chaty/features/users/view/widgets/custom_text_button.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {

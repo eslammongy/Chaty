@@ -29,6 +29,7 @@ class ChatRepoImpl extends ChatRepo {
     List<MessageModel> messages = [];
     return chats.doc(chatId).snapshots().map(
       (event) {
+        debugPrint("Receive an event happened : $event");
         if (event.data() != null && event['messages'] != null) {
           final List chatMessages = event['messages'];
           for (var element in chatMessages) {

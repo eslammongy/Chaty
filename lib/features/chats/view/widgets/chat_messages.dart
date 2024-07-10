@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/core/widgets/failure_state_ui.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/chats/view/widgets/messages_listview.dart';
@@ -28,17 +30,24 @@ class _ChatMessagesState extends State<ChatMessages> {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCubit, ChatStates>(
       builder: (context, state) {
-        debugPrint("ChatCubit: $state");
-
         if (state is ChatLoadingMsgState) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is ChatLoadAllMessagesState ||
-            state is ChatMsgSendedState) {
-          return MessagesListView(msgSource: chat.messages ?? []);
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is ChatLoadAllMessagesState) {
+          return MessagesListView(
+            msgSource: state.messages,
+          );
         } else if (state is ChatFailureState) {
-          return Center(child: Text('Error: ${state.errorMsg.toString()}'));
+          return const FailureStateUI(
+            imgPath: AppAssetsManager.emptyInbox,
+            text:
+                "Sorry for the inconvenience. We are working on it, may be your internet connection is poor",
+          );
         }
-        return const Center(child: Text('No messages'));
+        return MessagesListView(
+          msgSource: chat.messages ?? [],
+        );
       },
     );
   }
