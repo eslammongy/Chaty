@@ -266,4 +266,250 @@ List<MessageModel> fakeMessages = [
     dateTime: Timestamp.fromDate(DateTime.now()),
     msgType: MsgType.image,
   ),
+  MessageModel(
+    text: null,
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J224",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J225",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J227",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J228",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J229",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J220",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J221",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J223",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J224",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J225",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J227",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J228",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J229",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J224",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J225",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J227",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J228",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J229",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J220",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J221",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J223",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J224",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J225",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J227",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J228",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
+  MessageModel(
+    text:
+        "Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+    senderId: "OSkBoK072YSYBaqqlm9V6YbA9J229",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.text,
+  ),
+  MessageModel(
+    text: null,
+    senderId: "0tzK43hDpxTEjy7zzTjBOgw3pM53",
+    dateTime: Timestamp.fromDate(DateTime.now()),
+    msgType: MsgType.image,
+  ),
 ];

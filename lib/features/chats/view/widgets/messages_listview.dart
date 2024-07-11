@@ -11,10 +11,10 @@ class MessagesListView extends StatefulWidget {
   final List<MessageModel> msgSource;
 
   @override
-  State<MessagesListView> createState() => _MessagesListViewState();
+  State<MessagesListView> createState() => MessagesListViewState();
 }
 
-class _MessagesListViewState extends State<MessagesListView> {
+class MessagesListViewState extends State<MessagesListView> {
   final ScrollController _scrollController = ScrollController();
   final Debounce _debounce = Debounce(delay: const Duration(milliseconds: 300));
   bool _isLoading = false;
@@ -34,8 +34,7 @@ class _MessagesListViewState extends State<MessagesListView> {
     return BlocListener<ChatCubit, ChatStates>(
       listener: (context, state) {
         if (state is ChatMsgSendedState) {
-          debugPrint("Messages List : ${widget.msgSource.last.text}");
-          messages.insert(0, widget.msgSource.last);
+          ChatCubit.get(context).fetchAllUserChats();
         }
       },
       child: Expanded(
@@ -56,7 +55,9 @@ class _MessagesListViewState extends State<MessagesListView> {
     );
   }
 
-  void _fetchMoreMessages({int limit = 20, bool isRefresh = false}) async {
+  void appendLastSentMsg(MessageModel msg) => messages.insert(0, msg);
+
+  void _fetchMoreMessages({int limit = 20}) async {
     if (messages.length >= widget.msgSource.length && messages.isNotEmpty) {
       setState(() => _isLoading = false);
       return;
@@ -71,24 +72,25 @@ class _MessagesListViewState extends State<MessagesListView> {
       final int end = (start - limit < limit) ? 0 : start - limit;
 
       _reverseMessages(widget.msgSource.sublist(end, start));
-      setState(() => _isLoading = false);
     }
+
+    setState(() => _isLoading = false);
   }
 
+  /// Reverse the list of messages so, the last sent message will be on bottom
   _reverseMessages(List<MessageModel> source) {
     for (var i = source.length - 1; i >= 0; i--) {
       messages.add(widget.msgSource[i]);
     }
   }
 
+  /// Listen to scroll controller, when user scroll to bottom, fetch more messages
   void _listenToScrollController() {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
-        if (messages.length != widget.msgSource.length) {
-          setState(() => _isLoading = true);
-          _debounce.call(() => _fetchMoreMessages());
-        }
+        setState(() => _isLoading = true);
+        _debounce.call(() => _fetchMoreMessages());
       }
     });
   }

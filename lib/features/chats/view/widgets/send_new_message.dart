@@ -7,9 +7,12 @@ import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
+import 'package:chaty/features/chats/view/widgets/messages_listview.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
-class SendNewMessage extends StatelessWidget {
+final messagesListViewKey = GlobalKey<MessagesListViewState>();
+
+final class SendNewMessage extends StatelessWidget {
   const SendNewMessage({
     super.key,
     required this.msgController,
@@ -92,6 +95,7 @@ class SendNewMessage extends StatelessWidget {
     if (chatCubit.isChatExist(chatId).id == null) {
       _createNewChatDoc(chatCubit, userCubit, receiver, chatId);
     }
+    messagesListViewKey.currentState?.appendLastSentMsg(msg);
     await chatCubit.sendNewTextMsg(chatId: chatId, msg: msg);
     msgController.clear();
   }

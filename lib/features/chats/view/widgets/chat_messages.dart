@@ -4,6 +4,7 @@ import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/core/widgets/failure_state_ui.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
+import 'package:chaty/features/chats/view/widgets/send_new_message.dart';
 import 'package:chaty/features/chats/view/widgets/messages_listview.dart';
 
 class ChatMessages extends StatefulWidget {
@@ -30,15 +31,10 @@ class _ChatMessagesState extends State<ChatMessages> {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCubit, ChatStates>(
       builder: (context, state) {
-        if (state is ChatLoadingMsgState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is ChatLoadAllMessagesState) {
-          debugPrint("Chat Messages State : ${state.messages.last.text}");
-
+        if (state is ChatLoadAllMessagesState) {
           return MessagesListView(
             msgSource: state.messages,
+            key: messagesListViewKey,
           );
         } else if (state is ChatFailureState) {
           return const FailureStateUI(
@@ -46,10 +42,12 @@ class _ChatMessagesState extends State<ChatMessages> {
             text:
                 "Sorry for the inconvenience. We are working on it, may be your internet connection is poor",
           );
+        } else {
+          return MessagesListView(
+            msgSource: chat.messages ?? [],
+            key: messagesListViewKey,
+          );
         }
-        return MessagesListView(
-          msgSource: chat.messages ?? [],
-        );
       },
     );
   }

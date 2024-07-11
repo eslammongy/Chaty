@@ -50,7 +50,7 @@ class ChatCubit extends Cubit<ChatStates> {
     required String chatId,
     required MessageModel msg,
   }) async {
-    emit(ChatLoadingState());
+    emit(ChatLoadingMsgState());
     final result = await chatRepo.sendNewTextMsg(chatId: chatId, msg: msg);
     result.fold((exp) {
       if (exp is FirebaseException) {
