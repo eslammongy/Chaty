@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/utils/debouncer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
@@ -47,18 +46,23 @@ class _MessagesListViewState extends State<MessagesListView> {
     );
   }
 
-  void _fetchMoreMessages({int limit = 15}) async {
+  void _fetchMoreMessages({int limit = 20}) async {
     if (messages.length >= widget.msgSource.length && messages.isNotEmpty) {
       setState(() => _isLoading = false);
       return;
     }
 
-    final start = (widget.msgSource.length - messages.length - limit)
-        .clamp(0, widget.msgSource.length);
-    final end = widget.msgSource.length;
+    if (widget.msgSource.length <= limit) {
+      _reverseMessages(widget.msgSource);
+    } else {
+      final int start = (messages.isEmpty)
+          ? widget.msgSource.length
+          : widget.msgSource.length - messages.length;
+      final int end = (start - limit < limit) ? 0 : start - limit;
 
-    debugPrint("start : $start, end : $end");
-    _reverseMessages(widget.msgSource.sublist(start, end));
+      _reverseMessages(widget.msgSource.sublist(end, start));
+    }
+
     setState(() => _isLoading = false);
   }
 
