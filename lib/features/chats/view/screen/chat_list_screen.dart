@@ -28,8 +28,10 @@ class ChatListScreen extends StatelessWidget {
               children: [
                 Visibility(
                   visible: state is ChatLoadingState,
-                  child: const LinearProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  child: LinearProgressIndicator(
+                    borderRadius: BorderRadius.circular(12),
+                    valueColor:
+                        const AlwaysStoppedAnimation<Color>(Colors.blue),
                     backgroundColor: Colors.grey,
                     minHeight: 10,
                   ),
@@ -40,7 +42,8 @@ class ChatListScreen extends StatelessWidget {
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 Visibility(
-                  visible: state is ChatLoadAllChatsState || chatList.isNotEmpty,
+                  visible:
+                      state is ChatLoadAllChatsState || chatList.isNotEmpty,
                   child: const ChatsList(),
                 ),
                 Visibility(

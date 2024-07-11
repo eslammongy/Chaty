@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/debouncer.dart';
+import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/view/widgets/message_item.dart';
@@ -28,25 +30,33 @@ class _MessagesListViewState extends State<MessagesListView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Expanded(
-      child: ListView.builder(
-        controller: _scrollController,
-        reverse: true,
-        padding: EdgeInsets.only(bottom: 10.h, left: 0, right: 0),
-        physics: const BouncingScrollPhysics(),
-        itemCount: messages.length + (_isLoading ? 1 : 0),
-        itemBuilder: (context, index) {
-          if (index == messages.length) {
-            return displayLoadingIndicator(theme);
-          }
-          final msg = messages[index];
-          return MessageItem(msg: msg);
-        },
+
+    return BlocListener<ChatCubit, ChatStates>(
+      listener: (context, state) {
+        if (state is ChatMsgSendedState) {
+          debugPrint("Messages List : ${widget.msgSource.last.text}");
+          messages.insert(0, widget.msgSource.last);
+        }
+      },
+      child: Expanded(
+        child: ListView.builder(
+          controller: _scrollController,
+          reverse: true,
+          padding: EdgeInsets.only(bottom: 10.h, left: 0, right: 0),
+          physics: const BouncingScrollPhysics(),
+          itemCount: messages.length + (_isLoading ? 1 : 0),
+          itemBuilder: (context, index) {
+            if (index == messages.length) {
+              return displayLoadingIndicator(theme);
+            }
+            return MessageItem(msg: messages[index]);
+          },
+        ),
       ),
     );
   }
 
-  void _fetchMoreMessages({int limit = 20}) async {
+  void _fetchMoreMessages({int limit = 20, bool isRefresh = false}) async {
     if (messages.length >= widget.msgSource.length && messages.isNotEmpty) {
       setState(() => _isLoading = false);
       return;
@@ -61,9 +71,8 @@ class _MessagesListViewState extends State<MessagesListView> {
       final int end = (start - limit < limit) ? 0 : start - limit;
 
       _reverseMessages(widget.msgSource.sublist(end, start));
+      setState(() => _isLoading = false);
     }
-
-    setState(() => _isLoading = false);
   }
 
   _reverseMessages(List<MessageModel> source) {

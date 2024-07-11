@@ -35,6 +35,8 @@ class _ChatMessagesState extends State<ChatMessages> {
             child: CircularProgressIndicator(),
           );
         } else if (state is ChatLoadAllMessagesState) {
+          debugPrint("Chat Messages State : ${state.messages.last.text}");
+
           return MessagesListView(
             msgSource: state.messages,
           );
