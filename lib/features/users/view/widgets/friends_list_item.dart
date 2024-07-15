@@ -20,8 +20,8 @@ class FriendsListItem extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
           child: Row(
             children: [
-              const CacheNetworkImg(
-                imgUrl: dummyImageUrl,
+              CacheNetworkImg(
+                imgUrl: user.imageUrl ?? dummyImageUrl,
                 radius: 25,
               ),
               const SizedBox(

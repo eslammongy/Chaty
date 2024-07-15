@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/core/widgets/empty_state_ui.dart';
 import 'package:chaty/core/widgets/failure_state_ui.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,7 +44,7 @@ class ChatListScreen extends StatelessWidget {
                 ),
                 Visibility(
                   visible:
-                      state is ChatLoadAllChatsState || chatList.isNotEmpty,
+                      state is ChatLoadAllChatsState && chatList.isNotEmpty,
                   child: const ChatsList(),
                 ),
                 Visibility(
@@ -53,6 +54,13 @@ class ChatListScreen extends StatelessWidget {
                     text: "Something went wrong, please try again",
                   ),
                 ),
+                Visibility(
+                    visible: chatList.isEmpty && state is! ChatFailureState,
+                    child: const EmptyStateUI(
+                      imgPath: AppAssetsManager.emptyInbox,
+                      text:
+                          "Currently, your inbox is empty and you don't have any messages",
+                    )),
               ],
             );
           },

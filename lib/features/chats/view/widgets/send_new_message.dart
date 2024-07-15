@@ -16,11 +16,11 @@ final class SendNewMessage extends StatelessWidget {
   const SendNewMessage({
     super.key,
     required this.msgController,
-    required this.receiver,
+    required this.participant,
   });
 
   final TextEditingController msgController;
-  final UserModel receiver;
+  final UserModel participant;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,8 @@ final class SendNewMessage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(100)),
             child: InkWell(
               onTap: () async {
-                if (userCubit.userModel?.uId == null || receiver.uId == null) {
+                if (userCubit.userModel?.uId == null ||
+                    participant.uId == null) {
                   return;
                 }
                 await _sendNewTextMsg(userCubit, chatCubit);
@@ -90,10 +91,10 @@ final class SendNewMessage extends StatelessWidget {
 
   Future<void> _sendNewTextMsg(UserCubit userCubit, ChatCubit chatCubit) async {
     final chatId =
-        generateChatId(id1: userCubit.userModel!.uId!, id2: receiver.uId!);
+        generateChatId(id1: userCubit.userModel!.uId!, id2: participant.uId!);
     final msg = msgModel(userCubit);
     if (chatCubit.isChatExist(chatId).id == null) {
-      _createNewChatDoc(chatCubit, userCubit, receiver, chatId);
+      _createNewChatDoc(chatCubit, userCubit, participant, chatId);
     }
     messagesListViewKey.currentState?.appendLastSentMsg(msg);
     await chatCubit.sendNewTextMsg(chatId: chatId, msg: msg);
@@ -111,13 +112,13 @@ final class SendNewMessage extends StatelessWidget {
   _createNewChatDoc(
     ChatCubit chatCubit,
     UserCubit userCubit,
-    UserModel receiver,
+    UserModel participant,
     String chatId,
   ) async {
     await chatCubit.createNewChat(
         chat: ChatModel(
             id: chatId,
-            participants: [userCubit.userModel!.uId!, receiver.uId!],
+            participants: [userCubit.userModel!.uId!, participant.uId!],
             messages: []));
   }
 }

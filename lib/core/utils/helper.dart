@@ -139,11 +139,14 @@ void displayToastMsg(BuildContext context, String msg,
   );
 }
 
-/// Generates a chat ID by concatenating the given `id1` and `id2` strings.
+/// Generates a chat ID by Ensure the order is consistent by comparing the user IDs
 /// Returns the generated chat ID as a string.
 String generateChatId({required String id1, required String id2}) {
-  final chatId = [id1, id2].fold("", (id, uid) => "$id$uid");
-  return chatId;
+  if (id1.compareTo(id2) < 0) {
+    return '${id1}_$id2';
+  } else {
+    return '${id2}_$id2';
+  }
 }
 
 String getDateTime(DateTime dateTime) {

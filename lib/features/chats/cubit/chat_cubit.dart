@@ -86,16 +86,23 @@ class ChatCubit extends Cubit<ChatStates> {
     );
   }
 
-  UserModel? getChatReceiver(BuildContext context, ChatModel chat) {
+  UserModel? getChatParticipant(BuildContext context, ChatModel chat) {
     final userCubit = UserCubit.get(context);
-    if (userCubit.friendsList.isEmpty ||
-        chat.participants == null ||
-        chat.participants!.isEmpty) {
+    if (userCubit.friendsList.isEmpty || chat.participants == null) {
       return null;
     }
 
-    final receiver = userCubit.friendsList
-        .firstWhere((element) => element.uId == chat.participants?.last);
-    return receiver;
+    try {
+      final participant = userCubit.friendsList.firstWhere(
+        (element) {
+          debugPrint(
+              "element : ${element.uId}, chat.participants!.last : ${chat.participants!.last}");
+          return element.uId == chat.participants!.last;
+        },
+      );
+      return participant;
+    } catch (_) {
+      return null;
+    }
   }
 }
