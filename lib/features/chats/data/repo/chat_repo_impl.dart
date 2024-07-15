@@ -1,16 +1,21 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 
 class ChatRepoImpl extends ChatRepo {
-  final chats = FirebaseFirestore.instance.collection("chats");
+  final chatCollection = FirebaseFirestore.instance.collection("chats");
   @override
   Future<Either<Exception, List<ChatModel>>> fetchAllUserChats() async {
     try {
-      final userChats = await chats.get();
+      final userID = FirebaseAuth.instance.currentUser?.uid;
+      final userChats = await chatCollection
+          .where('participants', arrayContains: userID)
+          .orderBy('__name__')
+          .get();
       final listOfChats =
           userChats.docs.map((item) => ChatModel.fromMap(item.data())).toList();
       debugPrint("List of Chats : $listOfChats");
@@ -27,7 +32,7 @@ class ChatRepoImpl extends ChatRepo {
     required String chatId,
   }) {
     List<MessageModel> messages = [];
-    return chats.doc(chatId).snapshots().map(
+    return chatCollection.doc(chatId).snapshots().map(
       (event) {
         debugPrint("Receive an event happened : ${event['messages'].last}");
         if (event.data() != null && event['messages'] != null) {
@@ -54,7 +59,7 @@ class ChatRepoImpl extends ChatRepo {
     required MessageModel msg,
   }) async {
     try {
-      await chats.doc(chatId).update({
+      await chatCollection.doc(chatId).update({
         'messages': FieldValue.arrayUnion([msg.toMap()])
       });
       return right(msg);
@@ -70,7 +75,7 @@ class ChatRepoImpl extends ChatRepo {
     required ChatModel chat,
   }) async {
     try {
-      await chats.doc(chat.id).set(chat.toMap());
+      await chatCollection.doc(chat.id).set(chat.toMap());
       return right(chat);
     } on FirebaseException catch (ex) {
       return left(ex);

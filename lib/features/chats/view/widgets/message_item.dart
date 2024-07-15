@@ -36,7 +36,7 @@ class MessageItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Visibility(
-              visible: state is ChatFailureState,
+              visible: state is ChatFailureState || state is ChatFailureState,
               child: Icon(
                 Icons.info,
                 color: theme.colorScheme.error,

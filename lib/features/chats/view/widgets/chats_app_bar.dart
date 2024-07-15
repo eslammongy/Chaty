@@ -26,6 +26,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
         height: 100.h,
         child: Card(
           color: theme.colorScheme.surface,
+          elevation: 2,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(25),
@@ -75,6 +76,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                         Expanded(
                           child: CustomTextInputField(
                             textEditingController: controller,
+                            bkColor: theme.scaffoldBackgroundColor,
                             prefix:
                                 const Icon(FontAwesomeIcons.magnifyingGlass),
                             hint: searchHint,

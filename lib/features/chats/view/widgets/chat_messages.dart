@@ -31,12 +31,13 @@ class _ChatMessagesState extends State<ChatMessages> {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCubit, ChatStates>(
       builder: (context, state) {
+        final chatHasMsg = chatCubit.openedChat!.messages ?? [];
         if (state is ChatLoadAllMessagesState) {
           return MessagesListView(
             msgSource: state.messages,
             key: messagesListViewKey,
           );
-        } else if (state is ChatFailureState) {
+        } else if (state is ChatFailureState && chatHasMsg.isNotEmpty) {
           return const FailureStateUI(
             imgPath: AppAssetsManager.emptyInbox,
             text:
