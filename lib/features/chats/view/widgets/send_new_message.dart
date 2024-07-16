@@ -5,7 +5,6 @@ import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
 import 'package:chaty/features/chats/view/widgets/messages_listview.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
@@ -93,9 +92,7 @@ final class SendNewMessage extends StatelessWidget {
     final chatId =
         generateChatId(id1: userCubit.userModel!.uId!, id2: participant.uId!);
     final msg = msgModel(userCubit);
-    if (chatCubit.isChatExist(chatId).id == null) {
-      _createNewChatDoc(chatCubit, userCubit, participant, chatId);
-    }
+
     messagesListViewKey.currentState?.appendLastSentMsg(msg);
     await chatCubit.sendNewTextMsg(chatId: chatId, msg: msg);
     msgController.clear();
@@ -107,18 +104,5 @@ final class SendNewMessage extends StatelessWidget {
       senderId: userCubit.userModel!.uId!,
       dateTime: Timestamp.fromDate(DateTime.now()),
     );
-  }
-
-  _createNewChatDoc(
-    ChatCubit chatCubit,
-    UserCubit userCubit,
-    UserModel participant,
-    String chatId,
-  ) async {
-    await chatCubit.createNewChat(
-        chat: ChatModel(
-            id: chatId,
-            participants: [userCubit.userModel!.uId!, participant.uId!],
-            messages: []));
   }
 }

@@ -43,20 +43,23 @@ class FriendsListView extends StatelessWidget {
   }
 
   void _handleNavToChattingScreen(
-      BuildContext context, String userId, String friendId) {
+      BuildContext context, String userId, String friendId) async {
     final chatCubit = ChatCubit.get(context);
     final chatId = generateChatId(id1: userId, id2: friendId);
     final chatModel = chatCubit.isChatExist(chatId);
-
+    // in this case the chat collection for this friend does'nt created yet...
     if (chatModel.id == null) {
       chatCubit.openedChat =
           ChatModel(id: chatId, participants: [userId, friendId], messages: []);
-      GoRouter.of(context)
-          .push(AppRouter.chatScreen, extra: chatCubit.openedChat);
+      chatCubit.createNewChat(chat: chatCubit.openedChat!);
     } else {
       chatCubit.openedChat = chatModel;
-      GoRouter.of(context)
-          .push(AppRouter.chatScreen, extra: chatCubit.openedChat);
     }
+    Future(() => _navigateChatScreen(context, chatCubit));
+  }
+
+  void _navigateChatScreen(BuildContext context, ChatCubit chatCubit) {
+    GoRouter.of(context)
+        .push(AppRouter.chatScreen, extra: chatCubit.openedChat);
   }
 }
