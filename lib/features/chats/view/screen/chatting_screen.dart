@@ -3,17 +3,18 @@ import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
-import 'package:chaty/features/chats/view/widgets/chat_messages.dart';
 import 'package:chaty/features/chats/view/widgets/messages_appbar.dart';
 import 'package:chaty/features/chats/view/widgets/send_new_message.dart';
+import 'package:chaty/features/chats/view/widgets/chatting_state_handler.dart';
 
-class ChatScreen extends StatelessWidget {
-  const ChatScreen({super.key, required this.chat});
+class ChattingScreen extends StatelessWidget {
+  const ChattingScreen({super.key, required this.chat});
   final ChatModel chat;
 
   @override
   Widget build(BuildContext context) {
-    final participant = ChatCubit.get(context).getChatParticipant(context, chat);
+    final participant =
+        ChatCubit.get(context).getChatParticipant(context, chat);
     final msgController = TextEditingController();
     return Scaffold(
       appBar: MessagesAppBar(
@@ -24,7 +25,7 @@ class ChatScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const ChatMessages(),
+            const ChattingStateHandler(),
             SendNewMessage(
               msgController: msgController,
               participant: participant ?? UserModel(),

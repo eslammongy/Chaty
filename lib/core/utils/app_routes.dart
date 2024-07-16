@@ -1,10 +1,10 @@
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/user_pref.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
-import 'package:chaty/features/chats/view/screen/chat_screen.dart';
 import 'package:chaty/features/dashboard/view/dashboard_screen.dart';
 import 'package:chaty/features/auth/view/screens/signup_screen.dart';
 import 'package:chaty/features/auth/view/screens/sign_in_screen.dart';
+import 'package:chaty/features/chats/view/screen/chatting_screen.dart';
 import 'package:chaty/features/users/view/screens/profile_screen.dart';
 import 'package:chaty/features/auth/view/widgets/forget_password.dart';
 import 'package:chaty/features/chats/view/screen/chat_list_screen.dart';
@@ -78,7 +78,7 @@ abstract class AppRouter {
         path: chatScreen,
         builder: (context, state) {
           final chat = state.extra;
-          return ChatScreen(chat: chat as ChatModel);
+          return ChattingScreen(chat: chat as ChatModel);
         },
       ),
     ]);

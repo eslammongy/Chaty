@@ -3,41 +3,39 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/core/widgets/failure_state_ui.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
-import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/chats/view/widgets/send_new_message.dart';
 import 'package:chaty/features/chats/view/widgets/messages_listview.dart';
 
-class ChatMessages extends StatefulWidget {
-  const ChatMessages({
+class ChattingStateHandler extends StatefulWidget {
+  const ChattingStateHandler({
     super.key,
   });
 
   @override
-  State<ChatMessages> createState() => _ChatMessagesState();
+  State<ChattingStateHandler> createState() => _ChattingStateHandlerState();
 }
 
-class _ChatMessagesState extends State<ChatMessages> {
+class _ChattingStateHandlerState extends State<ChattingStateHandler> {
   late final ChatCubit chatCubit;
-  late ChatModel chat;
   @override
   void initState() {
     super.initState();
     chatCubit = ChatCubit.get(context);
-    chat = chatCubit.openedChat!;
-    chatCubit.fetchChatMessages(chatId: chat.id!);
+    chatCubit.fetchChatMessages(chatId: chatCubit.openedChat!.id!);
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCubit, ChatStates>(
       builder: (context, state) {
-        final chatHasMsg = chatCubit.openedChat!.messages ?? [];
+        final chatMsg = chatCubit.openedChat!.messages ?? [];
+        debugPrint("Current State::$state");
         if (state is ChatLoadAllMessagesState) {
           return MessagesListView(
             msgSource: state.messages,
             key: messagesListViewKey,
           );
-        } else if (state is ChatFailureState && chatHasMsg.isNotEmpty) {
+        } else if (state is ChatFailureState && chatMsg.isNotEmpty) {
           return const FailureStateUI(
             imgPath: AppAssetsManager.emptyInbox,
             text:
@@ -45,7 +43,7 @@ class _ChatMessagesState extends State<ChatMessages> {
           );
         } else {
           return MessagesListView(
-            msgSource: chat.messages ?? [],
+            msgSource: chatMsg,
             key: messagesListViewKey,
           );
         }
