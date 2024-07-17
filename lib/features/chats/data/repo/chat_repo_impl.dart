@@ -12,13 +12,19 @@ class ChatRepoImpl extends ChatRepo {
   Future<Either<Exception, List<ChatModel>>> fetchAllUserChats() async {
     try {
       final userID = FirebaseAuth.instance.currentUser?.uid;
+      final listOfChats = <ChatModel>[];
       final userChats = await chatCollection
           .where('participants', arrayContains: userID)
           .orderBy('__name__')
           .get();
-      final listOfChats =
-          userChats.docs.map((item) => ChatModel.fromMap(item.data())).toList();
-      debugPrint("List of Chats : $listOfChats");
+      for (var element in userChats.docs) {
+        final chat = element.data();
+        if (chat['messages'] != null && chat['messages'].isNotEmpty) {
+          listOfChats.add(ChatModel.fromMap(chat));
+        } else {
+          continue;
+        }
+      }
       return right(listOfChats);
     } on FirebaseException catch (ex) {
       return left(ex);

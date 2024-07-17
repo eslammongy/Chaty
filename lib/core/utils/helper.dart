@@ -50,7 +50,7 @@ showLoadingDialog(BuildContext context, {String text = "please wait..."}) {
       context: context,
       builder: (context) {
         return Dialog(
-          insetPadding: EdgeInsets.symmetric(horizontal: 90.w),
+          insetPadding: EdgeInsets.symmetric(horizontal: 85.w),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
           ),
@@ -141,11 +141,11 @@ void displayToastMsg(BuildContext context, String msg,
 
 /// Generates a chat ID by Ensure the order is consistent by comparing the user IDs
 /// Returns the generated chat ID as a string.
-String generateChatId({required String id1, required String id2}) {
-  if (id1.compareTo(id2) < 0) {
-    return '${id1}_$id2';
+String generateChatId({required String userId, required String participantId}) {
+  if (userId.isEmpty || participantId.isEmpty) {
+    return '';
   } else {
-    return '${id2}_$id2';
+    return '$userId$participantId';
   }
 }
 

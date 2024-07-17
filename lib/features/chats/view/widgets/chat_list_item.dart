@@ -16,7 +16,6 @@ class ChatListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    debugPrint("Chat Participants::${chat.participants}");
     final receiver = ChatCubit.get(context).getChatParticipant(context, chat);
 
     return Card(

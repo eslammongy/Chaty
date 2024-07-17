@@ -20,6 +20,7 @@ class ChatCubit extends Cubit<ChatStates> {
   /// Use this function to fetch all the user chats so, user can select and open any chat from the list
   Future<void> fetchAllUserChats() async {
     emit(ChatLoadingState());
+    listOFChats.clear();
     final fetchingResult = await chatRepo.fetchAllUserChats();
     fetchingResult.fold((exp) {
       if (exp is FirebaseException) {
@@ -27,7 +28,6 @@ class ChatCubit extends Cubit<ChatStates> {
       }
       emit(ChatFailureState(errorMsg: exp.toString()));
     }, (chats) {
-      listOFChats.clear();
       listOFChats.addAll(chats);
       emit(ChatLoadAllChatsState());
     });

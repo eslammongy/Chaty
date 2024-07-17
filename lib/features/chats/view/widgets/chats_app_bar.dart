@@ -35,7 +35,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: BlocConsumer<UserCubit, UserStates>(
             listener: (context, state) async {
               if (state is UserLoadingState) {
-                showLoadingDialog(context, text: "loading info...");
+                showLoadingDialog(context, text: "loading profile info...");
               }
               if (state is UserLoadAllFriendsState) {
                 Future(() async {

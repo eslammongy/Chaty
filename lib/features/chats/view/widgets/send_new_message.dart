@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:chaty/core/utils/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
 import 'package:chaty/features/chats/view/widgets/messages_listview.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
@@ -15,11 +13,9 @@ final class SendNewMessage extends StatelessWidget {
   const SendNewMessage({
     super.key,
     required this.msgController,
-    required this.participant,
   });
 
   final TextEditingController msgController;
-  final UserModel participant;
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +63,8 @@ final class SendNewMessage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(100)),
             child: InkWell(
               onTap: () async {
-                if (userCubit.userModel?.uId == null ||
-                    participant.uId == null) {
+                if (chatCubit.openedChat == null ||
+                    chatCubit.openedChat!.participants == null) {
                   return;
                 }
                 await _sendNewTextMsg(userCubit, chatCubit);
@@ -89,10 +85,10 @@ final class SendNewMessage extends StatelessWidget {
   }
 
   Future<void> _sendNewTextMsg(UserCubit userCubit, ChatCubit chatCubit) async {
-    final chatId =
-        generateChatId(id1: userCubit.userModel!.uId!, id2: participant.uId!);
-    final msg = msgModel(userCubit);
+    if (chatCubit.openedChat!.id == null) return;
 
+    final chatId = chatCubit.openedChat!.id!;
+    final msg = msgModel(userCubit);
     messagesListViewKey.currentState?.appendLastSentMsg(msg);
     await chatCubit.sendNewTextMsg(chatId: chatId, msg: msg);
     msgController.clear();

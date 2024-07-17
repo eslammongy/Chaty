@@ -30,7 +30,7 @@ class LoadingStateUI extends StatelessWidget {
               ),
               Text(
                 text,
-                style: theme.textTheme.titleLarge,
+                style: theme.textTheme.titleMedium,
               )
             ],
           ),
