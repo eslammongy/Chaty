@@ -95,9 +95,11 @@ class ChatCubit extends Cubit<ChatStates> {
     try {
       final participant = userCubit.friendsList.firstWhere(
         (element) {
-          debugPrint(
-              "element : ${element.uId}, chat.participants!.last : ${chat.participants!.last}");
-          return element.uId == chat.participants!.last;
+          if (element.uId == chat.participants?.first) {
+            return element.uId == chat.participants?.first;
+          } else {
+            return element.uId == chat.participants!.last;
+          }
         },
       );
       return participant;

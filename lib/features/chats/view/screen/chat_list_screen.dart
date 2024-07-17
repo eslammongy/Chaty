@@ -44,7 +44,7 @@ class ChatListScreen extends StatelessWidget {
                 ),
                 Visibility(
                   visible:
-                      state is ChatLoadAllChatsState && chatList.isNotEmpty,
+                      state is ChatLoadAllChatsState || chatList.isNotEmpty,
                   child: const ChatsList(),
                 ),
                 Visibility(
