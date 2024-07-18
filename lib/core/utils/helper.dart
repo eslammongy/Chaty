@@ -142,13 +142,11 @@ void displayToastMsg(BuildContext context, String msg,
 /// Generates a chat ID by Ensure the order is consistent by comparing the user IDs
 /// Returns the generated chat ID as a string.
 String generateChatId({required String userId, required String participantId}) {
-  if (userId.isEmpty || participantId.isEmpty) {
-    return '';
-  } else {
-    return '$userId$participantId';
-  }
+  final listOfIds = [userId, participantId]..sort();
+  final String chatId =
+      listOfIds.fold("", (userId, participantId) => "$userId$participantId");
+  return chatId;
 }
-
 String getDateTime(DateTime dateTime) {
   final formattedDate = DateFormat.yMMMEd().format(dateTime);
   final formattedTime = DateFormat.jm().format(dateTime);

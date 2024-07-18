@@ -25,15 +25,13 @@ class FriendsListView extends StatelessWidget {
             itemCount: userCubit.friendsList.length,
             itemBuilder: (context, index) {
               final friend = userCubit.friendsList[index];
-              return InkWell(
+              return FriendsListItem(
+                user: friend,
                 onTap: () {
                   final userId = userCubit.userModel?.uId;
                   if (userId == null || friend.uId == null) return;
                   _handleNavToChattingScreen(context, userId, friend.uId!);
                 },
-                child: FriendsListItem(
-                  user: friend,
-                ),
               );
             },
           ),
@@ -47,6 +45,7 @@ class FriendsListView extends StatelessWidget {
     final chatCubit = ChatCubit.get(context);
     final chatId = generateChatId(userId: userId, participantId: friendId);
     final chatModel = chatCubit.isChatExist(chatId);
+    debugPrint("Chat Model MSG: $chatId");
     // in this case the chat collection for this friend does'nt created yet...
     if (chatModel.id == null) {
       chatCubit.openedChat =

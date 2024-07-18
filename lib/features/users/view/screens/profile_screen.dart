@@ -57,7 +57,6 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 10),
                   if (state is UserLoadingState) displayLinearIndicator(theme),
                   const SizedBox(height: 20),
                   ProfileImageSection(

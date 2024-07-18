@@ -40,7 +40,7 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
                 icon: const Icon(FontAwesomeIcons.chevronLeft),
               ),
               const SizedBox(
-                width: 20,
+                width: 10,
               ),
               CacheNetworkImg(
                 imgUrl: receiver.imageUrl ?? dummyImageUrl,
