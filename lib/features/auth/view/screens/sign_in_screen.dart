@@ -104,6 +104,7 @@ class SignInScreen extends StatelessWidget {
   }
 
   Future<void> _keepUserLoggedIn(BuildContext context) async {
+     AppRouter.isUserLogin = true;
     await SharedPref.keepUserAuthenticated(isLogged: true).then((value) {
       GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
     });

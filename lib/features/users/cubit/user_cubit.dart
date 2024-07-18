@@ -12,7 +12,6 @@ class UserCubit extends Cubit<UserStates> {
   static UserCubit get(context) => BlocProvider.of(context);
   UserModel? userModel;
   final friendsList = <UserModel>[];
-  bool isShouldPopLoading = false;
 
   Future<void> createNewUserProfile({required UserModel user}) async {
     emit(UserLoadingState());

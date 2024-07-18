@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/user_pref.dart';
+import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/dashboard/view/dashboard_screen.dart';
 import 'package:chaty/features/auth/view/screens/signup_screen.dart';

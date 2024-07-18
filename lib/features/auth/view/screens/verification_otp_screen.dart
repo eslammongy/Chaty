@@ -29,6 +29,7 @@ class VerificationOtpScreen extends StatelessWidget {
       listener: (context, state) async {
         if (state is UserCreatedState) {
           await SharedPref.keepUserAuthenticated(isLogged: true).then((value) {
+             AppRouter.isUserLogin = true;
             GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
           });
         }
