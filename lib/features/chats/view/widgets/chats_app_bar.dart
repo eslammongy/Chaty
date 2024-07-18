@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:chaty/features/settings/view/settings_bottom_sheet.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
 class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -85,18 +84,6 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        InkWell(
-                          onTap: () async {
-                            await _displaySettingSheet(context);
-                          },
-                          borderRadius: BorderRadius.circular(50),
-                          child: const Padding(
-                            padding: EdgeInsets.all(6),
-                            child: Icon(
-                              FontAwesomeIcons.gear,
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ],
@@ -115,23 +102,4 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => heightOfAppBar;
-
-  Future<void> _displaySettingSheet(BuildContext context) async {
-    const borderRadius = Radius.circular(20.0);
-    final theme = Theme.of(context);
-
-    await showModalBottomSheet(
-      context: context,
-      backgroundColor: theme.colorScheme.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: borderRadius,
-          topRight: borderRadius,
-        ),
-      ),
-      builder: (BuildContext context) {
-        return const SettingsBottomSheet();
-      },
-    );
-  }
 }

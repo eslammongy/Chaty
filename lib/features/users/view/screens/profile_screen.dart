@@ -12,6 +12,7 @@ import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/core/widgets/customized_text_btn.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/users/view/widgets/profile_bio.dart';
+import 'package:chaty/features/users/view/widgets/profile_settings.dart';
 import 'package:chaty/features/users/view/widgets/confirm_user_logout.dart';
 import 'package:chaty/features/users/view/widgets/profile_image_section.dart';
 import 'package:chaty/features/users/view/widgets/profile_info_field_item.dart';
@@ -42,6 +43,13 @@ class ProfileScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
+          appBar: AppBar(
+            backgroundColor: theme.scaffoldBackgroundColor,
+            actions: const [
+              ProfileSettings(),
+              SizedBox(width: 10),
+            ],
+          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
@@ -51,32 +59,25 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: kToolbarHeight - 10),
                   if (state is UserLoadingState) displayLinearIndicator(theme),
-                  SizedBox(height: 6.h),
+                  SizedBox(height: 5.h),
                   ProfileImageSection(
                     profileImgUrl:
                         profileCubit.userModel?.imageUrl ?? dummyImageUrl,
                   ),
                   const SizedBox(height: 20),
                   ProfileBio(pioTxtController: pioTxtController),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   ProfileInfoFieldItem(
                     text: profileCubit.userModel?.name ?? dummyName,
                     textController: nameTxtController,
                     icon: FontAwesomeIcons.user,
-                    onSubmitted: (value) async {
-                      profileCubit.userModel?.name = value;
-                      await profileCubit.updateUserProfile();
-                    },
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 10),
                   ProfileInfoFieldItem(
                     text: profileCubit.userModel?.email ?? dummyEmail,
                     textController: emailTxtController,
                     icon: FontAwesomeIcons.envelope,
-                    onSubmitted: (value) async {
-                      profileCubit.userModel?.email = value;
-                      await profileCubit.updateUserProfile();
-                    },
+                    enabled: false,
                   ),
                   BlocListener<AuthCubit, AuthStates>(
                     listener: (context, state) {
@@ -84,27 +85,19 @@ class ProfileScreen extends StatelessWidget {
                         showLoadingDialog(context);
                       }
                       if (state is UserLogoutState) {
-                        UserCubit.get(context).userModel = null;
-                        ChatCubit.get(context).openedChat = null;
-                        ChatCubit.get(context).listOFChats.clear();
-                        UserCubit.get(context).friendsList.clear();
-                        GoRouter.of(context)
-                            .pushReplacement(AppRouter.loginScreen);
+                        _userSignOut(context);
                       }
                     },
                     child: const SizedBox.shrink(),
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 10),
                   ProfileInfoFieldItem(
                     text: profileCubit.userModel?.phone ?? dummyPhone,
                     textController: phoneTxtController,
                     icon: FontAwesomeIcons.phone,
-                    onSubmitted: (value) async {
-                      profileCubit.userModel?.phone = value;
-                      await profileCubit.updateUserProfile();
-                    },
                   ),
-                  const SizedBox(height: 45),
+                  const SizedBox(height: 10),
+                  const SizedBox(height: 35),
                   CustomizedTextBtn(
                     btnText: "Sign out",
                     bkColor: theme.colorScheme.error,
@@ -120,6 +113,14 @@ class ProfileScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _userSignOut(BuildContext context) {
+    UserCubit.get(context).userModel = null;
+    ChatCubit.get(context).openedChat = null;
+    ChatCubit.get(context).listOFChats.clear();
+    UserCubit.get(context).friendsList.clear();
+    GoRouter.of(context).pushReplacement(AppRouter.loginScreen);
   }
 
   Future<void> _showLogoutAlertDialog(

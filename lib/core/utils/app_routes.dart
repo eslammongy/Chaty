@@ -21,6 +21,7 @@ abstract class AppRouter {
   static String profileScreen = '/profileScreen';
   static String chatsListScreen = '/chatsListScreen';
   static String chatScreen = '/chatScreen';
+  static String settingsScreen = '/settingsScreen';
 
   static bool isUserLogin = false;
   static setInitialRoute() async {
