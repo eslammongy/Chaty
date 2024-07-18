@@ -156,8 +156,7 @@ String getDateTime(DateTime dateTime) {
 }
 
 String getMsgDateOnly(DateTime dateTime) {
-  final formattedDate = DateFormat.yMMMEd().format(dateTime);
-
+  final formattedDate = DateFormat.yMd().format(dateTime);
   return formattedDate;
 }
 

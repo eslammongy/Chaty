@@ -19,7 +19,7 @@ class ChatListItem extends StatelessWidget {
     final receiver = ChatCubit.get(context).getChatParticipant(context, chat);
 
     return Card(
-      elevation: 0,
+      elevation: 1,
       child: SizedBox(
         height: 90.h,
         child: Padding(

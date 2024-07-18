@@ -28,7 +28,10 @@ class CacheNetworkImg extends StatelessWidget {
         color: Colors.transparent,
         child: CircleAvatar(
           radius: radius,
-          child: Image.asset(AppAssetsManager.placeholderImg),
+          child: Image.asset(
+            AppAssetsManager.loading,
+            width: 40,
+          ),
         ),
       ),
       errorWidget: (context, url, error) => Card(

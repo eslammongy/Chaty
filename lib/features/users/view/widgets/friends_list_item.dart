@@ -13,7 +13,7 @@ class FriendsListItem extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Card(
-      elevation: 0,
+      elevation: 1,
       child: SizedBox(
         height: 80.h,
         child: Padding(
