@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/features/users/data/repos/user_repo.dart';
 import 'package:chaty/core/errors/auth_exceptions_handler.dart';
@@ -52,7 +51,7 @@ class UserCubit extends Cubit<UserStates> {
     });
   }
 
-  Future<void> fetchAllFriends() async {
+  Future<void> fetchAllUserFriends() async {
     emit(UserLoadingState());
 
     var result = await userRepo.fetchAllFriends(
@@ -65,7 +64,6 @@ class UserCubit extends Cubit<UserStates> {
       var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (friends) {
-      debugPrint("****Your friends list::$friends");
       friendsList.addAll(friends);
       emit(UserLoadAllFriendsState());
     });

@@ -25,7 +25,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<UserCubit>().fetchAllFriends();
+      if (UserCubit.get(context).friendsList.isEmpty) {
+        context.read<UserCubit>().fetchAllUserFriends();
+      }
     });
   }
 

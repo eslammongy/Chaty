@@ -57,9 +57,9 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: kToolbarHeight - 10),
+                  const SizedBox(height: 10),
                   if (state is UserLoadingState) displayLinearIndicator(theme),
-                  SizedBox(height: 5.h),
+                  const SizedBox(height: 20),
                   ProfileImageSection(
                     profileImgUrl:
                         profileCubit.userModel?.imageUrl ?? dummyImageUrl,
