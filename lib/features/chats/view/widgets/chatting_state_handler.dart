@@ -1,39 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/core/widgets/loading_state_ui.dart';
 import 'package:chaty/core/widgets/failure_state_ui.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/view/widgets/send_new_message.dart';
 import 'package:chaty/features/chats/view/widgets/messages_listview.dart';
 
-class ChattingStateHandler extends StatefulWidget {
-  const ChattingStateHandler({
-    super.key,
-  });
-
-  @override
-  State<ChattingStateHandler> createState() => _ChattingStateHandlerState();
-}
-
-class _ChattingStateHandlerState extends State<ChattingStateHandler> {
-  late final ChatCubit chatCubit;
-  @override
-  void initState() {
-    super.initState();
-    chatCubit = ChatCubit.get(context);
-    chatCubit.fetchChatMessages(chatId: chatCubit.openedChat!.id!);
-  }
+class ChattingStateHandler extends StatelessWidget {
+  const ChattingStateHandler({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatCubit, ChatStates>(
       builder: (context, state) {
-        final chatMsg = chatCubit.openedChat!.messages ?? [];
-        debugPrint("Current State::$state");
-        if (state is ChatLoadAllMessagesState) {
-          return MessagesListView(
-            msgSource: state.messages,
-            key: messagesListViewKey,
+        final chatMsg = [];
+        if (state is ChatLoadingState) {
+          return const LoadingStateUI(
+            text: "fetching messages...",
           );
         } else if (state is ChatFailureState && chatMsg.isNotEmpty) {
           return const FailureStateUI(
@@ -43,7 +27,6 @@ class _ChattingStateHandlerState extends State<ChattingStateHandler> {
           );
         } else {
           return MessagesListView(
-            msgSource: chatMsg,
             key: messagesListViewKey,
           );
         }

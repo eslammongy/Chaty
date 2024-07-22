@@ -16,6 +16,7 @@ class ChatCubit extends Cubit<ChatStates> {
 
   ChatModel? openedChat;
   final List<ChatModel> listOFChats = [];
+  final List<MessageModel> chatMessages = [];
 
   /// Use this function to fetch all the user chats so, user can select and open any chat from the list
   Future<void> fetchAllUserChats() async {
@@ -23,13 +24,10 @@ class ChatCubit extends Cubit<ChatStates> {
     listOFChats.clear();
     final fetchingResult = await chatRepo.fetchAllUserChats();
     fetchingResult.fold((exp) {
-      if (exp is FirebaseException) {
-        emit(ChatFailureState(errorMsg: exp.message));
-      }
       emit(ChatFailureState(errorMsg: exp.toString()));
     }, (chats) {
       listOFChats.addAll(chats);
-      emit(ChatLoadAllChatsState());
+      emit(ChatFetchAllChatsState());
     });
   }
 
@@ -37,12 +35,9 @@ class ChatCubit extends Cubit<ChatStates> {
     emit(ChatLoadingState());
     final result = await chatRepo.createNewChatDoc(chat: chat);
     result.fold((exp) {
-      if (exp is FirebaseException) {
-        emit(ChatFailureState(errorMsg: exp.message));
-      }
       emit(ChatFailureState(errorMsg: exp.toString()));
     }, (chat) {
-      emit(ChatCreatedState(chat: chat));
+      emit(ChatCreatedNewState(chat: chat));
     });
   }
 
@@ -53,27 +48,27 @@ class ChatCubit extends Cubit<ChatStates> {
     emit(ChatLoadingMsgState());
     final result = await chatRepo.sendNewTextMsg(chatId: chatId, msg: msg);
     result.fold((exp) {
-      if (exp is FirebaseException) {
-        emit(ChatFailureState(errorMsg: exp.message));
-      }
       emit(ChatFailureState(errorMsg: exp.toString()));
     }, (msg) {
-      debugPrint("sendNewTextMsg: $msg");
-      emit(ChatMsgSendedState(msg: msg));
+      emit(ChatSendingMsgState(msg: msg));
     });
   }
 
   Future<void> fetchChatMessages({required String chatId}) async {
     emit(ChatLoadingMsgState());
-
+    final messages = <MessageModel>[];
     chatRepo.fetchAllChatMsgs(chatId: chatId).listen(
       (event) {
-        event.fold(
-          (error) => emit(ChatFailureState(errorMsg: error.toString(error))),
-          (messages) => emit(ChatLoadAllMessagesState(messages: messages)),
-        );
+        if (event.data() != null && event['messages'] != null) {
+          for (var element in event['messages']) {
+            messages.add(MessageModel.fromMap(element));
+          }
+        }
+        emit(ChatFetchChatMsgsState(messages: messages));
       },
-    );
+    ).onError((error) {
+      emit(ChatFailureState(errorMsg: error.toString(error)));
+    });
   }
 
   /// check if the generated chatId exist in the list of chats fetched from the cloud firestore or not

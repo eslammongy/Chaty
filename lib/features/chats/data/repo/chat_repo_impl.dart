@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
@@ -13,50 +13,33 @@ class ChatRepoImpl extends ChatRepo {
     try {
       final userID = FirebaseAuth.instance.currentUser?.uid;
       final listOfChats = <ChatModel>[];
+      final setOfChatIds = <String>{};
       final userChats = await chatCollection
           .where('participants', arrayContains: userID)
           .orderBy('__name__')
           .get();
       for (var element in userChats.docs) {
+        debugPrint("Chat Repo: $element");
         final chat = element.data();
+        if (setOfChatIds.contains(chat['id'])) continue;
         if (chat['messages'] != null && chat['messages'].isNotEmpty) {
+          setOfChatIds.add(chat['id']);
           listOfChats.add(ChatModel.fromMap(chat));
         } else {
           continue;
         }
       }
       return right(listOfChats);
-    } on FirebaseException catch (ex) {
-      return left(ex);
     } on Exception catch (e) {
       return left(e);
     }
   }
 
   @override
-  Stream<Either<dynamic, List<MessageModel>>> fetchAllChatMsgs({
+  Stream<DocumentSnapshot<Map<String, dynamic>>> fetchAllChatMsgs({
     required String chatId,
   }) {
-    List<MessageModel> messages = [];
-    return chatCollection.doc(chatId).snapshots().map(
-      (event) {
-        debugPrint("Receive an event happened : ${event['messages'].last}");
-        if (event.data() != null && event['messages'] != null) {
-          final List chatMessages = event['messages'];
-          for (var element in chatMessages) {
-            messages.add(MessageModel.fromMap(element));
-          }
-          return right(messages);
-        }
-        return right(messages);
-      },
-    ).handleError((error) {
-      if (error is FirebaseException) {
-        return left(error);
-      } else {
-        return left(error);
-      }
-    });
+    return chatCollection.doc(chatId).snapshots();
   }
 
   @override
@@ -65,12 +48,8 @@ class ChatRepoImpl extends ChatRepo {
     required MessageModel msg,
   }) async {
     try {
-      await chatCollection.doc(chatId).update({
-        'messages': FieldValue.arrayUnion([msg.toMap()])
-      });
+      await chatCollection.doc(chatId).collection('messages').add(msg.toMap());
       return right(msg);
-    } on FirebaseException catch (ex) {
-      return left(ex);
     } on Exception catch (e) {
       return left(e);
     }
@@ -82,10 +61,10 @@ class ChatRepoImpl extends ChatRepo {
   }) async {
     try {
       await chatCollection.doc(chat.id).set(chat.toMap());
+      debugPrint("Chat Repo Success: $chat");
       return right(chat);
-    } on FirebaseException catch (ex) {
-      return left(ex);
     } on Exception catch (e) {
+      debugPrint("Chat Repo Error: $e");
       return left(e);
     }
   }

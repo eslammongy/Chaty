@@ -89,9 +89,9 @@ final class SendNewMessage extends StatelessWidget {
 
     final chatId = chatCubit.openedChat!.id!;
     final msg = msgModel(userCubit);
-    messagesListViewKey.currentState?.appendLastSentMsg(msg);
-    await chatCubit.sendNewTextMsg(chatId: chatId, msg: msg);
     msgController.clear();
+    // chatCubit.openedChat?.messages?.add(msg);
+    await chatCubit.sendNewTextMsg(chatId: chatId, msg: msg);
   }
 
   MessageModel msgModel(UserCubit userCubit) {

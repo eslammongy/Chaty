@@ -8,16 +8,16 @@ class ChatLoadingState extends ChatStates {}
 
 class ChatLoadingMsgState extends ChatStates {}
 
-class ChatCreatedState extends ChatStates {
+class ChatCreatedNewState extends ChatStates {
   final ChatModel chat;
 
-  ChatCreatedState({required this.chat});
+  ChatCreatedNewState({required this.chat});
 }
 
-class ChatMsgSendedState extends ChatStates {
+class ChatSendingMsgState extends ChatStates {
   final MessageModel msg;
 
-  ChatMsgSendedState({required this.msg});
+  ChatSendingMsgState({required this.msg});
 }
 
 class ChatFailureState extends ChatStates {
@@ -27,10 +27,10 @@ class ChatFailureState extends ChatStates {
   });
 }
 
-class ChatLoadAllChatsState extends ChatStates {}
+class ChatFetchAllChatsState extends ChatStates {}
 
-class ChatLoadAllMessagesState extends ChatStates {
+class ChatFetchChatMsgsState extends ChatStates {
   final List<MessageModel> messages;
 
-  ChatLoadAllMessagesState({required this.messages});
+  ChatFetchChatMsgsState({required this.messages});
 }

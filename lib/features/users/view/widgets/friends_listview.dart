@@ -45,12 +45,15 @@ class FriendsListView extends StatelessWidget {
     final chatCubit = ChatCubit.get(context);
     final chatId = generateChatId(userId: userId, participantId: friendId);
     final chatModel = chatCubit.isChatExist(chatId);
-    debugPrint("Chat Model MSG: $chatId");
+
     // in this case the chat collection for this friend does'nt created yet...
     if (chatModel.id == null) {
-      chatCubit.openedChat =
-          ChatModel(id: chatId, participants: [userId, friendId], messages: []);
-      chatCubit.createNewChat(chat: chatCubit.openedChat!);
+      debugPrint("Chat Model MSG: $chatId");
+      chatCubit.openedChat = ChatModel(
+        id: chatId,
+        participants: [userId, friendId],
+      );
+      await chatCubit.createNewChat(chat: chatCubit.openedChat!);
     } else {
       chatCubit.openedChat = chatModel;
     }
