@@ -43,7 +43,20 @@ abstract class AuthExceptionHandler {
       case " auth/invalid-email":
         status = AuthExceptionsTypes.authInvalidEmail;
         break;
-
+      case 'unavailable':
+        return AuthExceptionsTypes.unavailable;
+      case 'permission-denied':
+        return AuthExceptionsTypes.permissionDenied;
+      case 'not-found':
+        return AuthExceptionsTypes.notFound;
+      case 'already-exists':
+        return AuthExceptionsTypes.alreadyExists;
+      case 'cancelled':
+        return AuthExceptionsTypes.cancelled;
+      case 'deadline-exceeded':
+        return AuthExceptionsTypes.deadlineExceeded;
+      case 'invalid-argument':
+        return AuthExceptionsTypes.invalidArgument;
       default:
         status = AuthExceptionsTypes.undefined;
     }
@@ -98,6 +111,20 @@ abstract class AuthExceptionHandler {
       case AuthExceptionsTypes.authInvalidEmail:
         errorMessage = "Thrown if the email address is not valid.";
         break;
+      case AuthExceptionsTypes.unavailable:
+        return 'Service is currently unavailable. Please try again later.';
+      case AuthExceptionsTypes.permissionDenied:
+        return 'You do not have permission to perform this action.';
+      case AuthExceptionsTypes.notFound:
+        return 'The requested document or collection was not found.';
+      case AuthExceptionsTypes.alreadyExists:
+        return 'The document already exists.';
+      case AuthExceptionsTypes.cancelled:
+        return 'The operation was cancelled.';
+      case AuthExceptionsTypes.deadlineExceeded:
+        return 'The operation took too long to complete. Please try again.';
+      case AuthExceptionsTypes.invalidArgument:
+        return 'An invalid argument was provided.';
       default:
         errorMessage = "An undefined Error happened.";
     }

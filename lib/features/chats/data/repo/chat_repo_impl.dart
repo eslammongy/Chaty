@@ -30,8 +30,8 @@ class ChatRepoImpl extends ChatRepo {
         }
       }
       return right(listOfChats);
-    } on Exception catch (e) {
-      return left(e);
+    } catch (e) {
+      return left(Exception(e.toString()));
     }
   }
 
@@ -50,8 +50,8 @@ class ChatRepoImpl extends ChatRepo {
     try {
       await chatCollection.doc(chatId).collection('messages').add(msg.toMap());
       return right(msg);
-    } on Exception catch (e) {
-      return left(e);
+    } catch (e) {
+      return left(Exception(e.toString()));
     }
   }
 
@@ -61,11 +61,9 @@ class ChatRepoImpl extends ChatRepo {
   }) async {
     try {
       await chatCollection.doc(chat.id).set(chat.toMap());
-      debugPrint("Chat Repo Success: $chat");
       return right(chat);
-    } on Exception catch (e) {
-      debugPrint("Chat Repo Error: $e");
-      return left(e);
+    } catch (e) {
+      return left(Exception(e.toString()));
     }
   }
 }

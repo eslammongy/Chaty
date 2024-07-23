@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:chaty/core/errors/exp_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chaty/features/auth/data/repos/auth_repo.dart';
 import 'package:chaty/core/errors/auth_exceptions_handler.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
@@ -31,10 +31,14 @@ class AuthRepoImplementation implements AuthRepo {
       }
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
-    } on PlatformException catch (ex) {
-      return left(AuthExceptionHandler.handleException(ex.message));
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
+    } catch (e) {
+      return left(
+        AuthExceptionHandler.handleException(
+          Exception(
+            e.toString(),
+          ),
+        ),
+      );
     }
   }
 
@@ -61,10 +65,14 @@ class AuthRepoImplementation implements AuthRepo {
       final userModel = UserModel(
           uId: userCredential.user?.uid, email: email, password: password);
       return right(userModel);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
-    } catch (error) {
-      return left(AuthExceptionsTypes.undefined);
+    } catch (e) {
+      return left(
+        AuthExceptionHandler.handleException(
+          Exception(
+            e.toString(),
+          ),
+        ),
+      );
     }
   }
 
@@ -80,11 +88,14 @@ class AuthRepoImplementation implements AuthRepo {
       }
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
-    } catch (error) {
+    } catch (e) {
       return left(
-          AuthExceptionHandler.handleException(AuthExceptionsTypes.undefined));
+        AuthExceptionHandler.handleException(
+          Exception(
+            e.toString(),
+          ),
+        ),
+      );
     }
   }
 
@@ -109,10 +120,14 @@ class AuthRepoImplementation implements AuthRepo {
         verificationFailed: verificationFailed,
       );
       return right(true);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
-    } catch (error) {
-      return left(AuthExceptionsTypes.undefined);
+    } catch (e) {
+      return left(
+        AuthExceptionHandler.handleException(
+          Exception(
+            e.toString(),
+          ),
+        ),
+      );
     }
   }
 
@@ -134,10 +149,14 @@ class AuthRepoImplementation implements AuthRepo {
 
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
-    } catch (error) {
-      return left(AuthExceptionsTypes.undefined);
+    } catch (e) {
+      return left(
+        AuthExceptionHandler.handleException(
+          Exception(
+            e.toString(),
+          ),
+        ),
+      );
     }
   }
 
@@ -147,10 +166,14 @@ class AuthRepoImplementation implements AuthRepo {
       final userId = firebaseAuth.currentUser?.uid;
       await firebaseAuth.signOut();
       return right(userId);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
-    } catch (error) {
-      return left(AuthExceptionsTypes.undefined);
+    } catch (e) {
+      return left(
+        AuthExceptionHandler.handleException(
+          Exception(
+            e.toString(),
+          ),
+        ),
+      );
     }
   }
 
@@ -160,10 +183,14 @@ class AuthRepoImplementation implements AuthRepo {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
       return right(email);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
-    } catch (error) {
-      return left(AuthExceptionsTypes.undefined);
+    } catch (e) {
+      return left(
+        AuthExceptionHandler.handleException(
+          Exception(
+            e.toString(),
+          ),
+        ),
+      );
     }
   }
 }
