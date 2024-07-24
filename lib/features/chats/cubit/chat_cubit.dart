@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
@@ -16,7 +15,6 @@ class ChatCubit extends Cubit<ChatStates> {
 
   ChatModel? openedChat;
   final List<ChatModel> listOFChats = [];
-  final List<MessageModel> chatMessages = [];
 
   /// Use this function to fetch all the user chats so, user can select and open any chat from the list
   Future<void> fetchAllUserChats() async {
@@ -57,8 +55,9 @@ class ChatCubit extends Cubit<ChatStates> {
   Future<void> fetchChatMessages({required String chatId}) async {
     emit(ChatLoadingMsgState());
     final messages = <MessageModel>[];
-    chatRepo.fetchAllChatMsgs(chatId: chatId).listen(
+    /*    chatRepo.fetchAllChatMsgs(chatId: chatId).listen(
       (event) {
+        
         if (event.data() != null && event['messages'] != null) {
           for (var element in event['messages']) {
             messages.add(MessageModel.fromMap(element));
@@ -68,7 +67,7 @@ class ChatCubit extends Cubit<ChatStates> {
       },
     ).onError((error) {
       emit(ChatFailureState(errorMsg: error.toString(error)));
-    });
+    }); */
   }
 
   /// check if the generated chatId exist in the list of chats fetched from the cloud firestore or not
@@ -100,6 +99,15 @@ class ChatCubit extends Cubit<ChatStates> {
       return participant;
     } catch (_) {
       return null;
+    }
+  }
+
+  Future<void> initializeChatting() async {
+    // this case indicates that we are opening the chat screen with this friend for the first time
+    if (!openedChat!.isCreated) {
+      await createNewChat(chat: openedChat!);
+    } else {
+      await fetchChatMessages(chatId: openedChat!.id!);
     }
   }
 }

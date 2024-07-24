@@ -6,16 +6,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/view/widgets/message_item.dart';
 
-class MessagesListView extends StatefulWidget {
-  const MessagesListView({
+class ChattingMsgsListView extends StatefulWidget {
+  const ChattingMsgsListView({
     super.key,
   });
 
   @override
-  State<MessagesListView> createState() => MessagesListViewState();
+  State<ChattingMsgsListView> createState() => _ChattingMsgsListViewState();
 }
 
-class MessagesListViewState extends State<MessagesListView> {
+class _ChattingMsgsListViewState extends State<ChattingMsgsListView> {
   final ScrollController _scrollController = ScrollController();
   final Debounce _debounce = Debounce(delay: const Duration(milliseconds: 300));
   late final ChatCubit chatCubit;
@@ -27,8 +27,8 @@ class MessagesListViewState extends State<MessagesListView> {
   void initState() {
     super.initState();
     chatCubit = ChatCubit.get(context);
-   // msgSource = chatCubit.openedChat?.messages ?? [];
-   // _listenToChatMessages();
+    // msgSource = chatCubit.openedChat?.messages ?? [];
+    // _listenToChatMessages();
     _listenToScrollController();
   }
 
