@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chaty/core/constants/app_assets.dart';
-import 'package:chaty/core/widgets/failure_state_ui.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/view/widgets/chatting_msgs_listview.dart';
 import 'package:chaty/features/chats/view/widgets/chatting_msg_placeholder.dart';
+
+const failureMsg =
+    "Sorry for the inconvenience. We are working on it, may be your internet connection is poor";
 
 class ChattingStateHandler extends StatelessWidget {
   const ChattingStateHandler({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final chat = ChatCubit.get(context).openedChat;
     return BlocConsumer<ChatCubit, ChatStates>(
-      bloc: ChatCubit.get(context)..initializeChatting(),
-      listener: (context, state) {},
+      bloc: ChatCubit.get(context)..fetchChatMessages(chatId: chat?.id ?? ''),
+      listener: (context, state) {
+        if (state is ChatFailureState) {
+          displayToastMsg(context, state.errorMsg ?? failureMsg,
+              alignment: Alignment.topCenter);
+        }
+      },
       builder: (context, state) {
+        final messages = chat?.messages ?? [];
         if (state is ChatLoadingState) {
           return const ChatMessagePlaceholder();
-        } else if (state is ChatFailureState) {
-          return const FailureStateUI(
-            imgPath: AppAssetsManager.emptyInbox,
-            text:
-                "Sorry for the inconvenience. We are working on it, may be your internet connection is poor",
-          );
         } else {
-          return const ChatMessagePlaceholder();
+          debugPrint("ChattingStateHandler: ${messages.toString()}");
+          return ChattingMsgsListView(msgSource: messages);
         }
       },
     );

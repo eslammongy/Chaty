@@ -20,7 +20,7 @@ class MessageModel {
     return <String, dynamic>{
       'text': text,
       'senderId': senderId,
-      'dateTime': FieldValue.serverTimestamp(),
+      'dateTime': dateTime,
       'msgType': msgType.name,
     };
   }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
-
 
 final class SendNewMessage extends StatelessWidget {
   const SendNewMessage({
@@ -61,11 +62,14 @@ final class SendNewMessage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(100)),
             child: InkWell(
               onTap: () async {
-                if (chatCubit.openedChat == null ||
-                    chatCubit.openedChat!.participants == null) {
-                  return;
+                final chat = chatCubit.openedChat;
+                if (_checkIsChatCreate(chat)) {
+                  await _sendNewTextMsg(userCubit, chatCubit);
+                } else {
+                  await chatCubit.createNewChat(chat: chat!).then((_) async {
+                    await _sendNewTextMsg(userCubit, chatCubit);
+                  });
                 }
-                await _sendNewTextMsg(userCubit, chatCubit);
               },
               borderRadius: BorderRadius.circular(100),
               child: const Padding(
@@ -83,20 +87,27 @@ final class SendNewMessage extends StatelessWidget {
   }
 
   Future<void> _sendNewTextMsg(UserCubit userCubit, ChatCubit chatCubit) async {
-    if (chatCubit.openedChat!.id == null) return;
-
-    final chatId = chatCubit.openedChat!.id!;
     final msg = msgModel(userCubit);
     msgController.clear();
-    // chatCubit.openedChat?.messages?.add(msg);
-    await chatCubit.sendNewTextMsg(chatId: chatId, msg: msg);
+    chatCubit.openedChat?.messages!.add(msg);
+    await chatCubit.sendNewTextMsg(
+        chatId: chatCubit.openedChat?.id ?? '', msg: msg);
+  }
+
+  bool _checkIsChatCreate(ChatModel? chat) {
+    if (chat == null) return false;
+    // case the chat is not exist in the collection or does'nt created yet...
+    if (chat.messages == null || chat.messages!.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   MessageModel msgModel(UserCubit userCubit) {
     return MessageModel(
-      text: msgController.text,
-      senderId: userCubit.userModel!.uId!,
-      dateTime: Timestamp.fromDate(DateTime.now()),
-    );
+        text: msgController.text,
+        senderId: userCubit.userModel!.uId!,
+        dateTime: Timestamp.now());
   }
 }

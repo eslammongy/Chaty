@@ -8,30 +8,28 @@ class ChatMessagePlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 30),
-            _shimmerLoading(),
-            const SizedBox(height: 15),
-            _shimmerLoading(alignment: MainAxisAlignment.end),
-            const SizedBox(height: 15),
-            _shimmerLoading(),
-            const SizedBox(height: 15),
-            _shimmerLoading(alignment: MainAxisAlignment.end),
-            const SizedBox(height: 15),
-            _shimmerLoading(),
-            const SizedBox(height: 15),
-            _shimmerLoading(alignment: MainAxisAlignment.end),
-            const SizedBox(height: 15),
-            _shimmerLoading(),
-            const SizedBox(height: 15),
-            _shimmerLoading(alignment: MainAxisAlignment.end),
-            const SizedBox(height: 15),
-            _shimmerLoading(),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 30),
+          _shimmerLoading(),
+          const SizedBox(height: 15),
+          _shimmerLoading(alignment: MainAxisAlignment.end),
+          const SizedBox(height: 15),
+          _shimmerLoading(),
+          const SizedBox(height: 15),
+          _shimmerLoading(alignment: MainAxisAlignment.end),
+          const SizedBox(height: 15),
+          _shimmerLoading(),
+          const SizedBox(height: 15),
+          _shimmerLoading(alignment: MainAxisAlignment.end),
+          const SizedBox(height: 15),
+          _shimmerLoading(),
+          const SizedBox(height: 15),
+          _shimmerLoading(alignment: MainAxisAlignment.end),
+          const SizedBox(height: 15),
+          _shimmerLoading(),
+        ],
       ),
     );
   }

@@ -121,8 +121,12 @@ Future<void> displayPickImageDialog(
       });
 }
 
-void displayToastMsg(BuildContext context, String msg,
-    {ToastificationType? type}) {
+void displayToastMsg(
+  BuildContext context,
+  String msg, {
+  ToastificationType? type,
+  Alignment alignment = Alignment.bottomCenter,
+}) {
   final theme = Theme.of(context);
   toastification.show(
     context: context,
@@ -133,7 +137,7 @@ void displayToastMsg(BuildContext context, String msg,
     type: type ?? ToastificationType.info,
     style: ToastificationStyle.simple,
     borderSide: BorderSide.none,
-    alignment: Alignment.bottomCenter,
+    alignment: alignment,
     backgroundColor: type != null ? Colors.red : theme.colorScheme.secondary,
     autoCloseDuration: const Duration(seconds: 2),
   );
@@ -147,10 +151,11 @@ String generateChatId({required String userId, required String participantId}) {
       listOfIds.fold("", (userId, participantId) => "$userId$participantId");
   return chatId;
 }
+
 String getDateTime(DateTime dateTime) {
-  final formattedDate = DateFormat.yMMMEd().format(dateTime);
+  // final formattedDate = DateFormat.yMMMEd().format(dateTime);
   final formattedTime = DateFormat.jm().format(dateTime);
-  return "$formattedDate  $formattedTime";
+  return formattedTime;
 }
 
 String getMsgDateOnly(DateTime dateTime) {

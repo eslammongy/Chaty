@@ -73,11 +73,15 @@ class ChatCubit extends Cubit<ChatStates> {
   /// check if the generated chatId exist in the list of chats fetched from the cloud firestore or not
   /// if exist return it so we don't have to fetch the again
   /// else return null, in this case may be the chat need to created
-  ChatModel isChatExist(String chatId) {
-    return listOFChats.firstWhere(
-      (element) => element.id == chatId,
-      orElse: () => ChatModel(),
-    );
+  ChatModel? isChatExist(String chatId) {
+    try {
+      final chat = listOFChats.firstWhere(
+        (element) => element.id == chatId,
+      );
+      return chat;
+    } catch (_) {
+      return null;
+    }
   }
 
   UserModel? getChatParticipant(BuildContext context, ChatModel chat) {
@@ -104,6 +108,7 @@ class ChatCubit extends Cubit<ChatStates> {
 
   Future<void> initializeChatting() async {
     // this case indicates that we are opening the chat screen with this friend for the first time
+    debugPrint("Chat Created:: ${openedChat?.isCreated}");
     if (!openedChat!.isCreated) {
       await createNewChat(chat: openedChat!);
     } else {
