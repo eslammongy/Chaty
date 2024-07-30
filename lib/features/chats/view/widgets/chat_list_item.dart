@@ -46,7 +46,7 @@ class ChatListItem extends StatelessWidget {
                           style: theme.textTheme.bodyLarge
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
-                     /*    Text(
+                        /*    Text(
                           getMsgDateOnly(
                               openedChatMsgs?.last.dateTime?.toDate() ??
                                   DateTime.now()),
@@ -61,14 +61,14 @@ class ChatListItem extends StatelessWidget {
                           Icons.done_all_outlined,
                           color: theme.colorScheme.surfaceTint,
                         ),
-                      /*   Expanded(
+                        Expanded(
                           child: Text(
                             chat.messages?.last.text ?? "",
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.bodyMedium?.copyWith(
                                 color: theme.colorScheme.surfaceTint),
                           ),
-                        ), */
+                        ),
                       ],
                     ),
                   ],

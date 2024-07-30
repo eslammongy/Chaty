@@ -27,7 +27,6 @@ class ChattingStateHandler extends StatelessWidget {
         if (state is ChatLoadingState) {
           return const ChatMessagePlaceholder();
         } else {
-          debugPrint("ChattingStateHandler: ${messages.toString()}");
           return ChattingMsgsListView(msgSource: messages);
         }
       },

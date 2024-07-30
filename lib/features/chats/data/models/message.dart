@@ -35,7 +35,4 @@ class MessageModel {
   }
 
   String toJson() => json.encode(toMap());
-
-  factory MessageModel.fromJson(String source) =>
-      MessageModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

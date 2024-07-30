@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
@@ -33,14 +34,16 @@ class ChatRepoImpl extends ChatRepo {
         final chat = element.data();
         if (chat['messages'] != null && chat['messages'].isNotEmpty) {
           final messages = chat['messages'] as List;
-          chat['messages'] = messages.reversed.toList();
+          chat['messages'] = messages.reversed;
           listOfChats.add(ChatModel.fromMap(chat));
         } else {
           continue;
         }
       }
+
       return right(listOfChats);
     } catch (e) {
+      debugPrint("Chats Items->${e.toString()}");
       return left(Exception(e.toString()));
     }
   }

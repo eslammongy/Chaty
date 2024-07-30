@@ -30,7 +30,7 @@ class ChatCubit extends Cubit<ChatStates> {
   }
 
   Future<void> createNewChat({required ChatModel chat}) async {
-    emit(ChatLoadingState());
+    //  emit(ChatLoadingState());
     final result = await chatRepo.createNewChatDoc(chat: chat);
     result.fold((exp) {
       emit(ChatFailureState(errorMsg: exp.toString()));
@@ -54,7 +54,7 @@ class ChatCubit extends Cubit<ChatStates> {
 
   Future<void> fetchChatMessages({required String chatId}) async {
     emit(ChatLoadingMsgState());
-    final messages = <MessageModel>[];
+   // final messages = <MessageModel>[];
     /*    chatRepo.fetchAllChatMsgs(chatId: chatId).listen(
       (event) {
         
@@ -103,16 +103,6 @@ class ChatCubit extends Cubit<ChatStates> {
       return participant;
     } catch (_) {
       return null;
-    }
-  }
-
-  Future<void> initializeChatting() async {
-    // this case indicates that we are opening the chat screen with this friend for the first time
-    debugPrint("Chat Created:: ${openedChat?.isCreated}");
-    if (!openedChat!.isCreated) {
-      await createNewChat(chat: openedChat!);
-    } else {
-      await fetchChatMessages(chatId: openedChat!.id!);
     }
   }
 }
