@@ -4,7 +4,7 @@ import 'package:chaty/features/chats/data/models/message.dart';
 class ChatModel {
   String? id;
   final List<String>? participants;
-  final List<MessageModel>? messages;
+  List<MessageModel>? messages;
   ChatModel({
     this.id,
     this.participants,

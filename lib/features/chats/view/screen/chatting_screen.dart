@@ -14,21 +14,15 @@ class ChattingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chatCubit = ChatCubit.get(context);
-    final msgController = TextEditingController();
     return Scaffold(
       appBar: MessagesAppBar(
         receiver: chatCubit.getChatParticipant(context, chat) ?? UserModel(),
       ),
       body: Padding(
         padding: EdgeInsets.only(left: 15.w, right: 15.w, bottom: 20.h),
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const ChattingStateHandler(),
-            SendNewMessage(
-              msgController: msgController,
-            )
-          ],
+          children: [ChattingStateHandler(), SendNewMessage()],
         ),
       ),
     );

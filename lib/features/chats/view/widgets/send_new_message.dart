@@ -10,13 +10,12 @@ import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 final class SendNewMessage extends StatelessWidget {
   const SendNewMessage({
     super.key,
-    required this.msgController,
   });
-
-  final TextEditingController msgController;
 
   @override
   Widget build(BuildContext context) {
+    final msgController = TextEditingController();
+
     final chatCubit = ChatCubit.get(context);
     final userCubit = UserCubit.get(context);
     final theme = Theme.of(context);
@@ -63,10 +62,10 @@ final class SendNewMessage extends StatelessWidget {
               onTap: () async {
                 final chat = chatCubit.openedChat;
                 if (_checkIsChatCreate(chat)) {
-                  await _sendNewTextMsg(userCubit, chatCubit);
+                  await _sendNewTextMsg(userCubit, chatCubit, msgController);
                 } else {
                   await chatCubit.createNewChat(chat: chat!).then((_) async {
-                    await _sendNewTextMsg(userCubit, chatCubit);
+                    await _sendNewTextMsg(userCubit, chatCubit, msgController);
                   });
                 }
               },
@@ -85,10 +84,14 @@ final class SendNewMessage extends StatelessWidget {
     );
   }
 
-  Future<void> _sendNewTextMsg(UserCubit userCubit, ChatCubit chatCubit) async {
-    final msg = msgModel(userCubit);
+  Future<void> _sendNewTextMsg(
+    UserCubit userCubit,
+    ChatCubit chatCubit,
+    TextEditingController msgController,
+  ) async {
+    final msg = msgModel(userCubit, msgController);
     msgController.clear();
-    chatCubit.openedChat?.messages!.add(msg);
+    //  chatCubit.openedChat?.messages!.insert(0, msg); // insert(msg);
     await chatCubit.sendNewTextMsg(
         chatId: chatCubit.openedChat?.id ?? '', msg: msg);
   }
@@ -103,7 +106,8 @@ final class SendNewMessage extends StatelessWidget {
     }
   }
 
-  MessageModel msgModel(UserCubit userCubit) {
+  MessageModel msgModel(
+      UserCubit userCubit, TextEditingController msgController) {
     return MessageModel(
         text: msgController.text,
         senderId: userCubit.userModel!.uId!,

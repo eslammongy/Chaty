@@ -54,20 +54,25 @@ class ChatCubit extends Cubit<ChatStates> {
 
   Future<void> fetchChatMessages({required String chatId}) async {
     emit(ChatLoadingMsgState());
-   // final messages = <MessageModel>[];
-    /*    chatRepo.fetchAllChatMsgs(chatId: chatId).listen(
+    List<MessageModel> messages = [];
+    chatRepo.fetchAllChatMsgs(chatId: chatId).listen(
       (event) {
-        
         if (event.data() != null && event['messages'] != null) {
-          for (var element in event['messages']) {
-            messages.add(MessageModel.fromMap(element));
-          }
+          final chatMsgs = event['messages'] as List;
+
+          messages = chatMsgs.reversed.map(
+            (e) {
+              return MessageModel.fromMap(e);
+            },
+          ).toList();
         }
+        debugPrint("Chat Cubit MS------: ${messages.lastOrNull?.text}");
+
         emit(ChatFetchChatMsgsState(messages: messages));
       },
     ).onError((error) {
       emit(ChatFailureState(errorMsg: error.toString(error)));
-    }); */
+    });
   }
 
   /// check if the generated chatId exist in the list of chats fetched from the cloud firestore or not

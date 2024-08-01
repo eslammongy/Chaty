@@ -24,14 +24,15 @@ class _ChattingMsgsListViewState extends State<ChattingMsgsListView> {
   @override
   void initState() {
     super.initState();
-    _fetchMoreMessages();
-    _listenToScrollController();
+    // _fetchMoreMessages();
+    // _listenToScrollController();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    debugPrint("ChattingMsgsListView: ${widget.msgSource.toString()}");
+    debugPrint(
+        "ChattingMsgsListView*******: ${widget.msgSource.lastOrNull?.text}");
 
     return Expanded(
       child: ListView.builder(
@@ -39,12 +40,12 @@ class _ChattingMsgsListViewState extends State<ChattingMsgsListView> {
         reverse: true,
         padding: EdgeInsets.only(bottom: 10.h, left: 0, right: 0),
         physics: const BouncingScrollPhysics(),
-        itemCount: messages.length + (_isLoading ? 1 : 0),
+        itemCount: widget.msgSource.length,
         itemBuilder: (context, index) {
-          if (index == messages.length) {
+          /*       if (index == messages.length) {
             return displayLoadingIndicator(theme);
-          }
-          return MessageItem(msg: messages[index]);
+          } */
+          return MessageItem(msg: widget.msgSource[index]);
         },
       ),
     );
@@ -56,18 +57,23 @@ class _ChattingMsgsListViewState extends State<ChattingMsgsListView> {
       return;
     }
 
-    if (widget.msgSource.length <= limit) {
+    /*  if (widget.msgSource.length <= limit) {
+      debugPrint("ChattingMsgsListView#########: ${widget.msgSource.length}");
       messages = widget.msgSource;
     } else {
       final int start = (messages.isEmpty)
           ? widget.msgSource.length
           : widget.msgSource.length - messages.length;
       final int end = (start - limit < limit) ? 0 : start - limit;
-
-      //  _reverseMessages(widget.msgSource.sublist(end, start));
+      debugPrint("ChattingMsgsListView%%%%%%%%%%%: ${widget.msgSource.length}");
       messages.addAll(widget.msgSource.sublist(end, start));
-    }
-
+    } */
+    final int start = (messages.isEmpty)
+        ? widget.msgSource.length
+        : widget.msgSource.length - messages.length;
+    final int end = (start - limit < limit) ? 0 : start - limit;
+    debugPrint("ChattingMsgsListView%%%%%%%%%%%: ${widget.msgSource.length}");
+    messages.addAll(widget.msgSource.sublist(end, start));
     setState(() => _isLoading = false);
   }
 

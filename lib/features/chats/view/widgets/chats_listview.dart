@@ -33,7 +33,7 @@ class ChatsList extends StatelessWidget {
                   chatCubit.openedChat = chatCubit.listOFChats[index];
                   GoRouter.of(context).push(
                     AppRouter.chatScreen,
-                    extra: chatCubit.listOFChats[index],
+                    extra: chatCubit.openedChat,
                   );
                 },
                 child: ChatListItem(

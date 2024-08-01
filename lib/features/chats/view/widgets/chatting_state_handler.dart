@@ -14,6 +14,7 @@ class ChattingStateHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chat = ChatCubit.get(context).openedChat;
+
     return BlocConsumer<ChatCubit, ChatStates>(
       bloc: ChatCubit.get(context)..fetchChatMessages(chatId: chat?.id ?? ''),
       listener: (context, state) {
@@ -23,10 +24,15 @@ class ChattingStateHandler extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final messages = chat?.messages ?? [];
+        debugPrint('ChattingStateHandler: $state');
         if (state is ChatLoadingState) {
           return const ChatMessagePlaceholder();
+        }
+        if (state is ChatFetchChatMsgsState) {
+          chat?.messages = state.messages;
+          return ChattingMsgsListView(msgSource: state.messages);
         } else {
+          final messages = chat?.messages ?? [];
           return ChattingMsgsListView(msgSource: messages);
         }
       },

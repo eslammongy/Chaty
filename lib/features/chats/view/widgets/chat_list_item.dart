@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,13 +47,13 @@ class ChatListItem extends StatelessWidget {
                           style: theme.textTheme.bodyLarge
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
-                        /*    Text(
+                        Text(
                           getMsgDateOnly(
-                              openedChatMsgs?.last.dateTime?.toDate() ??
+                              chat.messages?.first.dateTime?.toDate() ??
                                   DateTime.now()),
                           style: theme.textTheme.bodyMedium
                               ?.copyWith(color: theme.colorScheme.surfaceTint),
-                        ) */
+                        )
                       ],
                     ),
                     Row(
@@ -63,7 +64,7 @@ class ChatListItem extends StatelessWidget {
                         ),
                         Expanded(
                           child: Text(
-                            chat.messages?.last.text ?? "",
+                            chat.messages?.first.text ?? "",
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.bodyMedium?.copyWith(
                                 color: theme.colorScheme.surfaceTint),
