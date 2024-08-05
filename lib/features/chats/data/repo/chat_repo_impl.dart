@@ -1,9 +1,13 @@
+import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
+import 'package:chaty/core/errors/auth_exceptions_handler.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 
 class ChatRepoImpl extends ChatRepo {
@@ -68,5 +72,25 @@ class ChatRepoImpl extends ChatRepo {
     required String chatId,
   }) {
     return chatCollection.doc(chatId).snapshots();
+  }
+
+  @override
+  Future<Either<Exception, String>> uploadChattingImgMsg(
+    File imageFile,
+    String chatId,
+  ) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference storageReference =
+          storage.ref().child('chats/$chatId/$imageFile');
+      UploadTask uploadTask = storageReference.putFile(imageFile);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+      return right(imageUrl);
+    } on FirebaseException catch (error) {
+      return left(AuthExceptionHandler.handleException(error.code));
+    } catch (error) {
+      return left(AuthExceptionHandler.handleException(error));
+    }
   }
 }

@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
+import 'package:chaty/core/errors/auth_exceptions_handler.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 
@@ -109,5 +111,18 @@ class ChatCubit extends Cubit<ChatStates> {
     } catch (_) {
       return null;
     }
+  }
+
+  Future<void> uploadProfileImage(File imageFile) async {
+    emit(ChatLoadingMsgState());
+
+    final result =
+        await chatRepo.uploadChattingImgMsg(imageFile, openedChat?.id ?? '');
+    result.fold((errorStatus) {
+      var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);
+      emit(ChatFailureState(errorMsg: errorMsg));
+    }, (downloadUrl) {
+      emit(ChatImageMsgUploadedState(imageUrl: downloadUrl));
+    });
   }
 }

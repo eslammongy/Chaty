@@ -55,7 +55,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
                   onCameraTap: () async {
                     //* close the bottom sheet
                     GoRouter.of(context).pop();
-                    final imgFile = await _pickImageFromCamera();
+                    final imgFile = await pickImageFromCamera(context);
                     if (imgFile != null) {
                       selectedImg = File(imgFile.path);
                       await _updateProfileInfo(profileCubit);
@@ -64,7 +64,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
                   onGalleryTap: () async {
                     //* close the bottom sheet
                     GoRouter.of(context).pop();
-                    final imgFile = await _pickGalleryImage();
+                    final imgFile = await pickGalleryImage(context);
                     if (imgFile != null) {
                       await displayPickGalleryImg(imgFile, profileCubit);
                     }
@@ -97,40 +97,5 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
         },
       );
     });
-  }
-
-  /// pick an image fromGallery
-  Future<XFile?> _pickGalleryImage() async {
-    final ImagePicker picker = ImagePicker();
-
-    try {
-      final XFile? pickedFile =
-          await picker.pickImage(source: ImageSource.gallery);
-
-      if (pickedFile == null) return null;
-
-      return pickedFile;
-    } on Exception catch (e) {
-      Future(() {
-        displaySnackBar(context, e.toString());
-      });
-    }
-    return null;
-  }
-
-  /// pick an image from camera
-  Future<XFile?> _pickImageFromCamera() async {
-    try {
-      final pickedImg =
-          await ImagePicker().pickImage(source: ImageSource.camera);
-      if (pickedImg == null) return null;
-      return pickedImg;
-    } on Exception catch (e) {
-      Future(() {
-        displaySnackBar(context, e.toString());
-      });
-    }
-    Future(() => GoRouter.of(context).pop());
-    return null;
   }
 }

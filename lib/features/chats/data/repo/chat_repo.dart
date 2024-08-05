@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
@@ -18,4 +19,9 @@ abstract class ChatRepo {
 
   Future<Either<Exception, ChatModel>> createNewChatDoc(
       {required ChatModel chat});
+
+  Future<Either<Exception, String>> uploadChattingImgMsg(
+    File imageFile,
+    String chatId,
+  );
 }

@@ -34,3 +34,9 @@ class ChatFetchChatMsgsState extends ChatStates {
 
   ChatFetchChatMsgsState({required this.messages});
 }
+
+class ChatImageMsgUploadedState extends ChatStates {
+  final String imageUrl;
+
+  ChatImageMsgUploadedState({required this.imageUrl});
+}

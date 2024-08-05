@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:toastification/toastification.dart';
 import 'package:chaty/core/widgets/loading_state_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -170,4 +172,38 @@ LinearProgressIndicator displayLinearIndicator(ThemeData theme) {
     minHeight: 8,
     borderRadius: BorderRadius.circular(10),
   );
+}
+
+/// pick an image fromGallery
+Future<XFile?> pickGalleryImage(BuildContext context) async {
+  final ImagePicker picker = ImagePicker();
+
+  try {
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile == null) return null;
+
+    return pickedFile;
+  } on Exception catch (e) {
+    Future(() {
+      displaySnackBar(context, e.toString());
+    });
+  }
+  return null;
+}
+
+/// pick an image from camera
+Future<XFile?> pickImageFromCamera(BuildContext context) async {
+  try {
+    final pickedImg = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedImg == null) return null;
+    return pickedImg;
+  } on Exception catch (e) {
+    Future(() {
+      displaySnackBar(context, e.toString());
+    });
+  }
+  Future(() => GoRouter.of(context).pop());
+  return null;
 }
