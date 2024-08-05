@@ -26,13 +26,13 @@ Future<void> _setupAppConfiguration(WidgetsBinding widgetsBinding) async {
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     await injectable.initServices();
     await AppRouter.setInitialRoute();
-    runApp(const Chaty());
+    runApp(const Chatty());
     FlutterNativeSplash.remove();
   });
 }
 
-class Chaty extends StatelessWidget {
-  const Chaty({super.key});
+class Chatty extends StatelessWidget {
+  const Chatty({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class Chaty extends StatelessWidget {
           builder: (context, state) {
             final currentTheme = SettingsCubit.get(context).currentTheme;
             return MaterialApp.router(
-              title: 'Chaty',
+              title: 'Chatty',
               debugShowCheckedModeBanner: false,
               theme: currentTheme,
               routerConfig: AppRouter.appRoutes(),
