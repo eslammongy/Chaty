@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/core/widgets/placeholder_img_msg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class CacheNetworkImg extends StatelessWidget {
@@ -22,7 +24,7 @@ class CacheNetworkImg extends StatelessWidget {
       imageBuilder: (context, imageProvider) => Card(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
-        color: Colors.transparent,
+        color: theme.scaffoldBackgroundColor,
         margin: EdgeInsets.zero,
         child: isChatMsg
             ? ClipRRect(
@@ -36,14 +38,16 @@ class CacheNetworkImg extends StatelessWidget {
       placeholder: (context, url) => Card(
         shape: shapeBorder(theme.scaffoldBackgroundColor),
         margin: EdgeInsets.zero,
-        color: Colors.transparent,
-        child: CircleAvatar(
-          radius: radius,
-          child: Image.asset(
-            AppAssetsManager.loading,
-            width: 40,
-          ),
-        ),
+        color: theme.scaffoldBackgroundColor,
+        child: isChatMsg
+            ? const PlaceholderImgMsg(type: PlaceholderType.asset)
+            : CircleAvatar(
+                radius: radius,
+                child: Image.asset(
+                  AppAssetsManager.loading,
+                  width: 40,
+                ),
+              ),
       ),
       errorWidget: (context, url, error) => Card(
         shape: shapeBorder(theme.scaffoldBackgroundColor),

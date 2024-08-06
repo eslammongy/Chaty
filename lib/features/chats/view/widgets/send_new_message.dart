@@ -1,16 +1,13 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
-import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
+import 'package:chaty/features/chats/view/widgets/msg_type_builder.dart';
 
-final class SendNewMessage extends StatelessWidget {
+class SendNewMessage extends StatelessWidget {
   const SendNewMessage({
     super.key,
   });
@@ -26,12 +23,9 @@ final class SendNewMessage extends StatelessWidget {
       listener: (context, state) async {
         if (state is ChatImageMsgUploadedState) {
           final chat = chatCubit.openedChat;
-          final msg = MessageModel(
-            text: state.imageUrl,
-            msgType: MsgType.image,
-            senderId: userCubit.userModel!.uId!,
-            dateTime: Timestamp.now(),
-          );
+          final msg = MessageModel.buildMsg(
+              state.imageUrl, userCubit.userModel!.uId!,
+              type: MsgType.image);
           if (_checkIsChatCreate(chat)) {
             await chatCubit.sendNewTextMsg(
                 chatId: chatCubit.openedChat?.id ?? '', msg: msg);
@@ -45,40 +39,7 @@ final class SendNewMessage extends StatelessWidget {
       },
       child: Row(
         children: [
-          Expanded(
-            child: CustomTextInputField(
-              textEditingController: msgController,
-              focusColor: theme.colorScheme.surface,
-              fieldRoundedRadius: BorderRadius.circular(20),
-              hint: "type something...",
-              prefix: IconButton(
-                onPressed: () async {},
-                padding: EdgeInsets.zero,
-                icon: Card(
-                  color: theme.colorScheme.primary,
-                  child: const Padding(
-                    padding: EdgeInsets.all(6.0),
-                    child: Icon(
-                      Icons.camera_alt_rounded,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-              suffix: InkWell(
-                onTap: () async {
-                  final image = await pickGalleryImage(context);
-                  if (image == null) return;
-                  await chatCubit.uploadProfileImage(File(image.path));
-                },
-                radius: 8,
-                borderRadius: BorderRadius.circular(12),
-                child: const Icon(
-                  FontAwesomeIcons.image,
-                ),
-              ),
-            ),
-          ),
+          MsgTypeBuilder(msgController: msgController),
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: Card(
@@ -119,10 +80,8 @@ final class SendNewMessage extends StatelessWidget {
     ChatCubit chatCubit,
     TextEditingController msgController,
   ) async {
-    final msg = MessageModel(
-        text: msgController.text,
-        senderId: userCubit.userModel!.uId!,
-        dateTime: Timestamp.now());
+    final msg =
+        MessageModel.buildMsg(msgController.text, userCubit.userModel!.uId!);
     msgController.clear();
     await chatCubit.sendNewTextMsg(
         chatId: chatCubit.openedChat?.id ?? '', msg: msg);

@@ -32,7 +32,7 @@ class ChattingStateHandler extends StatelessWidget {
           chat?.messages = state.messages;
           return ChattingMsgsListView(msgSource: state.messages);
         } else {
-          final messages = chat?.messages ?? [];
+          final messages = ChatCubit.get(context).openedChat?.messages ?? [];
           return ChattingMsgsListView(msgSource: messages);
         }
       },

@@ -113,9 +113,9 @@ class ChatCubit extends Cubit<ChatStates> {
     }
   }
 
-  Future<void> uploadProfileImage(File imageFile) async {
+  Future<void> uploadProfileImage(File imageFile, MessageModel msg) async {
     emit(ChatLoadingMsgState());
-
+    openedChat!.messages?.insert(0, msg);
     final result =
         await chatRepo.uploadChattingImgMsg(imageFile, openedChat?.id ?? '');
     result.fold((errorStatus) {

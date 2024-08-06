@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum MsgType { text, image }
+enum MsgType { text, image, file }
 
 class MessageModel {
   final String? text;
@@ -35,4 +35,17 @@ class MessageModel {
   }
 
   String toJson() => json.encode(toMap());
+
+  static buildMsg(
+    String text,
+    String senderId, {
+    MsgType type = MsgType.text,
+  }) {
+    return MessageModel(
+      text: text,
+      msgType: type,
+      senderId: senderId,
+      dateTime: Timestamp.now(),
+    );
+  }
 }

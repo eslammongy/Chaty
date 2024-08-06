@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
+import 'package:chaty/core/widgets/placeholder_img_msg.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/settings/cubit/settings_cubit.dart';
@@ -17,7 +19,6 @@ class MessageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settingsCubit = SettingsCubit.get(context);
     final state = ChatCubit.get(context).state;
     final theme = Theme.of(context);
     return Column(
@@ -52,34 +53,65 @@ class MessageItem extends StatelessWidget {
                   maxWidth: 260,
                   minWidth: 100,
                 ),
-                child: msg.msgType == MsgType.image
-                    ? CacheNetworkImg(
-                        imgUrl: msg.text ?? "",
-                        radius: 12,
-                        isChatMsg: true,
-                      )
-                    : Card(
-                        color: isCurUserMsgSender(msg.senderId)
-                            ? settingsCubit.msgBkColor
-                            : theme.colorScheme.surface,
-                        margin: EdgeInsets.zero,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ExpendableTextWidget(
-                            expendedText: msg.text ?? "",
-                            textColor: settingsCubit.isLight &&
-                                    !isCurUserMsgSender(msg.senderId)
-                                ? Colors.black
-                                : Colors.white,
-                          ),
-                        ),
-                      ),
+                child: buildMsgLayout(msg.msgType, context),
               ),
             ),
           ],
         ),
       ],
     );
+  }
+
+  Widget _networkImgMsg() {
+    return CacheNetworkImg(
+      imgUrl: msg.text ?? "",
+      radius: 12,
+      isChatMsg: true,
+    );
+  }
+
+  Widget _textMsgLayout(BuildContext context) {
+    final settingsCubit = SettingsCubit.get(context);
+    final theme = Theme.of(context);
+
+    return Card(
+      color: isCurUserMsgSender(msg.senderId)
+          ? settingsCubit.msgBkColor
+          : theme.colorScheme.surface,
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ExpendableTextWidget(
+          expendedText: msg.text ?? "",
+          textColor: settingsCubit.isLight && !isCurUserMsgSender(msg.senderId)
+              ? Colors.black
+              : Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFileMsgLayout(BuildContext context) {
+    return const Opacity(
+      opacity: 0.4,
+      child: PlaceholderImgMsg(
+        type: PlaceholderType.file,
+      ),
+    );
+  }
+
+  buildMsgLayout(
+    MsgType type,
+    BuildContext context,
+  ) {
+    switch (type) {
+      case MsgType.image:
+        return _networkImgMsg();
+      case MsgType.file:
+        return _buildFileMsgLayout(context);
+      default:
+        return _textMsgLayout(context);
+    }
   }
 
   bool isCurUserMsgSender(String? senderId) {
