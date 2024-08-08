@@ -22,19 +22,7 @@ class SendNewMessage extends StatelessWidget {
     return BlocListener<ChatCubit, ChatStates>(
       listener: (context, state) async {
         if (state is ChatImageMsgUploadedState) {
-          final chat = chatCubit.openedChat;
-          final msg = MessageModel.buildMsg(
-              state.imageUrl, userCubit.userModel!.uId!,
-              type: MsgType.image);
-          if (_checkIsChatCreate(chat)) {
-            await chatCubit.sendNewTextMsg(
-                chatId: chatCubit.openedChat?.id ?? '', msg: msg);
-          } else {
-            await chatCubit.createNewChat(chat: chat!).then((_) async {
-              await chatCubit.sendNewTextMsg(
-                  chatId: chatCubit.openedChat?.id ?? '', msg: msg);
-            });
-          }
+          await _sendImageMsg(chatCubit, state, userCubit);
         }
       },
       child: Row(
@@ -73,6 +61,22 @@ class SendNewMessage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _sendImageMsg(ChatCubit chatCubit,
+      ChatImageMsgUploadedState state, UserCubit userCubit) async {
+    final chat = chatCubit.openedChat;
+    final msg = MessageModel.buildMsg(state.imageUrl, userCubit.userModel!.uId!,
+        type: MsgType.image);
+    if (_checkIsChatCreate(chat)) {
+      await chatCubit.sendNewTextMsg(
+          chatId: chatCubit.openedChat?.id ?? '', msg: msg);
+    } else {
+      await chatCubit.createNewChat(chat: chat!).then((_) async {
+        await chatCubit.sendNewTextMsg(
+            chatId: chatCubit.openedChat?.id ?? '', msg: msg);
+      });
+    }
   }
 
   Future<void> _sendNewTextMsg(

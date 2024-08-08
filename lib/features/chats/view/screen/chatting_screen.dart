@@ -22,7 +22,10 @@ class ChattingScreen extends StatelessWidget {
         padding: EdgeInsets.only(left: 15.w, right: 15.w, bottom: 20.h),
         child: const Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [ChattingStateHandler(), SendNewMessage()],
+          children: [
+            ChattingStateHandler(),
+            SendNewMessage(),
+          ],
         ),
       ),
     );

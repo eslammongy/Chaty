@@ -11,7 +11,8 @@ class PlaceholderImgMsg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final messages = ChatCubit.get(context).openedChat?.messages ?? [];
+    final chatCubit = ChatCubit.get(context);
+    final messages = chatCubit.openedChat?.messages ?? [];
     final lastMsg = messages.isNotEmpty ? messages.first : null;
     return Stack(
       alignment: Alignment.center,

@@ -24,7 +24,14 @@ class MsgTypeBuilder extends StatelessWidget {
         hint: "type something...",
         prefix: _buildPickIngBtn(
           theme,
-          onPressed: () async {},
+          onPressed: () async {
+            final image = await pickImageFromCamera(context);
+            if (image == null) return;
+            final msg = MessageModel.buildMsg(
+                image.path, userCubit.userModel!.uId!,
+                type: MsgType.file);
+            await chatCubit.uploadProfileImage(File(image.path), msg);
+          },
         ),
         suffix: _buildPickIngBtn(
           theme,

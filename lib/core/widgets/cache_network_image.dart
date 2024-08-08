@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/core/widgets/placeholder_img_msg.dart';

@@ -4,6 +4,7 @@ import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
+import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 
 class ChatListItem extends StatelessWidget {
@@ -64,7 +65,7 @@ class ChatListItem extends StatelessWidget {
                         ),
                         Expanded(
                           child: Text(
-                            chat.messages?.first.text ?? "",
+                            lastMsgText(chat),
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.bodyMedium?.copyWith(
                                 color: theme.colorScheme.surfaceTint),
@@ -80,5 +81,10 @@ class ChatListItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String lastMsgText(ChatModel chat) {
+    if (chat.messages?.first.msgType == MsgType.image) return 'image';
+    return chat.messages?.first.text ?? '';
   }
 }

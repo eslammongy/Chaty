@@ -24,12 +24,12 @@ class ChattingStateHandler extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        debugPrint('ChattingStateHandler: $state');
         if (state is ChatLoadingState) {
           return const ChatMessagePlaceholder();
         }
         if (state is ChatFetchChatMsgsState) {
           chat?.messages = state.messages;
+
           return ChattingMsgsListView(msgSource: state.messages);
         } else {
           final messages = ChatCubit.get(context).openedChat?.messages ?? [];
