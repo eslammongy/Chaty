@@ -30,8 +30,11 @@ class AuthRepoImplementation implements AuthRepo {
       }
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
-    } catch (e) {
-      return left(ExceptionHandler.handleException(e));
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
@@ -58,8 +61,11 @@ class AuthRepoImplementation implements AuthRepo {
       final userModel = UserModel(
           uId: userCredential.user?.uid, email: email, password: password);
       return right(userModel);
-    } catch (e) {
-      return left(ExceptionHandler.handleException(e));
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
@@ -75,8 +81,11 @@ class AuthRepoImplementation implements AuthRepo {
       }
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
-    } catch (e) {
-      return left(ExceptionHandler.handleException(e));
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
@@ -101,8 +110,11 @@ class AuthRepoImplementation implements AuthRepo {
         verificationFailed: verificationFailed,
       );
       return right(true);
-    } catch (e) {
-      return left(ExceptionHandler.handleException(e));
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
@@ -124,8 +136,11 @@ class AuthRepoImplementation implements AuthRepo {
 
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
-    } catch (e) {
-      return left(ExceptionHandler.handleException(e));
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
@@ -135,8 +150,11 @@ class AuthRepoImplementation implements AuthRepo {
       final userId = firebaseAuth.currentUser?.uid;
       await firebaseAuth.signOut();
       return right(userId);
-    } catch (e) {
-      return left(ExceptionHandler.handleException(e));
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
@@ -146,8 +164,11 @@ class AuthRepoImplementation implements AuthRepo {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
       return right(email);
-    } catch (e) {
-      return left(ExceptionHandler.handleException(e));
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 }
