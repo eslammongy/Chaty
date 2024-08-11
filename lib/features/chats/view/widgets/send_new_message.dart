@@ -66,7 +66,7 @@ class SendNewMessage extends StatelessWidget {
   Future<void> _sendImageMsg(ChatCubit chatCubit,
       ChatImageMsgUploadedState state, UserCubit userCubit) async {
     final chat = chatCubit.openedChat;
-    final msg = MessageModel.buildMsg(state.imageUrl, userCubit.userModel!.uId!,
+    final msg = MessageModel.buildMsg(state.imageUrl, userCubit.user!.uId!,
         type: MsgType.image);
     if (_checkIsChatCreate(chat)) {
       await chatCubit.sendNewTextMsg(
@@ -85,7 +85,7 @@ class SendNewMessage extends StatelessWidget {
     TextEditingController msgController,
   ) async {
     final msg =
-        MessageModel.buildMsg(msgController.text, userCubit.userModel!.uId!);
+        MessageModel.buildMsg(msgController.text, userCubit.user!.uId!);
     msgController.clear();
     await chatCubit.sendNewTextMsg(
         chatId: chatCubit.openedChat?.id ?? '', msg: msg);

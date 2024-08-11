@@ -61,19 +61,19 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   ProfileImageSection(
                     profileImgUrl:
-                        profileCubit.userModel?.imageUrl ?? dummyImageUrl,
+                        profileCubit.user?.imageUrl ?? dummyImageUrl,
                   ),
                   const SizedBox(height: 20),
                   ProfileBio(pioTxtController: pioTxtController),
                   const SizedBox(height: 10),
                   ProfileInfoFieldItem(
-                    text: profileCubit.userModel?.name ?? dummyName,
+                    text: profileCubit.user?.name ?? dummyName,
                     textController: nameTxtController,
                     icon: FontAwesomeIcons.user,
                   ),
                   const SizedBox(height: 10),
                   ProfileInfoFieldItem(
-                    text: profileCubit.userModel?.email ?? dummyEmail,
+                    text: profileCubit.user?.email ?? dummyEmail,
                     textController: emailTxtController,
                     icon: FontAwesomeIcons.envelope,
                     enabled: false,
@@ -91,7 +91,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   ProfileInfoFieldItem(
-                    text: profileCubit.userModel?.phone ?? dummyPhone,
+                    text: profileCubit.user?.phone ?? dummyPhone,
                     textController: phoneTxtController,
                     icon: FontAwesomeIcons.phone,
                   ),
@@ -115,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
   void _userSignOut(BuildContext context) {
-    UserCubit.get(context).userModel = null;
+    UserCubit.get(context).user = null;
     ChatCubit.get(context).openedChat = null;
     ChatCubit.get(context).listOFChats.clear();
     UserCubit.get(context).friendsList.clear();

@@ -29,9 +29,10 @@ class UserRepoImpl implements UserRepo {
           .child(firebaseAuth.currentUser!.uid)
           .set(userModel.toMap());
       return right(userModel);
-    } on FirebaseException catch (error) {
-      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
       return left(ExceptionHandler.handleException(error));
     }
   }
@@ -48,9 +49,10 @@ class UserRepoImpl implements UserRepo {
             event.snapshot.value as Map<Object?, Object?>);
       });
       return right(userModel);
-    } on FirebaseException catch (error) {
-      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
       return left(ExceptionHandler.handleException(error));
     }
   }
@@ -65,11 +67,10 @@ class UserRepoImpl implements UserRepo {
       debugPrint("Update Profile ${firebaseAuth.currentUser!.uid} info Done");
 
       return right(userModel);
-    } on FirebaseException catch (error) {
-      debugPrint("Firebase Error : ${error.message}");
-      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
-      debugPrint("Other Error : $error");
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
       return left(ExceptionHandler.handleException(error));
     }
   }
@@ -85,9 +86,10 @@ class UserRepoImpl implements UserRepo {
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       String imageUrl = await taskSnapshot.ref.getDownloadURL();
       return right(imageUrl);
-    } on FirebaseException catch (error) {
-      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
       return left(ExceptionHandler.handleException(error));
     }
   }
@@ -121,10 +123,11 @@ class UserRepoImpl implements UserRepo {
       }
 
       return right(friends);
-    } on FirebaseException catch (error) {
-      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
-      return left(ExceptionHandler.handleException(error.toString()));
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 }

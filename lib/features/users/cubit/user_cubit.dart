@@ -10,7 +10,7 @@ class UserCubit extends Cubit<UserStates> {
   UserCubit({required this.userRepo}) : super(UserInitialState());
   final UserRepo userRepo;
   static UserCubit get(context) => BlocProvider.of(context);
-  UserModel? userModel;
+  UserModel? user;
   final friendsList = <UserModel>[];
 
   Future<void> createNewUserProfile({required UserModel user}) async {
@@ -20,19 +20,19 @@ class UserCubit extends Cubit<UserStates> {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (userModel) {
-      this.userModel = user = userModel;
+      this.user = user = userModel;
       emit(UserCreatedState(userModel: userModel));
     });
   }
 
   Future<void> updateUserProfile() async {
     emit(UserLoadingState());
-    var result = await userRepo.updateUserProfile(userModel: userModel!);
+    var result = await userRepo.updateUserProfile(userModel: user!);
     result.fold((errorStatus) {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (userModel) {
-      this.userModel = userModel;
+      user = userModel;
       emit(UserUpdatedState());
     });
   }
@@ -45,7 +45,7 @@ class UserCubit extends Cubit<UserStates> {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (userModel) {
-      this.userModel = userModel;
+      user = userModel;
       emit(UserFetchedState(userModel: userModel));
     });
   }
@@ -55,8 +55,8 @@ class UserCubit extends Cubit<UserStates> {
 
     var result = await userRepo.fetchAllFriends(
       (currentUser) {
-        userModel = currentUser;
-        emit(UserFetchedState(userModel: userModel));
+        user = currentUser;
+        emit(UserFetchedState(userModel: user));
       },
     );
     result.fold((errorStatus) {
@@ -76,7 +76,7 @@ class UserCubit extends Cubit<UserStates> {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (downloadUrl) {
-      userModel?.imageUrl = downloadUrl;
+      user?.imageUrl = downloadUrl;
       emit(ProfileImgUploadedState());
     });
   }

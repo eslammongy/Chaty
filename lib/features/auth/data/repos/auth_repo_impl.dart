@@ -31,13 +31,7 @@ class AuthRepoImplementation implements AuthRepo {
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
     } catch (e) {
-      return left(
-        ExceptionHandler.handleException(
-          Exception(
-            e.toString(),
-          ),
-        ),
-      );
+      return left(ExceptionHandler.handleException(e));
     }
   }
 
@@ -65,13 +59,7 @@ class AuthRepoImplementation implements AuthRepo {
           uId: userCredential.user?.uid, email: email, password: password);
       return right(userModel);
     } catch (e) {
-      return left(
-        ExceptionHandler.handleException(
-          Exception(
-            e.toString(),
-          ),
-        ),
-      );
+      return left(ExceptionHandler.handleException(e));
     }
   }
 
@@ -88,13 +76,7 @@ class AuthRepoImplementation implements AuthRepo {
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
     } catch (e) {
-      return left(
-        ExceptionHandler.handleException(
-          Exception(
-            e.toString(),
-          ),
-        ),
-      );
+      return left(ExceptionHandler.handleException(e));
     }
   }
 
@@ -120,13 +102,7 @@ class AuthRepoImplementation implements AuthRepo {
       );
       return right(true);
     } catch (e) {
-      return left(
-        ExceptionHandler.handleException(
-          Exception(
-            e.toString(),
-          ),
-        ),
-      );
+      return left(ExceptionHandler.handleException(e));
     }
   }
 
@@ -149,13 +125,7 @@ class AuthRepoImplementation implements AuthRepo {
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
     } catch (e) {
-      return left(
-        ExceptionHandler.handleException(
-          Exception(
-            e.toString(),
-          ),
-        ),
-      );
+      return left(ExceptionHandler.handleException(e));
     }
   }
 
@@ -166,13 +136,7 @@ class AuthRepoImplementation implements AuthRepo {
       await firebaseAuth.signOut();
       return right(userId);
     } catch (e) {
-      return left(
-        ExceptionHandler.handleException(
-          Exception(
-            e.toString(),
-          ),
-        ),
-      );
+      return left(ExceptionHandler.handleException(e));
     }
   }
 
@@ -183,13 +147,7 @@ class AuthRepoImplementation implements AuthRepo {
       await firebaseAuth.sendPasswordResetEmail(email: email);
       return right(email);
     } catch (e) {
-      return left(
-        ExceptionHandler.handleException(
-          Exception(
-            e.toString(),
-          ),
-        ),
-      );
+      return left(ExceptionHandler.handleException(e));
     }
   }
 }

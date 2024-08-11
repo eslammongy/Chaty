@@ -91,7 +91,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
         imgFile.path,
         onConfirm: () async {
           selectedImg = File(imgFile.path);
-          profileCubit.userModel?.imageUrl = selectedImg?.path;
+          profileCubit.user?.imageUrl = selectedImg?.path;
           GoRouter.of(context).pop();
           await _updateProfileInfo(profileCubit);
         },

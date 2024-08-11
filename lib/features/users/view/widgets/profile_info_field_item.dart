@@ -54,13 +54,13 @@ class ProfileInfoFieldItem extends StatelessWidget {
     final profileCubit = UserCubit.get(context);
     switch (icon) {
       case FontAwesomeIcons.user:
-        profileCubit.userModel?.name = value;
+        profileCubit.user?.name = value;
         break;
       case FontAwesomeIcons.envelope:
-        profileCubit.userModel?.email = value;
+        profileCubit.user?.email = value;
         break;
       case FontAwesomeIcons.phone:
-        profileCubit.userModel?.phone = value;
+        profileCubit.user?.phone = value;
         break;
       default:
     }

@@ -19,9 +19,10 @@ class ChatRepoImpl extends ChatRepo {
     try {
       await chatCollection.doc(chat.id).set(chat.toMap());
       return right(chat);
-    } on FirebaseException catch (error) {
-      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
       return left(ExceptionHandler.handleException(error));
     }
   }
@@ -47,9 +48,10 @@ class ChatRepoImpl extends ChatRepo {
       }
 
       return right(listOfChats);
-    } on FirebaseException catch (error) {
-      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
       return left(ExceptionHandler.handleException(error));
     }
   }
@@ -64,9 +66,10 @@ class ChatRepoImpl extends ChatRepo {
         'messages': FieldValue.arrayUnion([msg.toMap()])
       });
       return right(msg);
-    } on FirebaseException catch (error) {
-      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
       return left(ExceptionHandler.handleException(error));
     }
   }
@@ -91,9 +94,10 @@ class ChatRepoImpl extends ChatRepo {
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       String imageUrl = await taskSnapshot.ref.getDownloadURL();
       return right(imageUrl);
-    } on FirebaseException catch (error) {
-      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
       return left(ExceptionHandler.handleException(error));
     }
   }

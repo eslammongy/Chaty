@@ -28,7 +28,7 @@ class MsgTypeBuilder extends StatelessWidget {
             final image = await pickImageFromCamera(context);
             if (image == null) return;
             final msg = MessageModel.buildMsg(
-                image.path, userCubit.userModel!.uId!,
+                image.path, userCubit.user!.uId!,
                 type: MsgType.file);
             await chatCubit.uploadProfileImage(File(image.path), msg);
           },
@@ -40,7 +40,7 @@ class MsgTypeBuilder extends StatelessWidget {
             final image = await pickGalleryImage(context);
             if (image == null) return;
             final msg = MessageModel.buildMsg(
-                image.path, userCubit.userModel!.uId!,
+                image.path, userCubit.user!.uId!,
                 type: MsgType.file);
             await chatCubit.uploadProfileImage(File(image.path), msg);
           },

@@ -28,7 +28,7 @@ class FriendsListView extends StatelessWidget {
               return FriendsListItem(
                 user: friend,
                 onTap: () {
-                  final userId = userCubit.userModel?.uId;
+                  final userId = userCubit.user?.uId;
                   if (userId == null || friend.uId == null) return;
                   _handleNavToChattingScreen(context, userId, friend.uId!);
                 },
