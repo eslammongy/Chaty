@@ -24,7 +24,7 @@ class SignUpScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.background,
+        backgroundColor: theme.scaffoldBackgroundColor,
         title: const Text("Sign Up"),
       ),
       body: BlocListener<AuthCubit, AuthStates>(
@@ -153,6 +153,7 @@ class SignUpScreen extends StatelessWidget {
 
   Future<void> _createUserProfileInfo(
       BuildContext context, UserModel userModel) async {
+    AppRouter.isUserLogin = true;
     await UserCubit.get(context)
         .createNewUserProfile(user: userModel)
         .whenComplete(() => GoRouter.of(context).pop());

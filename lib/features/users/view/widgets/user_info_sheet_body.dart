@@ -64,29 +64,32 @@ class UserInfoSheetBody extends StatelessWidget {
 
   Widget _buildInfoItem(ThemeData theme, String text, IconData icon) {
     return Card(
-      color: theme.colorScheme.background,
+      color: theme.scaffoldBackgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
       child: SizedBox(
         height: text.length >= 50 ? 124.h : 50.h,
         width: double.infinity,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Icon(icon, color: theme.colorScheme.primary),
-                const SizedBox(
-                  width: 6,
-                ),
-                Text(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(icon, color: theme.colorScheme.primary),
+              const SizedBox(
+                width: 6,
+              ),
+              Flexible(
+                child: Text(
                   text,
                   textAlign: TextAlign.start,
+                  maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.titleMedium,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

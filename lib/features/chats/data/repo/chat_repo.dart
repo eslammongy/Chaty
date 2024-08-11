@@ -1,14 +1,26 @@
+import 'dart:io';
 import 'package:dartz/dartz.dart';
+import 'package:chaty/core/errors/exp_enum.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 
 abstract class ChatRepo {
-  Future<Either<String, List<ChatModel>>> fetchAllUserChats();
-
-  ///* This function responsible for fetching all the messages of specific chat
-  Future<Either<String, List<MessageModel>>> fetchAllChatMsgs({
+  Future<Either<ExceptionsType, List<ChatModel>>> fetchAllUserChats();
+  Stream<DocumentSnapshot<Map<String, dynamic>>> fetchAllChatMsgs({
     required String chatId,
   });
-  // Future<void> sendNewTextMsg();
-  // Future<void> sendNewImageMsg();
+
+  Future<Either<ExceptionsType, MessageModel>> sendNewTextMsg({
+    required String chatId,
+    required MessageModel msg,
+  });
+
+  Future<Either<ExceptionsType, ChatModel>> createNewChatDoc(
+      {required ChatModel chat});
+
+  Future<Either<ExceptionsType, String>> uploadChattingImgMsg(
+    File imageFile,
+    String chatId,
+  );
 }

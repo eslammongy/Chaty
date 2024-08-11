@@ -54,17 +54,6 @@ class SignInWithSocialAccounts extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 20,
-            ),
-            SignInOptionBtn(
-              iconPath: AppAssetsManager.facebookIcon,
-              btnText: "SignIn With Facebook",
-              signInOption: SignInOption.facebook,
-              onPressed: () async {
-                ///TODO: implement facebook login
-              },
-            ),
-            const SizedBox(
               height: 10,
             ),
             SignInOptionBtn(

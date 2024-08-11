@@ -4,7 +4,7 @@ import 'package:chaty/core/theme/error_palette.dart';
 import 'package:chaty/core/theme/light_palette.dart';
 import 'package:chaty/core/theme/common_palette.dart';
 
-ThemeData getDarkThemeData() => ThemeData(
+ThemeData darkThemeData() => ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: DarkPalette.backgroundDarkColor,
       colorScheme: ColorScheme(
@@ -15,8 +15,6 @@ ThemeData getDarkThemeData() => ThemeData(
         onSecondary: CommonColorPalette.greenColor,
         error: ErrorPalette.normal,
         onError: ErrorPalette.dark,
-        background: DarkPalette.backgroundDarkColor,
-        onBackground: DarkPalette.backgroundNormalColor,
         surface: DarkPalette.surfaceNormal,
         onSurface: DarkPalette.onSurfaceDark,
         outline: DarkPalette.outLineDark,
@@ -28,7 +26,7 @@ ThemeData getDarkThemeData() => ThemeData(
       ),
     );
 
-ThemeData getLightThemeData() => ThemeData(
+ThemeData lightThemeData() => ThemeData(
     useMaterial3: true,
     scaffoldBackgroundColor: LightPalette.backgroundLightColor,
     colorScheme: ColorScheme(
@@ -39,8 +37,6 @@ ThemeData getLightThemeData() => ThemeData(
       onSecondary: CommonColorPalette.greenColor,
       error: ErrorPalette.normal,
       onError: ErrorPalette.dark,
-      background: LightPalette.backgroundNormalColor,
-      onBackground: LightPalette.backgroundLightColor,
       surface: LightPalette.surfaceNormal,
       onSurface: LightPalette.onSurfaceLight,
       outline: LightPalette.outLineLight,

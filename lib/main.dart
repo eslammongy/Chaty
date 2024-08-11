@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/features/auth/cubit/auth_cubit.dart';
+import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
+import 'package:chaty/features/chats/data/repo/chat_repo.dart';
 import 'package:chaty/features/auth/data/repos/auth_repo.dart';
 import 'package:chaty/features/users/data/repos/user_repo.dart';
 import 'package:chaty/features/settings/data/settings_repo.dart';
@@ -23,13 +25,13 @@ Future<void> _setupAppConfiguration(WidgetsBinding widgetsBinding) async {
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     await injectable.initServices();
     await AppRouter.setInitialRoute();
-    runApp(const Chaty());
+    runApp(const Chatty());
     FlutterNativeSplash.remove();
   });
 }
 
-class Chaty extends StatelessWidget {//arch -x86_64 pod install
-  const Chaty({super.key});
+class Chatty extends StatelessWidget {
+  const Chatty({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +54,18 @@ class Chaty extends StatelessWidget {//arch -x86_64 pod install
             create: (context) => SettingsCubit(
               settingsRepo: injectable.getIt<SettingsRepo>(),
             ),
+          ),
+          BlocProvider(
+            create: (context) => ChatCubit(
+              chatRepo: injectable.getIt<ChatRepo>(),
+            ),
           )
         ],
         child: BlocBuilder<SettingsCubit, SettingsStates>(
           builder: (context, state) {
             final currentTheme = SettingsCubit.get(context).currentTheme;
             return MaterialApp.router(
-              title: 'Chaty',
+              title: 'Chatty',
               debugShowCheckedModeBanner: false,
               theme: currentTheme,
               routerConfig: AppRouter.appRoutes(),

@@ -1,7 +1,11 @@
 import 'dart:io';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:toastification/toastification.dart';
-import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/core/widgets/loading_state_ui.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/users/view/widgets/custom_text_btn.dart';
 
 /// this is the default box shadow for the card items
@@ -39,37 +43,24 @@ void displaySnackBar(BuildContext context, String msg,
 /// Shows a loading dialog in the given [BuildContext].
 ///
 /// The [context] parameter is the [BuildContext] in which the dialog is shown.
-/// This function does not return anything.
-void showLoadingDialog(BuildContext context) {
-  showDialog(
+// This function does not return anything./*
+showLoadingDialog(BuildContext context, {String text = "please wait..."}) {
+  return showDialog(
       useSafeArea: true,
       barrierDismissible: false,
       barrierColor: Colors.grey.withOpacity(0.3),
       context: context,
       builder: (context) {
-        return generateAlertDialog();
-      });
-}
-
-AlertDialog generateAlertDialog() {
-  return AlertDialog(
-    key: GlobalKey(),
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-    content: SizedBox(
-      height: 140,
-      width: 140,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Image.asset(
-            AppAssetsManager.loading,
-            width: 100,
+        return Dialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 85.w),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
           ),
-        ),
-      ),
-    ),
-  );
+          child: LoadingStateUI(
+            text: text,
+          ),
+        );
+      });
 }
 
 /// Checks if the given [value] is a valid email address.
@@ -132,8 +123,12 @@ Future<void> displayPickImageDialog(
       });
 }
 
-void displayToastMsg(BuildContext context, String msg,
-    {ToastificationType? type}) {
+void displayToastMsg(
+  BuildContext context,
+  String msg, {
+  ToastificationType? type,
+  Alignment alignment = Alignment.bottomCenter,
+}) {
   final theme = Theme.of(context);
   toastification.show(
     context: context,
@@ -144,15 +139,71 @@ void displayToastMsg(BuildContext context, String msg,
     type: type ?? ToastificationType.info,
     style: ToastificationStyle.simple,
     borderSide: BorderSide.none,
-    alignment: Alignment.bottomCenter,
+    alignment: alignment,
     backgroundColor: type != null ? Colors.red : theme.colorScheme.secondary,
     autoCloseDuration: const Duration(seconds: 2),
   );
 }
 
-/// Generates a chat ID by concatenating the given `id1` and `id2` strings.
+/// Generates a chat ID by Ensure the order is consistent by comparing the user IDs
 /// Returns the generated chat ID as a string.
-String generateChatId({required String id1, required String id2}) {
-  final chatId = [id1, id2].fold("", (id, uid) => "$id$uid");
+String generateChatId({required String userId, required String participantId}) {
+  final listOfIds = [userId, participantId]..sort();
+  final String chatId =
+      listOfIds.fold("", (userId, participantId) => "$userId$participantId");
   return chatId;
+}
+
+String getDateTime(DateTime dateTime) {
+  // final formattedDate = DateFormat.yMMMEd().format(dateTime);
+  final formattedTime = DateFormat.jm().format(dateTime);
+  return formattedTime;
+}
+
+String getMsgDateOnly(DateTime dateTime) {
+  final formattedDate = DateFormat.yMd().format(dateTime);
+  return formattedDate;
+}
+
+LinearProgressIndicator displayLinearIndicator(ThemeData theme) {
+  return LinearProgressIndicator(
+    color: theme.colorScheme.primary,
+    backgroundColor: theme.colorScheme.surface,
+    minHeight: 8,
+    borderRadius: BorderRadius.circular(10),
+  );
+}
+
+/// pick an image fromGallery
+Future<XFile?> pickGalleryImage(BuildContext context) async {
+  final ImagePicker picker = ImagePicker();
+
+  try {
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile == null) return null;
+
+    return pickedFile;
+  } on Exception catch (e) {
+    Future(() {
+      displaySnackBar(context, e.toString());
+    });
+  }
+  return null;
+}
+
+/// pick an image from camera
+Future<XFile?> pickImageFromCamera(BuildContext context) async {
+  try {
+    final pickedImg = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedImg == null) return null;
+    return pickedImg;
+  } on Exception catch (e) {
+    Future(() {
+      displaySnackBar(context, e.toString());
+    });
+  }
+  Future(() => GoRouter.of(context).pop());
+  return null;
 }

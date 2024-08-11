@@ -3,9 +3,44 @@ import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
-class ProfileBio extends StatelessWidget {
+class ProfileBio extends StatefulWidget {
   const ProfileBio({super.key, required this.pioTxtController});
   final TextEditingController pioTxtController;
+
+  @override
+  State<ProfileBio> createState() => _ProfileBioState();
+}
+
+class _ProfileBioState extends State<ProfileBio> {
+  double height = 60;
+  @override
+  void initState() {
+    super.initState();
+    _listeningToBioChanges();
+  }
+
+  void _listeningToBioChanges() {
+    final profileCubit = UserCubit.get(context);
+    widget.pioTxtController.text = profileCubit.user?.bio ?? '';
+    widget.pioTxtController.addListener(
+      () {
+        if (widget.pioTxtController.text.length > 40) {
+          _resizeInputField(120);
+        }
+        if (widget.pioTxtController.text.length < 40) {
+          _resizeInputField(40);
+        }
+      },
+    );
+  }
+
+  void _resizeInputField(double h) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        height = h;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +64,12 @@ class ProfileBio extends StatelessWidget {
           ),
           Expanded(
             child: CustomTextInputField(
-              textEditingController: pioTxtController,
-              initText: profileCubit.userModel?.bio ?? dummyBio,
+              textEditingController: widget.pioTxtController,
+              initText: profileCubit.user?.bio ?? dummyBio,
               maxLines: 5,
-              height:
-                  setProfileBioHight(profileCubit.userModel?.bio ?? dummyBio),
+              height: widget.pioTxtController.text.length > 40 ? 120 : 60,
               onSubmitted: (value) async {
-                profileCubit.userModel?.bio = value;
+                profileCubit.user?.bio = value;
                 await profileCubit.updateUserProfile();
               },
             ),
@@ -45,10 +79,9 @@ class ProfileBio extends StatelessWidget {
     );
   }
 
-  double setProfileBioHight(String bio) {
-    if (bio.length > 60) {
-      return 125;
-    }
-    return 60;
+  @override
+  void dispose() {
+    widget.pioTxtController.removeListener(_listeningToBioChanges);
+    super.dispose();
   }
 }

@@ -22,23 +22,24 @@ class SharedPref {
     return await sharedPreferences.setString(selectedThemeKey, theme);
   }
 
-  static String? getSelectedTheme() {
-    return sharedPreferences.getString(selectedThemeKey);
+  static String getSelectedTheme() {
+    return sharedPreferences.getString(selectedThemeKey) ?? "DARK_THEME";
   }
 
   static Future<bool> saveSelectedMsgFont(String font) async {
     return await sharedPreferences.setString(selectedFontKey, font);
   }
 
-  static String? getSelectedMsgFont() {
-    return sharedPreferences.getString(selectedFontKey);
+  static String getSelectedMsgFont() {
+    return sharedPreferences.getString(selectedFontKey) ?? cairoFM;
   }
 
   static Future<bool> saveSelectedAccentColor(Color color) async {
     return await sharedPreferences.setInt(selectedAColorKey, color.value);
   }
 
-  static int? getSelectedAccentColor() {
-    return sharedPreferences.getInt(selectedAColorKey);
+  static int getSelectedAccentColor() {
+    return sharedPreferences.getInt(selectedAColorKey) ??
+        const Color(0xFF4942E4).value;
   }
 }
