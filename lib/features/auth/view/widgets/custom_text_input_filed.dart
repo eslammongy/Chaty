@@ -44,7 +44,6 @@ class CustomTextInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    textEditingController.text = initText ?? "";
     return SizedBox(
       height: height,
       child: Card(

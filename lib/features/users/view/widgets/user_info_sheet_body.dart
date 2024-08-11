@@ -74,7 +74,7 @@ class UserInfoSheetBody extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(icon, color: theme.colorScheme.primary),
               const SizedBox(

@@ -21,6 +21,7 @@ class ProfileInfoFieldItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    textController.text = text;
     return Card(
       elevation: 0,
       color: theme.colorScheme.surface,
@@ -33,7 +34,7 @@ class ProfileInfoFieldItem extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: CustomTextInputField(
             textEditingController: textController,
-            initText: text,
+            // initText: textController.text = text,
             height: height,
             enabled: enabled,
             prefix: Icon(
