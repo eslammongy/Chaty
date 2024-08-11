@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
+import 'package:chaty/core/errors/exp_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,7 +13,7 @@ class ChatRepoImpl extends ChatRepo {
   final chatCollection = FirebaseFirestore.instance.collection("chats");
 
   @override
-  Future<Either<Exception, ChatModel>> createNewChatDoc({
+  Future<Either<ExceptionsType, ChatModel>> createNewChatDoc({
     required ChatModel chat,
   }) async {
     try {
@@ -27,7 +27,7 @@ class ChatRepoImpl extends ChatRepo {
   }
 
   @override
-  Future<Either<Exception, List<ChatModel>>> fetchAllUserChats() async {
+  Future<Either<ExceptionsType, List<ChatModel>>> fetchAllUserChats() async {
     try {
       final userID = FirebaseAuth.instance.currentUser?.uid;
       final listOfChats = <ChatModel>[];
@@ -55,7 +55,7 @@ class ChatRepoImpl extends ChatRepo {
   }
 
   @override
-  Future<Either<Exception, MessageModel>> sendNewTextMsg({
+  Future<Either<ExceptionsType, MessageModel>> sendNewTextMsg({
     required String chatId,
     required MessageModel msg,
   }) async {
@@ -79,7 +79,7 @@ class ChatRepoImpl extends ChatRepo {
   }
 
   @override
-  Future<Either<Exception, String>> uploadChattingImgMsg(
+  Future<Either<ExceptionsType, String>> uploadChattingImgMsg(
     File imageFile,
     String chatId,
   ) async {

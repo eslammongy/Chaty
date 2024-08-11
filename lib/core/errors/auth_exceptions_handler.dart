@@ -1,64 +1,64 @@
 import 'exp_enum.dart';
 
 abstract class ExceptionHandler {
-  static handleException(error) {
-    FirebaseExpTypes status;
+  static ExceptionsType handleException(error) {
+    ExceptionsType status;
     switch (error) {
       case "invalid-email":
-        status = FirebaseExpTypes.invalidEmail;
+        status = ExceptionsType.invalidEmail;
         break;
       case "weak-password":
-        status = FirebaseExpTypes.weekPassword;
+        status = ExceptionsType.weekPassword;
         break;
       case "wrong-password":
-        status = FirebaseExpTypes.wrongPassword;
+        status = ExceptionsType.wrongPassword;
         break;
       case "user-not-found":
-        status = FirebaseExpTypes.userNotFound;
+        status = ExceptionsType.userNotFound;
         break;
       case "user-disabled":
-        status = FirebaseExpTypes.userDisabled;
+        status = ExceptionsType.userDisabled;
         break;
       case "invalid-verification-code":
-        status = FirebaseExpTypes.tooManyRequests;
+        status = ExceptionsType.tooManyRequests;
         break;
       case "operation-not-allowed":
-        status = FirebaseExpTypes.operationNotAllowed;
+        status = ExceptionsType.operationNotAllowed;
         break;
       case "email-already-in-use":
-        status = FirebaseExpTypes.emailAlreadyExists;
+        status = ExceptionsType.emailAlreadyExists;
         break;
       case "notValidUserInput":
-        status = FirebaseExpTypes.notValidUserInput;
+        status = ExceptionsType.notValidUserInput;
         break;
       case "auth/invalid-continue-uri":
-        status = FirebaseExpTypes.authInvalidContinueUri;
+        status = ExceptionsType.authInvalidContinueUri;
         break;
       case "auth/unauthorized-continue-uri":
-        status = FirebaseExpTypes.authUnauthorizedContinueUri;
+        status = ExceptionsType.authUnauthorizedContinueUri;
         break;
       case "auth/missing-ios-bundle-id":
-        status = FirebaseExpTypes.authMissingIosBundleId;
+        status = ExceptionsType.authMissingIosBundleId;
         break;
       case " auth/invalid-email":
-        status = FirebaseExpTypes.authInvalidEmail;
+        status = ExceptionsType.authInvalidEmail;
         break;
       case 'unavailable':
-        return FirebaseExpTypes.unavailable;
+        return ExceptionsType.unavailable;
       case 'permission-denied':
-        return FirebaseExpTypes.permissionDenied;
+        return ExceptionsType.permissionDenied;
       case 'not-found':
-        return FirebaseExpTypes.notFound;
+        return ExceptionsType.notFound;
       case 'already-exists':
-        return FirebaseExpTypes.alreadyExists;
+        return ExceptionsType.alreadyExists;
       case 'cancelled':
-        return FirebaseExpTypes.cancelled;
+        return ExceptionsType.cancelled;
       case 'deadline-exceeded':
-        return FirebaseExpTypes.deadlineExceeded;
+        return ExceptionsType.deadlineExceeded;
       case 'invalid-argument':
-        return FirebaseExpTypes.invalidArgument;
+        return ExceptionsType.invalidArgument;
       default:
-        status = FirebaseExpTypes.undefined;
+        status = ExceptionsType.undefined;
     }
     return status;
   }
@@ -66,67 +66,67 @@ abstract class ExceptionHandler {
   static String getExpMessage(exceptionCode) {
     String errorMessage;
     switch (exceptionCode) {
-      case FirebaseExpTypes.invalidEmail:
+      case ExceptionsType.invalidEmail:
         errorMessage = "Your email address appears to be malformed.";
         break;
-      case FirebaseExpTypes.wrongPassword:
+      case ExceptionsType.wrongPassword:
         errorMessage =
             "The password is invalid or the user does not have a password.";
         break;
-      case FirebaseExpTypes.weekPassword:
+      case ExceptionsType.weekPassword:
         errorMessage =
             "The password is invalid or the user does not have a password.";
         break;
-      case FirebaseExpTypes.userNotFound:
+      case ExceptionsType.userNotFound:
         errorMessage = "User with this email doesn't exist.";
         break;
-      case FirebaseExpTypes.userDisabled:
+      case ExceptionsType.userDisabled:
         errorMessage = "User with this email has been disabled.";
         break;
-      case FirebaseExpTypes.tooManyRequests:
+      case ExceptionsType.tooManyRequests:
         errorMessage = "Too many requests. Try again later.";
         break;
-      case FirebaseExpTypes.operationNotAllowed:
+      case ExceptionsType.operationNotAllowed:
         errorMessage = "Signing in with Email and Password is not enabled.";
         break;
-      case FirebaseExpTypes.emailAlreadyExists:
+      case ExceptionsType.emailAlreadyExists:
         errorMessage =
             "The email has already been registered. Please login or reset your password.";
         break;
-      case FirebaseExpTypes.notValidUserInput:
+      case ExceptionsType.notValidUserInput:
         errorMessage =
             "please make sure you entered all info or correct wrong info...";
         break;
-      case FirebaseExpTypes.authInvalidContinueUri:
+      case ExceptionsType.authInvalidContinueUri:
         errorMessage = "The continue URL provided in the request is invalid.";
         break;
-      case FirebaseExpTypes.authUnauthorizedContinueUri:
+      case ExceptionsType.authUnauthorizedContinueUri:
         errorMessage =
             "The domain of the continue URL is not whitelisted. Whitelist the domain in the Firebase console.";
         break;
-      case FirebaseExpTypes.authMissingIosBundleId:
+      case ExceptionsType.authMissingIosBundleId:
         errorMessage =
             "An iOS Bundle ID must be provided if an App Store ID is provided.";
         break;
-      case FirebaseExpTypes.authInvalidEmail:
+      case ExceptionsType.authInvalidEmail:
         errorMessage = "Thrown if the email address is not valid.";
         break;
-      case FirebaseExpTypes.unavailable:
+      case ExceptionsType.unavailable:
         return 'Service is currently unavailable. Please try again later.';
-      case FirebaseExpTypes.permissionDenied:
+      case ExceptionsType.permissionDenied:
         return 'You do not have permission to perform this action.';
-      case FirebaseExpTypes.notFound:
+      case ExceptionsType.notFound:
         return 'The requested document or collection was not found.';
-      case FirebaseExpTypes.alreadyExists:
+      case ExceptionsType.alreadyExists:
         return 'The document already exists.';
-      case FirebaseExpTypes.cancelled:
+      case ExceptionsType.cancelled:
         return 'The operation was cancelled.';
-      case FirebaseExpTypes.deadlineExceeded:
+      case ExceptionsType.deadlineExceeded:
         return 'The operation took too long to complete. Please try again.';
-      case FirebaseExpTypes.invalidArgument:
+      case ExceptionsType.invalidArgument:
         return 'An invalid argument was provided.';
       default:
-        errorMessage = "An undefined Error happened.";
+        errorMessage = "An undefined Error happened, please try again later.";
     }
 
     return errorMessage;

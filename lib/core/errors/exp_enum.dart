@@ -1,4 +1,4 @@
-enum FirebaseExpTypes {
+enum ExceptionsType {
   emailAlreadyExists,
   wrongPassword,
   weekPassword,

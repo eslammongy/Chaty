@@ -18,11 +18,11 @@ class UserRepoImpl implements UserRepo {
   UserRepoImpl({required this.firebaseAuth});
 
   @override
-  Future<Either<FirebaseExpTypes, UserModel>> createNewUserProfile(
+  Future<Either<ExceptionsType, UserModel>> createNewUserProfile(
       {required UserModel userModel}) async {
     if (userModel.uId == null) {
-      return left(ExceptionHandler.handleException(
-          FirebaseExpTypes.notValidUserInput));
+      return left(
+          ExceptionHandler.handleException(ExceptionsType.notValidUserInput));
     }
     try {
       await databaseReference
@@ -37,7 +37,7 @@ class UserRepoImpl implements UserRepo {
   }
 
   @override
-  Future<Either<FirebaseExpTypes, UserModel>> fetchUserProfileInfo() async {
+  Future<Either<ExceptionsType, UserModel>> fetchUserProfileInfo() async {
     try {
       final userModel = await databaseReference
           .child(firebaseAuth.currentUser!.uid)
@@ -56,7 +56,7 @@ class UserRepoImpl implements UserRepo {
   }
 
   @override
-  Future<Either<FirebaseExpTypes, UserModel>> updateUserProfile(
+  Future<Either<ExceptionsType, UserModel>> updateUserProfile(
       {required UserModel userModel}) async {
     try {
       await databaseReference.ref
@@ -75,7 +75,7 @@ class UserRepoImpl implements UserRepo {
   }
 
   @override
-  Future<Either<FirebaseExpTypes, String>> uploadProfileImg(
+  Future<Either<ExceptionsType, String>> uploadProfileImg(
       File imageFile) async {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
@@ -99,7 +99,7 @@ class UserRepoImpl implements UserRepo {
   }
 
   @override
-  Future<Either<FirebaseExpTypes, List<UserModel>>> fetchAllFriends(
+  Future<Either<ExceptionsType, List<UserModel>>> fetchAllFriends(
     Function(UserModel currentUser)? setCurrentUser,
   ) async {
     try {
@@ -108,7 +108,7 @@ class UserRepoImpl implements UserRepo {
 
       if (usersMap == null) {
         return left(
-            ExceptionHandler.handleException(FirebaseExpTypes.userNotFound));
+            ExceptionHandler.handleException(ExceptionsType.userNotFound));
       }
       final friends = <UserModel>[];
       for (var entry in usersMap.entries) {

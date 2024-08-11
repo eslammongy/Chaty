@@ -24,7 +24,8 @@ class ChatCubit extends Cubit<ChatStates> {
     listOFChats.clear();
     final fetchingResult = await chatRepo.fetchAllUserChats();
     fetchingResult.fold((exp) {
-      emit(ChatFailureState(errorMsg: exp.toString()));
+      final msg = ExceptionHandler.getExpMessage(exp);
+      emit(ChatFailureState(errorMsg: msg));
     }, (chats) {
       listOFChats.addAll(chats);
       emit(ChatFetchAllChatsState());
@@ -35,7 +36,8 @@ class ChatCubit extends Cubit<ChatStates> {
     //  emit(ChatLoadingState());
     final result = await chatRepo.createNewChatDoc(chat: chat);
     result.fold((exp) {
-      emit(ChatFailureState(errorMsg: exp.toString()));
+      final msg = ExceptionHandler.getExpMessage(exp);
+      emit(ChatFailureState(errorMsg: msg));
     }, (chat) {
       emit(ChatCreatedNewState(chat: chat));
     });
@@ -48,7 +50,8 @@ class ChatCubit extends Cubit<ChatStates> {
     emit(ChatLoadingMsgState());
     final result = await chatRepo.sendNewTextMsg(chatId: chatId, msg: msg);
     result.fold((exp) {
-      emit(ChatFailureState(errorMsg: exp.toString()));
+      final msg = ExceptionHandler.getExpMessage(exp);
+      emit(ChatFailureState(errorMsg: msg));
     }, (msg) {
       emit(ChatSendingMsgState(msg: msg));
     });
@@ -73,7 +76,8 @@ class ChatCubit extends Cubit<ChatStates> {
         emit(ChatFetchChatMsgsState(messages: messages));
       },
     ).onError((error) {
-      emit(ChatFailureState(errorMsg: "$error"));
+      final msg = ExceptionHandler.getExpMessage(error);
+      emit(ChatFailureState(errorMsg: msg));
     });
   }
 
@@ -118,9 +122,9 @@ class ChatCubit extends Cubit<ChatStates> {
     openedChat!.messages?.insert(0, msg);
     final result =
         await chatRepo.uploadChattingImgMsg(imageFile, openedChat?.id ?? '');
-    result.fold((errorStatus) {
-      var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
-      emit(ChatFailureState(errorMsg: errorMsg));
+    result.fold((error) {
+      final msg = ExceptionHandler.getExpMessage(error);
+      emit(ChatFailureState(errorMsg: msg));
     }, (downloadUrl) {
       emit(ChatImageMsgUploadedState(imageUrl: downloadUrl));
     });
