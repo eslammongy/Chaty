@@ -14,7 +14,7 @@ class AuthRepoImplementation implements AuthRepo {
   });
 
   @override
-  Future<Either<AuthExceptionsTypes, UserModel>> signInWithGoogle() async {
+  Future<Either<FirebaseExpTypes, UserModel>> signInWithGoogle() async {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
@@ -26,13 +26,13 @@ class AuthRepoImplementation implements AuthRepo {
       final userCredential =
           await firebaseAuth.signInWithCredential(credential);
       if (userCredential.user == null) {
-        return left(AuthExceptionsTypes.undefined);
+        return left(FirebaseExpTypes.undefined);
       }
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
     } catch (e) {
       return left(
-        AuthExceptionHandler.handleException(
+        ExceptionHandler.handleException(
           Exception(
             e.toString(),
           ),
@@ -52,21 +52,21 @@ class AuthRepoImplementation implements AuthRepo {
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, UserModel>> signUpWithEmail(
+  Future<Either<FirebaseExpTypes, UserModel>> signUpWithEmail(
       {required String email, required String password}) async {
     try {
       final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
       if (userCredential.user == null) {
-        return left(AuthExceptionsTypes.undefined);
+        return left(FirebaseExpTypes.undefined);
       }
       final userModel = UserModel(
           uId: userCredential.user?.uid, email: email, password: password);
       return right(userModel);
     } catch (e) {
       return left(
-        AuthExceptionHandler.handleException(
+        ExceptionHandler.handleException(
           Exception(
             e.toString(),
           ),
@@ -76,20 +76,20 @@ class AuthRepoImplementation implements AuthRepo {
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, UserModel>> signInWithEmailPass(
+  Future<Either<FirebaseExpTypes, UserModel>> signInWithEmailPass(
       {required String email, required String password}) async {
     try {
       final userCredential = await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
 
       if (userCredential.user == null) {
-        return left(AuthExceptionsTypes.undefined);
+        return left(FirebaseExpTypes.undefined);
       }
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
     } catch (e) {
       return left(
-        AuthExceptionHandler.handleException(
+        ExceptionHandler.handleException(
           Exception(
             e.toString(),
           ),
@@ -99,7 +99,7 @@ class AuthRepoImplementation implements AuthRepo {
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, bool>> submitUserPhoneNumber({
+  Future<Either<FirebaseExpTypes, bool>> submitUserPhoneNumber({
     required String phoneNumber,
     required Function(String verifyCode) setVerificationCode,
     required Function(FirebaseAuthException authException) verificationFailed,
@@ -121,7 +121,7 @@ class AuthRepoImplementation implements AuthRepo {
       return right(true);
     } catch (e) {
       return left(
-        AuthExceptionHandler.handleException(
+        ExceptionHandler.handleException(
           Exception(
             e.toString(),
           ),
@@ -131,7 +131,7 @@ class AuthRepoImplementation implements AuthRepo {
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, UserModel>> signInWithPhoneNumber({
+  Future<Either<FirebaseExpTypes, UserModel>> signInWithPhoneNumber({
     required String otpCode,
     required String verificationId,
   }) async {
@@ -143,14 +143,14 @@ class AuthRepoImplementation implements AuthRepo {
           await firebaseAuth.signInWithCredential(phoneAuthCredential);
 
       if (userCredential.user == null) {
-        return left(AuthExceptionsTypes.undefined);
+        return left(FirebaseExpTypes.undefined);
       }
 
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
     } catch (e) {
       return left(
-        AuthExceptionHandler.handleException(
+        ExceptionHandler.handleException(
           Exception(
             e.toString(),
           ),
@@ -160,14 +160,14 @@ class AuthRepoImplementation implements AuthRepo {
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, String?>> logout() async {
+  Future<Either<FirebaseExpTypes, String?>> logout() async {
     try {
       final userId = firebaseAuth.currentUser?.uid;
       await firebaseAuth.signOut();
       return right(userId);
     } catch (e) {
       return left(
-        AuthExceptionHandler.handleException(
+        ExceptionHandler.handleException(
           Exception(
             e.toString(),
           ),
@@ -177,14 +177,14 @@ class AuthRepoImplementation implements AuthRepo {
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, String?>> resetUserPassword(
+  Future<Either<FirebaseExpTypes, String?>> resetUserPassword(
       {required String email}) async {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
       return right(email);
     } catch (e) {
       return left(
-        AuthExceptionHandler.handleException(
+        ExceptionHandler.handleException(
           Exception(
             e.toString(),
           ),

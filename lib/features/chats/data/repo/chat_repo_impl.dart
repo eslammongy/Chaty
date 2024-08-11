@@ -19,8 +19,10 @@ class ChatRepoImpl extends ChatRepo {
     try {
       await chatCollection.doc(chat.id).set(chat.toMap());
       return right(chat);
-    } catch (e) {
-      return left(Exception(e.toString()));
+    } on FirebaseException catch (error) {
+      return left(ExceptionHandler.handleException(error.code));
+    } catch (error) {
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
@@ -45,9 +47,10 @@ class ChatRepoImpl extends ChatRepo {
       }
 
       return right(listOfChats);
-    } catch (e) {
-      debugPrint("Chats Items->${e.toString()}");
-      return left(Exception(e.toString()));
+    } on FirebaseException catch (error) {
+      return left(ExceptionHandler.handleException(error.code));
+    } catch (error) {
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
@@ -61,8 +64,10 @@ class ChatRepoImpl extends ChatRepo {
         'messages': FieldValue.arrayUnion([msg.toMap()])
       });
       return right(msg);
-    } catch (e) {
-      return left(Exception(e.toString()));
+    } on FirebaseException catch (error) {
+      return left(ExceptionHandler.handleException(error.code));
+    } catch (error) {
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
@@ -87,9 +92,9 @@ class ChatRepoImpl extends ChatRepo {
       String imageUrl = await taskSnapshot.ref.getDownloadURL();
       return right(imageUrl);
     } on FirebaseException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
+      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
-      return left(AuthExceptionHandler.handleException(error));
+      return left(ExceptionHandler.handleException(error));
     }
   }
 }

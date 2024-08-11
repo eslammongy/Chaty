@@ -73,7 +73,7 @@ class ChatCubit extends Cubit<ChatStates> {
         emit(ChatFetchChatMsgsState(messages: messages));
       },
     ).onError((error) {
-      emit(ChatFailureState(errorMsg: error.toString(error)));
+      emit(ChatFailureState(errorMsg: "$error"));
     });
   }
 
@@ -119,7 +119,7 @@ class ChatCubit extends Cubit<ChatStates> {
     final result =
         await chatRepo.uploadChattingImgMsg(imageFile, openedChat?.id ?? '');
     result.fold((errorStatus) {
-      var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);
+      var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(ChatFailureState(errorMsg: errorMsg));
     }, (downloadUrl) {
       emit(ChatImageMsgUploadedState(imageUrl: downloadUrl));

@@ -18,11 +18,11 @@ class UserRepoImpl implements UserRepo {
   UserRepoImpl({required this.firebaseAuth});
 
   @override
-  Future<Either<AuthExceptionsTypes, UserModel>> createNewUserProfile(
+  Future<Either<FirebaseExpTypes, UserModel>> createNewUserProfile(
       {required UserModel userModel}) async {
     if (userModel.uId == null) {
-      return left(AuthExceptionHandler.handleException(
-          AuthExceptionsTypes.notValidUserInput));
+      return left(ExceptionHandler.handleException(
+          FirebaseExpTypes.notValidUserInput));
     }
     try {
       await databaseReference
@@ -30,14 +30,14 @@ class UserRepoImpl implements UserRepo {
           .set(userModel.toMap());
       return right(userModel);
     } on FirebaseException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
+      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
-      return left(AuthExceptionHandler.handleException(error));
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, UserModel>> fetchUserProfileInfo() async {
+  Future<Either<FirebaseExpTypes, UserModel>> fetchUserProfileInfo() async {
     try {
       final userModel = await databaseReference
           .child(firebaseAuth.currentUser!.uid)
@@ -49,14 +49,14 @@ class UserRepoImpl implements UserRepo {
       });
       return right(userModel);
     } on FirebaseException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
+      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
-      return left(AuthExceptionHandler.handleException(error));
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, UserModel>> updateUserProfile(
+  Future<Either<FirebaseExpTypes, UserModel>> updateUserProfile(
       {required UserModel userModel}) async {
     try {
       await databaseReference.ref
@@ -67,15 +67,15 @@ class UserRepoImpl implements UserRepo {
       return right(userModel);
     } on FirebaseException catch (error) {
       debugPrint("Firebase Error : ${error.message}");
-      return left(AuthExceptionHandler.handleException(error.code));
+      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
       debugPrint("Other Error : $error");
-      return left(AuthExceptionHandler.handleException(error));
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, String>> uploadProfileImg(
+  Future<Either<FirebaseExpTypes, String>> uploadProfileImg(
       File imageFile) async {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
@@ -86,9 +86,9 @@ class UserRepoImpl implements UserRepo {
       String imageUrl = await taskSnapshot.ref.getDownloadURL();
       return right(imageUrl);
     } on FirebaseException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
+      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
-      return left(AuthExceptionHandler.handleException(error));
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
@@ -99,7 +99,7 @@ class UserRepoImpl implements UserRepo {
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, List<UserModel>>> fetchAllFriends(
+  Future<Either<FirebaseExpTypes, List<UserModel>>> fetchAllFriends(
     Function(UserModel currentUser)? setCurrentUser,
   ) async {
     try {
@@ -107,8 +107,8 @@ class UserRepoImpl implements UserRepo {
       final usersMap = dbEvent.snapshot.value as Map<dynamic, dynamic>?;
 
       if (usersMap == null) {
-        return left(AuthExceptionHandler.handleException(
-            AuthExceptionsTypes.userNotFound));
+        return left(
+            ExceptionHandler.handleException(FirebaseExpTypes.userNotFound));
       }
       final friends = <UserModel>[];
       for (var entry in usersMap.entries) {
@@ -122,9 +122,9 @@ class UserRepoImpl implements UserRepo {
 
       return right(friends);
     } on FirebaseException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
+      return left(ExceptionHandler.handleException(error.code));
     } catch (error) {
-      return left(AuthExceptionHandler.handleException(error.toString()));
+      return left(ExceptionHandler.handleException(error.toString()));
     }
   }
 }

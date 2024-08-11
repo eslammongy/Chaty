@@ -17,7 +17,7 @@ class UserCubit extends Cubit<UserStates> {
     emit(UserLoadingState());
     var result = await userRepo.createNewUserProfile(userModel: user);
     result.fold((errorStatus) {
-      var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);
+      var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (userModel) {
       this.userModel = user = userModel;
@@ -29,7 +29,7 @@ class UserCubit extends Cubit<UserStates> {
     emit(UserLoadingState());
     var result = await userRepo.updateUserProfile(userModel: userModel!);
     result.fold((errorStatus) {
-      var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);
+      var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (userModel) {
       this.userModel = userModel;
@@ -42,7 +42,7 @@ class UserCubit extends Cubit<UserStates> {
 
     var result = await userRepo.fetchUserProfileInfo();
     result.fold((errorStatus) {
-      var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);
+      var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (userModel) {
       this.userModel = userModel;
@@ -60,7 +60,7 @@ class UserCubit extends Cubit<UserStates> {
       },
     );
     result.fold((errorStatus) {
-      var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);
+      var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (friends) {
       friendsList.addAll(friends);
@@ -73,7 +73,7 @@ class UserCubit extends Cubit<UserStates> {
 
     final result = await userRepo.uploadProfileImg(imageFile);
     result.fold((errorStatus) {
-      var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorStatus);
+      var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (downloadUrl) {
       userModel?.imageUrl = downloadUrl;

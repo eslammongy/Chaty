@@ -4,13 +4,13 @@ import 'package:chaty/core/errors/exp_enum.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
 
 abstract class UserRepo {
-  Future<Either<AuthExceptionsTypes, UserModel>> createNewUserProfile(
+  Future<Either<FirebaseExpTypes, UserModel>> createNewUserProfile(
       {required UserModel userModel});
-  Future<Either<AuthExceptionsTypes, UserModel>> updateUserProfile(
+  Future<Either<FirebaseExpTypes, UserModel>> updateUserProfile(
       {required UserModel userModel});
-  Future<Either<AuthExceptionsTypes, UserModel>> fetchUserProfileInfo();
-  Future<Either<AuthExceptionsTypes, List<UserModel>>> fetchAllFriends(
+  Future<Either<FirebaseExpTypes, UserModel>> fetchUserProfileInfo();
+  Future<Either<FirebaseExpTypes, List<UserModel>>> fetchAllFriends(
     Function(UserModel currentUser)? setCurrentUser,
   );
-  Future<Either<AuthExceptionsTypes, String>> uploadProfileImg(File imageFile);
+  Future<Either<FirebaseExpTypes, String>> uploadProfileImg(File imageFile);
 }

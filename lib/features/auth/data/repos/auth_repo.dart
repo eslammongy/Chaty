@@ -4,26 +4,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
 
 abstract class AuthRepo {
-  Future<Either<AuthExceptionsTypes, UserModel>> signInWithGoogle();
+  Future<Either<FirebaseExpTypes, UserModel>> signInWithGoogle();
 
-  Future<Either<AuthExceptionsTypes, UserModel>> signUpWithEmail(
+  Future<Either<FirebaseExpTypes, UserModel>> signUpWithEmail(
       {required String email, required String password});
 
-  Future<Either<AuthExceptionsTypes, UserModel>> signInWithEmailPass(
+  Future<Either<FirebaseExpTypes, UserModel>> signInWithEmailPass(
       {required String email, required String password});
 
-  Future<Either<AuthExceptionsTypes, bool>> submitUserPhoneNumber({
+  Future<Either<FirebaseExpTypes, bool>> submitUserPhoneNumber({
     required String phoneNumber,
     required Function(String verifyCode) setVerificationCode,
     required Function(FirebaseAuthException authException) verificationFailed,
   });
 
-  Future<Either<AuthExceptionsTypes, UserModel>> signInWithPhoneNumber({
+  Future<Either<FirebaseExpTypes, UserModel>> signInWithPhoneNumber({
     required String otpCode,
     required String verificationId,
   });
 
-  Future<Either<AuthExceptionsTypes, String?>> logout();
-  Future<Either<AuthExceptionsTypes, String?>> resetUserPassword(
+  Future<Either<FirebaseExpTypes, String?>> logout();
+  Future<Either<FirebaseExpTypes, String?>> resetUserPassword(
       {required String email});
 }
