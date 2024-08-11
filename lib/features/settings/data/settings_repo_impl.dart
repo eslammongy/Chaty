@@ -27,7 +27,7 @@ class SettingsRepoImpl extends SettingsRepo {
   @override
   switchAppTheme({required ThemeData theme}) {
     try {
-      if (theme == getDarkThemeData()) {
+      if (theme == darkThemeData()) {
         SharedPref.saveSelectedTheme("DARK_THEME");
       }
       SharedPref.saveSelectedTheme("LIGHT_THEME");
@@ -38,32 +38,23 @@ class SettingsRepoImpl extends SettingsRepo {
   }
 
   @override
-  Color? getMsgBKColor() {
+  Color getMsgBKColor() {
     final colorValue = SharedPref.getSelectedAccentColor();
-    if (colorValue == null) {
-      return null;
-    }
     return Color(colorValue);
   }
 
   @override
-  String? getMessageFont() {
+  String getMessageFont() {
     final msgFont = SharedPref.getSelectedMsgFont();
-    if (msgFont == null) {
-      return null;
-    }
     return msgFont;
   }
 
   @override
-  ThemeData? getThemeData() {
+  ThemeData getThemeData() {
     final theme = SharedPref.getSelectedTheme();
-    if (theme == null) {
-      return null;
-    }
     if (theme == "DARK_THEME") {
-      return getDarkThemeData();
+      return darkThemeData();
     }
-    return getLightThemeData();
+    return lightThemeData();
   }
 }

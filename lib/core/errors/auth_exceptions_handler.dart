@@ -1,105 +1,132 @@
 import 'exp_enum.dart';
 
-abstract class AuthExceptionHandler {
-  static handleException(error) {
-    AuthExceptionsTypes status;
+abstract class ExceptionHandler {
+  static ExceptionsType handleException(error) {
+    ExceptionsType status;
     switch (error) {
       case "invalid-email":
-        status = AuthExceptionsTypes.invalidEmail;
+        status = ExceptionsType.invalidEmail;
         break;
       case "weak-password":
-        status = AuthExceptionsTypes.weekPassword;
+        status = ExceptionsType.weekPassword;
         break;
       case "wrong-password":
-        status = AuthExceptionsTypes.wrongPassword;
+        status = ExceptionsType.wrongPassword;
         break;
       case "user-not-found":
-        status = AuthExceptionsTypes.userNotFound;
+        status = ExceptionsType.userNotFound;
         break;
       case "user-disabled":
-        status = AuthExceptionsTypes.userDisabled;
+        status = ExceptionsType.userDisabled;
         break;
       case "invalid-verification-code":
-        status = AuthExceptionsTypes.tooManyRequests;
+        status = ExceptionsType.tooManyRequests;
         break;
       case "operation-not-allowed":
-        status = AuthExceptionsTypes.operationNotAllowed;
+        status = ExceptionsType.operationNotAllowed;
         break;
       case "email-already-in-use":
-        status = AuthExceptionsTypes.emailAlreadyExists;
+        status = ExceptionsType.emailAlreadyExists;
         break;
       case "notValidUserInput":
-        status = AuthExceptionsTypes.notValidUserInput;
+        status = ExceptionsType.notValidUserInput;
         break;
       case "auth/invalid-continue-uri":
-        status = AuthExceptionsTypes.authInvalidContinueUri;
+        status = ExceptionsType.authInvalidContinueUri;
         break;
       case "auth/unauthorized-continue-uri":
-        status = AuthExceptionsTypes.authUnauthorizedContinueUri;
+        status = ExceptionsType.authUnauthorizedContinueUri;
         break;
       case "auth/missing-ios-bundle-id":
-        status = AuthExceptionsTypes.authMissingIosBundleId;
+        status = ExceptionsType.authMissingIosBundleId;
         break;
       case " auth/invalid-email":
-        status = AuthExceptionsTypes.authInvalidEmail;
+        status = ExceptionsType.authInvalidEmail;
         break;
-
+      case 'unavailable':
+        return ExceptionsType.unavailable;
+      case 'permission-denied':
+        return ExceptionsType.permissionDenied;
+      case 'not-found':
+        return ExceptionsType.notFound;
+      case 'already-exists':
+        return ExceptionsType.alreadyExists;
+      case 'cancelled':
+        return ExceptionsType.cancelled;
+      case 'deadline-exceeded':
+        return ExceptionsType.deadlineExceeded;
+      case 'invalid-argument':
+        return ExceptionsType.invalidArgument;
       default:
-        status = AuthExceptionsTypes.undefined;
+        status = ExceptionsType.undefined;
     }
     return status;
   }
 
-  static String generateExceptionMessage(exceptionCode) {
+  static String getExpMessage(exceptionCode) {
     String errorMessage;
     switch (exceptionCode) {
-      case AuthExceptionsTypes.invalidEmail:
+      case ExceptionsType.invalidEmail:
         errorMessage = "Your email address appears to be malformed.";
         break;
-      case AuthExceptionsTypes.wrongPassword:
+      case ExceptionsType.wrongPassword:
         errorMessage =
             "The password is invalid or the user does not have a password.";
         break;
-      case AuthExceptionsTypes.weekPassword:
+      case ExceptionsType.weekPassword:
         errorMessage =
             "The password is invalid or the user does not have a password.";
         break;
-      case AuthExceptionsTypes.userNotFound:
+      case ExceptionsType.userNotFound:
         errorMessage = "User with this email doesn't exist.";
         break;
-      case AuthExceptionsTypes.userDisabled:
+      case ExceptionsType.userDisabled:
         errorMessage = "User with this email has been disabled.";
         break;
-      case AuthExceptionsTypes.tooManyRequests:
+      case ExceptionsType.tooManyRequests:
         errorMessage = "Too many requests. Try again later.";
         break;
-      case AuthExceptionsTypes.operationNotAllowed:
+      case ExceptionsType.operationNotAllowed:
         errorMessage = "Signing in with Email and Password is not enabled.";
         break;
-      case AuthExceptionsTypes.emailAlreadyExists:
+      case ExceptionsType.emailAlreadyExists:
         errorMessage =
             "The email has already been registered. Please login or reset your password.";
         break;
-      case AuthExceptionsTypes.notValidUserInput:
+      case ExceptionsType.notValidUserInput:
         errorMessage =
             "please make sure you entered all info or correct wrong info...";
         break;
-      case AuthExceptionsTypes.authInvalidContinueUri:
+      case ExceptionsType.authInvalidContinueUri:
         errorMessage = "The continue URL provided in the request is invalid.";
         break;
-      case AuthExceptionsTypes.authUnauthorizedContinueUri:
+      case ExceptionsType.authUnauthorizedContinueUri:
         errorMessage =
             "The domain of the continue URL is not whitelisted. Whitelist the domain in the Firebase console.";
         break;
-      case AuthExceptionsTypes.authMissingIosBundleId:
+      case ExceptionsType.authMissingIosBundleId:
         errorMessage =
             "An iOS Bundle ID must be provided if an App Store ID is provided.";
         break;
-      case AuthExceptionsTypes.authInvalidEmail:
+      case ExceptionsType.authInvalidEmail:
         errorMessage = "Thrown if the email address is not valid.";
         break;
+      case ExceptionsType.unavailable:
+        return 'Service is currently unavailable. Please try again later.';
+      case ExceptionsType.permissionDenied:
+        return 'You do not have permission to perform this action.';
+      case ExceptionsType.notFound:
+        return 'The requested document or collection was not found.';
+      case ExceptionsType.alreadyExists:
+        return 'The document already exists.';
+      case ExceptionsType.cancelled:
+        return 'The operation was cancelled.';
+      case ExceptionsType.deadlineExceeded:
+        return 'The operation took too long to complete. Please try again.';
+      case ExceptionsType.invalidArgument:
+        return 'An invalid argument was provided.';
       default:
-        errorMessage = "An undefined Error happened.";
+        errorMessage = "An undefined Error happened, please try again later.";
     }
 
     return errorMessage;

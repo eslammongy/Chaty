@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/theme/theme_data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/settings/cubit/settings_cubit.dart';
-import 'package:chaty/features/settings/view/message_font_toggels.dart';
-import 'package:chaty/features/settings/view/widgets/accent_color_toggels.dart';
+import 'package:chaty/features/settings/view/message_font_toggles.dart';
+import 'package:chaty/features/settings/view/widgets/accent_color_toggles.dart';
 
 class SettingsBottomSheet extends StatelessWidget {
   const SettingsBottomSheet({super.key});
@@ -52,10 +52,12 @@ class SettingsBottomSheet extends StatelessWidget {
                       onChanged: (value) {
                         settingCubit.isLight = value;
                         Future.delayed(const Duration(milliseconds: 100), () {
+                          debugPrint(
+                              "Theme Switcher:: ${settingCubit.isLight}");
                           if (value) {
-                            settingCubit.switchAppTheme(getLightThemeData());
+                            settingCubit.switchAppTheme(lightThemeData());
                           } else {
-                            settingCubit.switchAppTheme(getDarkThemeData());
+                            settingCubit.switchAppTheme(darkThemeData());
                           }
                         });
                       },

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:chaty/core/errors/exp_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,7 +14,7 @@ class AuthRepoImplementation implements AuthRepo {
   });
 
   @override
-  Future<Either<AuthExceptionsTypes, UserModel>> signInWithGoogle() async {
+  Future<Either<ExceptionsType, UserModel>> signInWithGoogle() async {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
@@ -27,14 +26,15 @@ class AuthRepoImplementation implements AuthRepo {
       final userCredential =
           await firebaseAuth.signInWithCredential(credential);
       if (userCredential.user == null) {
-        return left(AuthExceptionsTypes.undefined);
+        return left(ExceptionsType.undefined);
       }
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
-    } on PlatformException catch (ex) {
-      return left(AuthExceptionHandler.handleException(ex.message));
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
@@ -49,61 +49,48 @@ class AuthRepoImplementation implements AuthRepo {
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, UserModel>> signUpWithEmail(
+  Future<Either<ExceptionsType, UserModel>> signUpWithEmail(
       {required String email, required String password}) async {
     try {
       final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
       if (userCredential.user == null) {
-        return left(AuthExceptionsTypes.undefined);
+        return left(ExceptionsType.undefined);
       }
       final userModel = UserModel(
           uId: userCredential.user?.uid, email: email, password: password);
       return right(userModel);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
     } catch (error) {
-      return left(AuthExceptionsTypes.undefined);
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, UserModel>> signInWithEmailPass(
+  Future<Either<ExceptionsType, UserModel>> signInWithEmailPass(
       {required String email, required String password}) async {
     try {
       final userCredential = await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
 
       if (userCredential.user == null) {
-        return left(AuthExceptionsTypes.undefined);
+        return left(ExceptionsType.undefined);
       }
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
     } catch (error) {
-      return left(
-          AuthExceptionHandler.handleException(AuthExceptionsTypes.undefined));
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, bool>> resetUserPassword(
-      {required String email}) async {
-    try {
-      await firebaseAuth.sendPasswordResetEmail(email: email);
-      return right(true);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
-    } catch (e) {
-      return left(
-          AuthExceptionHandler.handleException(AuthExceptionsTypes.undefined));
-    }
-  }
-
-  @override
-  Future<Either<AuthExceptionsTypes, bool>> submitUserPhoneNumber({
+  Future<Either<ExceptionsType, bool>> submitUserPhoneNumber({
     required String phoneNumber,
     required Function(String verifyCode) setVerificationCode,
     required Function(FirebaseAuthException authException) verificationFailed,
@@ -123,15 +110,16 @@ class AuthRepoImplementation implements AuthRepo {
         verificationFailed: verificationFailed,
       );
       return right(true);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
     } catch (error) {
-      return left(AuthExceptionsTypes.undefined);
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 
   @override
-  Future<Either<AuthExceptionsTypes, UserModel>> signInWithPhoneNumber({
+  Future<Either<ExceptionsType, UserModel>> signInWithPhoneNumber({
     required String otpCode,
     required String verificationId,
   }) async {
@@ -143,15 +131,44 @@ class AuthRepoImplementation implements AuthRepo {
           await firebaseAuth.signInWithCredential(phoneAuthCredential);
 
       if (userCredential.user == null) {
-        return left(AuthExceptionsTypes.undefined);
+        return left(ExceptionsType.undefined);
       }
 
       final userModel = _fillUserModel(userCredential.user!);
       return right(userModel);
-    } on FirebaseAuthException catch (error) {
-      return left(AuthExceptionHandler.handleException(error.code));
     } catch (error) {
-      return left(AuthExceptionsTypes.undefined);
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
+    }
+  }
+
+  @override
+  Future<Either<ExceptionsType, String?>> logout() async {
+    try {
+      final userId = firebaseAuth.currentUser?.uid;
+      await firebaseAuth.signOut();
+      return right(userId);
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
+    }
+  }
+
+  @override
+  Future<Either<ExceptionsType, String?>> resetUserPassword(
+      {required String email}) async {
+    try {
+      await firebaseAuth.sendPasswordResetEmail(email: email);
+      return right(email);
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
     }
   }
 }

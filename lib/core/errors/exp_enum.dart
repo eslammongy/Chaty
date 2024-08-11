@@ -1,4 +1,4 @@
-enum AuthExceptionsTypes {
+enum ExceptionsType {
   emailAlreadyExists,
   wrongPassword,
   weekPassword,
@@ -12,5 +12,13 @@ enum AuthExceptionsTypes {
   authInvalidEmail,
   authUnauthorizedContinueUri,
   authMissingIosBundleId,
-  authInvalidContinueUri
+  authInvalidContinueUri,
+  unavailable,
+  permissionDenied,
+  notFound,
+  alreadyExists,
+  cancelled,
+  deadlineExceeded,
+  invalidArgument,
+  unknown,
 }

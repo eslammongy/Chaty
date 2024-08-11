@@ -5,47 +5,51 @@ import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:chaty/features/users/data/models/user_model.dart';
 
 class FriendsListItem extends StatelessWidget {
-  const FriendsListItem({super.key, required this.user});
+  const FriendsListItem({super.key, required this.user, this.onTap});
   final UserModel user;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
-      elevation: 0,
-      child: SizedBox(
-        height: 80.h,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
-          child: Row(
-            children: [
-              const CacheNetworkImg(
-                imgUrl: dummyImageUrl,
-                radius: 25,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      user.name ?? dummyName,
-                      style: theme.textTheme.bodyLarge
-                          ?.copyWith(fontWeight: FontWeight.w600),
-                    ),
-                    Text(
-                      user.email ?? dummyEmail,
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(color: theme.colorScheme.surfaceTint),
-                    ),
-                  ],
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        elevation: 1,
+        child: SizedBox(
+          height: 80.h,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
+            child: Row(
+              children: [
+                CacheNetworkImg(
+                  imgUrl: user.imageUrl ?? dummyImageUrl,
+                  radius: 25,
                 ),
-              )
-            ],
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.name ?? dummyName,
+                        style: theme.textTheme.bodyLarge
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        user.email ?? dummyEmail,
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(color: theme.colorScheme.surfaceTint),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

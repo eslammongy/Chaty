@@ -2,25 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:chaty/core/utils/helper.dart';
 
 class CustomTextInputField extends StatelessWidget {
-  const CustomTextInputField({
-    Key? key,
-    required this.textEditingController,
-    this.hint,
-    this.prefix,
-    this.autoFocus = false,
-    this.textInputType = TextInputType.text,
-    this.maxLines = 1,
-    this.isTextPassword = false,
-    this.textColor,
-    this.suffix,
-    this.initText,
-    this.height = 55.0,
-    this.onSubmitted,
-    this.onChange,
-    this.bkColor,
-    this.fieldRoundedRadius,
-    this.focusColor,
-  }) : super(key: key);
+  const CustomTextInputField(
+      {Key? key,
+      required this.textEditingController,
+      this.hint,
+      this.prefix,
+      this.autoFocus = false,
+      this.textInputType = TextInputType.text,
+      this.maxLines = 1,
+      this.isTextPassword = false,
+      this.textColor,
+      this.suffix,
+      this.initText,
+      this.height = 55.0,
+      this.onSubmitted,
+      this.onChange,
+      this.bkColor,
+      this.fieldRoundedRadius,
+      this.focusColor,
+      this.enabled = true})
+      : super(key: key);
 
   final TextEditingController textEditingController;
   final String? initText;
@@ -38,11 +39,11 @@ class CustomTextInputField extends StatelessWidget {
   final Color? bkColor;
   final Color? focusColor;
   final BorderRadius? fieldRoundedRadius;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    textEditingController.text = initText ?? "";
     return SizedBox(
       height: height,
       child: Card(
@@ -55,6 +56,7 @@ class CustomTextInputField extends StatelessWidget {
           autofocus: autoFocus,
           obscureText: isTextPassword ?? false,
           maxLines: maxLines,
+          enabled: enabled,
           textAlign: TextAlign.start,
           textAlignVertical: TextAlignVertical.center,
           controller: textEditingController,

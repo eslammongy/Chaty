@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum MsgType { text, image }
+enum MsgType { text, image, file }
 
 class MessageModel {
   final String? text;
   final String? senderId;
-  final DateTime? dateTime;
+  final Timestamp? dateTime;
   final MsgType msgType;
 
   MessageModel({
@@ -19,24 +20,32 @@ class MessageModel {
     return <String, dynamic>{
       'text': text,
       'senderId': senderId,
-      'dateTime': dateTime?.millisecondsSinceEpoch,
-      'msgType': msgType,
+      'dateTime': dateTime,
+      'msgType': msgType.name,
     };
   }
 
   factory MessageModel.fromMap(Map<String, dynamic> map) {
     return MessageModel(
-      text: map['text'] != null ? map['text'] as String : null,
-      senderId: map['senderId'] != null ? map['senderId'] as String : null,
-      dateTime: map['dateTime'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['dateTime'] as int)
-          : null,
-      msgType: map['msgType'],
+      text: map['text'],
+      senderId: map['senderId'],
+      dateTime: map['dateTime'],
+      msgType: MsgType.values.byName(map['msgType']),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory MessageModel.fromJson(String source) =>
-      MessageModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  static buildMsg(
+    String text,
+    String senderId, {
+    MsgType type = MsgType.text,
+  }) {
+    return MessageModel(
+      text: text,
+      msgType: type,
+      senderId: senderId,
+      dateTime: Timestamp.now(),
+    );
+  }
 }

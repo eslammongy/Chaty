@@ -1,8 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:chaty/features/chats/data/repo/chat_repo.dart';
 import 'package:chaty/features/auth/data/repos/auth_repo.dart';
 import 'package:chaty/features/users/data/repos/user_repo.dart';
 import 'package:chaty/features/settings/data/settings_repo.dart';
+import 'package:chaty/features/chats/data/repo/chat_repo_impl.dart';
 import 'package:chaty/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:chaty/features/users/data/repos/user_repo_impl.dart';
 import 'package:chaty/features/settings/data/settings_repo_impl.dart';
@@ -17,6 +19,10 @@ Future<void> initServices() async {
 
   getIt.registerSingleton<UserRepo>(
     UserRepoImpl(firebaseAuth: getIt()),
+  );
+
+  getIt.registerSingleton<ChatRepo>(
+    ChatRepoImpl(),
   );
 
   getIt.registerSingleton<SettingsRepo>(

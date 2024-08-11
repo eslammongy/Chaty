@@ -19,7 +19,7 @@ class FloatingBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 55.w, vertical: 10.h),
+      margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
       elevation: 4,
       shadowColor: Colors.indigo.shade800,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

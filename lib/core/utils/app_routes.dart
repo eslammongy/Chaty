@@ -1,10 +1,10 @@
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/user_pref.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
-import 'package:chaty/features/chats/view/screen/chat_screen.dart';
+import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/dashboard/view/dashboard_screen.dart';
 import 'package:chaty/features/auth/view/screens/signup_screen.dart';
 import 'package:chaty/features/auth/view/screens/sign_in_screen.dart';
+import 'package:chaty/features/chats/view/screen/chatting_screen.dart';
 import 'package:chaty/features/users/view/screens/profile_screen.dart';
 import 'package:chaty/features/auth/view/widgets/forget_password.dart';
 import 'package:chaty/features/chats/view/screen/chat_list_screen.dart';
@@ -21,6 +21,7 @@ abstract class AppRouter {
   static String profileScreen = '/profileScreen';
   static String chatsListScreen = '/chatsListScreen';
   static String chatScreen = '/chatScreen';
+  static String settingsScreen = '/settingsScreen';
 
   static bool isUserLogin = false;
   static setInitialRoute() async {
@@ -38,8 +39,6 @@ abstract class AppRouter {
           if (!isUserLogin) {
             return const SignInScreen();
           } else {
-            /*  final receiver = state.extra;
-            return ChatScreen(receiver: receiver as UserModel); */
             return const DashboardScreen();
           }
         },
@@ -79,8 +78,8 @@ abstract class AppRouter {
       GoRoute(
         path: chatScreen,
         builder: (context, state) {
-          final receiver = state.extra;
-          return ChatScreen(receiver: receiver as UserModel);
+          final chat = state.extra;
+          return ChattingScreen(chat: chat as ChatModel);
         },
       ),
     ]);

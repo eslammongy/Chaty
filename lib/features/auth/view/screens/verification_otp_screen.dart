@@ -29,7 +29,8 @@ class VerificationOtpScreen extends StatelessWidget {
       listener: (context, state) async {
         if (state is UserCreatedState) {
           await SharedPref.keepUserAuthenticated(isLogged: true).then((value) {
-            GoRouter.of(context).pushReplacement(AppRouter.profileScreen);
+             AppRouter.isUserLogin = true;
+            GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
           });
         }
         if (state is UserFailureState) {
@@ -42,7 +43,7 @@ class VerificationOtpScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: theme.colorScheme.background,
+            backgroundColor: theme.colorScheme.surface,
             title: Text(
               "Verification Otp",
               style: theme.textTheme.titleLarge,
@@ -55,19 +56,19 @@ class VerificationOtpScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 10.h),
+                  SizedBox(height: 25.h),
                   Text(
                     "please enter the otp code sent to your phone",
-                    style: theme.textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.titleLarge,
                   ),
                   const SizedBox(height: 10),
-                  SizedBox(
-                      height: 40.h,
-                      child: SvgPicture.asset(
-                        AppAssetsManager.verificationCodeImg,
-                        fit: BoxFit.cover,
-                      )),
-                  SizedBox(height: 5.h),
+                  SvgPicture.asset(
+                    AppAssetsManager.verificationCodeImg,
+                    fit: BoxFit.cover,
+                    height: 200.h,
+                  ),
+                  SizedBox(height: 25.h),
                   Pinput(
                     controller: pinController,
                     focusNode: focusNode,

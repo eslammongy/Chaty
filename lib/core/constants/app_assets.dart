@@ -9,4 +9,7 @@ abstract class AppAssetsManager {
   static const String phoneIcon = "assets/svg/phone_icon.svg";
   static const String loading = "assets/images/loading_spiner.gif";
   static const String phoneAuthImg = "assets/images/phone_auth.png";
+  static const String emptyInbox = "assets/svg/empty_inbox.svg";
+  static const String landscapePlaceholder =
+      "assets/images/landscape_placeholder.png";
 }

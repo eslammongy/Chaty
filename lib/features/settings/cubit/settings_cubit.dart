@@ -14,7 +14,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
   static SettingsCubit get(context) => BlocProvider.of(context);
   final SettingsRepo settingsRepo;
 
-  ThemeData currentTheme = getDarkThemeData();
+  ThemeData currentTheme = darkThemeData();
   bool isLight = false;
   Color msgBkColor = CommonColorPalette.primaryColor;
   String msgFont = ubuntuSans;
@@ -23,18 +23,10 @@ class SettingsCubit extends Cubit<SettingsStates> {
     try {
       settingsRepo.switchAppTheme(theme: theme);
       currentTheme = theme;
-      setThemeSwitcher();
+      isLight = currentTheme == lightThemeData();
       emit(SettingsSwitchThemeState());
     } catch (e) {
       emit(SettingsFailureState(error: e.toString()));
-    }
-  }
-
-  void setThemeSwitcher() {
-    if (currentTheme == getLightThemeData()) {
-      isLight = true;
-    } else {
-      isLight = false;
     }
   }
 
@@ -61,13 +53,8 @@ class SettingsCubit extends Cubit<SettingsStates> {
   getSelectedTheme() {
     try {
       final theme = settingsRepo.getThemeData();
-      if (theme == null) {
-        emit(SettingsFailureState(
-            error: "There is an error happened when set your selected theme"));
-        return;
-      }
       currentTheme = theme;
-      setThemeSwitcher();
+      isLight = currentTheme == lightThemeData();
     } catch (e) {
       emit(SettingsFailureState(error: e.toString()));
     }
@@ -76,11 +63,6 @@ class SettingsCubit extends Cubit<SettingsStates> {
   getMsgBKColor() {
     try {
       final color = settingsRepo.getMsgBKColor();
-      if (color == null) {
-        emit(SettingsFailureState(
-            error: "There is an error happened when set your selected color"));
-        return;
-      }
       msgBkColor = color;
     } catch (e) {
       emit(SettingsFailureState(error: e.toString()));
@@ -90,12 +72,6 @@ class SettingsCubit extends Cubit<SettingsStates> {
   getSelectedMsgFont() {
     try {
       final font = settingsRepo.getMessageFont();
-      if (font == null) {
-        emit(SettingsFailureState(
-            error:
-                "There is an error happened when set your selected msg font"));
-        return;
-      }
       msgFont = font;
     } catch (e) {
       emit(SettingsFailureState(error: e.toString()));

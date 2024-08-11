@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'package:chaty/features/chats/data/models/message.dart';
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class ChatModel {
   String? id;
-  List<String>? participants;
+  final List<String>? participants;
   List<MessageModel>? messages;
   ChatModel({
     this.id,
@@ -16,7 +15,7 @@ class ChatModel {
     return <String, dynamic>{
       'id': id,
       'participants': participants,
-      'messages': messages?.map((msg) => msg.toMap()).toList(),
+      'messages': messages
     };
   }
 
@@ -24,20 +23,13 @@ class ChatModel {
     return ChatModel(
       id: map['id'] != null ? map['id'] as String : null,
       participants: map['participants'] != null
-          ? List<String>.from((map['participants'] as List<String>))
-          : null,
+          ? List<String>.from((map['participants'] as List<dynamic>))
+          : [],
       messages: map['messages'] != null
-          ? List<MessageModel>.from(
-              (map['messages'] as List<int>).map<MessageModel?>(
-                (x) => MessageModel.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
+          ? List.from(map['messages'].map((msg) => MessageModel.fromMap(msg)))
+          : [],
     );
   }
 
   String toJson() => json.encode(toMap());
-
-  factory ChatModel.fromJson(String source) =>
-      ChatModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

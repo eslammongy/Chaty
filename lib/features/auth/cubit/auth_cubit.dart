@@ -16,13 +16,13 @@ class AuthCubit extends Cubit<AuthStates> {
     try {
       var result = await authRepo.signInWithGoogle();
       result.fold((errorCode) {
-        var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
+        var errorMsg = ExceptionHandler.getExpMessage(errorCode);
         emit(AuthGenericFailureState(errorMsg));
       }, (user) async {
         emit(SignInWithGoogleSuccessState(userModel: user));
       });
     } catch (exp) {
-      final errorMsg = AuthExceptionHandler.generateExceptionMessage(exp);
+      final errorMsg = ExceptionHandler.getExpMessage(exp);
       debugPrint("SignIn CUBIT Error-$errorMsg");
       emit(AuthGenericFailureState(errorMsg));
     }
@@ -37,7 +37,7 @@ class AuthCubit extends Cubit<AuthStates> {
     var result =
         await authRepo.signUpWithEmail(email: email, password: password);
     result.fold((errorCode) {
-      final errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
+      final errorMsg = ExceptionHandler.getExpMessage(errorCode);
       emit(AuthGenericFailureState(errorMsg));
     }, (userModel) async {
       userModel.name = name;
@@ -53,21 +53,21 @@ class AuthCubit extends Cubit<AuthStates> {
     var result =
         await authRepo.signInWithEmailPass(email: email, password: password);
     result.fold((errorCode) {
-      final errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
+      final errorMsg = ExceptionHandler.getExpMessage(errorCode);
       emit(AuthGenericFailureState(errorMsg));
     }, (userModel) async {
       emit(SignInSuccessState(userModel: userModel));
     });
   }
 
-  Future resetUserPassword(String email) async {
+  Future resetUserPassword({required String email}) async {
     emit(AuthLoadingState());
     var result = await authRepo.resetUserPassword(email: email);
     result.fold((errorCode) {
-      final errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
+      final errorMsg = ExceptionHandler.getExpMessage(errorCode);
       emit(AuthGenericFailureState(errorMsg));
-    }, (right) {
-      emit(ResetPasswordSuccessState());
+    }, (email) {
+      emit(UserResetPasswordState(email: email));
     });
   }
 
@@ -79,8 +79,7 @@ class AuthCubit extends Cubit<AuthStates> {
         emit(PhoneNumberSubmittedState(verificationId: verifyCode));
       },
       verificationFailed: (authException) {
-        final errorMsg =
-            AuthExceptionHandler.generateExceptionMessage(authException);
+        final errorMsg = ExceptionHandler.getExpMessage(authException);
         emit(AuthGenericFailureState(errorMsg));
       },
     );
@@ -95,10 +94,21 @@ class AuthCubit extends Cubit<AuthStates> {
       verificationId: verificationId,
     );
     result.fold((errorCode) {
-      var errorMsg = AuthExceptionHandler.generateExceptionMessage(errorCode);
+      var errorMsg = ExceptionHandler.getExpMessage(errorCode);
       emit(AuthGenericFailureState(errorMsg));
     }, (userModel) async {
       emit(PhoneOtpCodeVerifiedState(userModel: userModel));
+    });
+  }
+
+  Future<void> logout() async {
+    emit(AuthLoadingState());
+    var result = await authRepo.logout();
+    result.fold((errorCode) {
+      var errorMsg = ExceptionHandler.getExpMessage(errorCode);
+      emit(AuthGenericFailureState(errorMsg));
+    }, (userId) async {
+      emit(UserLogoutState(userId: userId));
     });
   }
 }

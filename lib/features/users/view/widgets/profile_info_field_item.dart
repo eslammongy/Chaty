@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:chaty/features/users/cubit/user_cubit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
 class ProfileInfoFieldItem extends StatelessWidget {
@@ -8,17 +10,18 @@ class ProfileInfoFieldItem extends StatelessWidget {
     required this.textController,
     required this.icon,
     this.height = 50.0,
-    this.onSubmitted,
+    this.enabled = true,
   });
   final String text;
   final TextEditingController textController;
   final IconData icon;
+  final bool enabled;
   final double height;
-  final Function(String?)? onSubmitted;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    textController.text = text;
     return Card(
       elevation: 0,
       color: theme.colorScheme.surface,
@@ -31,16 +34,36 @@ class ProfileInfoFieldItem extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: CustomTextInputField(
             textEditingController: textController,
-            initText: text,
+            // initText: textController.text = text,
             height: height,
+            enabled: enabled,
             prefix: Icon(
               icon,
               color: theme.colorScheme.secondary,
             ),
-            onSubmitted: onSubmitted,
+            onSubmitted: (value) {
+              onSubmitted(context, value);
+            },
           ),
         ),
       ),
     );
+  }
+
+  void onSubmitted(BuildContext context, String? value) async {
+    final profileCubit = UserCubit.get(context);
+    switch (icon) {
+      case FontAwesomeIcons.user:
+        profileCubit.user?.name = value;
+        break;
+      case FontAwesomeIcons.envelope:
+        profileCubit.user?.email = value;
+        break;
+      case FontAwesomeIcons.phone:
+        profileCubit.user?.phone = value;
+        break;
+      default:
+    }
+    await profileCubit.updateUserProfile();
   }
 }
