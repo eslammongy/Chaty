@@ -16,7 +16,6 @@ import 'package:chaty/core/utils/services_locator.dart' as injectable;
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
   await _setupAppConfiguration(widgetsBinding);
 }
 
