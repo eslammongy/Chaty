@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 const String dummyBio = "bio";
 const String dummyName = "name";
 const String dummyEmail = "email";

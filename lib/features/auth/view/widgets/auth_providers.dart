@@ -6,8 +6,8 @@ import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/features/auth/view/widgets/build_login_option_btn.dart';
 
-class SignInWithSocialAccounts extends StatelessWidget {
-  const SignInWithSocialAccounts({
+class AuthProviders extends StatelessWidget {
+  const AuthProviders({
     Key? key,
   }) : super(key: key);
 
