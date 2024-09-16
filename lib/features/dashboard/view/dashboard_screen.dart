@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/core/services/notification_services.dart';
-import 'package:chaty/features/users/view/screens/friends_screen.dart';
-import 'package:chaty/features/users/view/screens/profile_screen.dart';
+import 'package:chaty/features/user/view/screens/friends_screen.dart';
+import 'package:chaty/features/user/view/screens/profile_screen.dart';
 import 'package:chaty/features/chats/view/screen/chat_list_screen.dart';
 import 'package:chaty/features/dashboard/view/widgets/bottom_nav_bar.dart';
 

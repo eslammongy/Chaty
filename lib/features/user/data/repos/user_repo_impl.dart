@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:chaty/core/errors/auth_exceptions_handler.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
 
 class UserRepoImpl implements UserRepo {
   final FirebaseAuth firebaseAuth;

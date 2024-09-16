@@ -8,8 +8,8 @@ import 'package:chaty/core/utils/user_pref.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/features/auth/cubit/auth_cubit.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
 
 class VerificationOtpScreen extends StatelessWidget {
   final String verifyId;

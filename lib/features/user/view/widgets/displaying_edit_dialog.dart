@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
-import 'package:chaty/features/users/view/widgets/info_dialog_title.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
+import 'package:chaty/features/user/view/widgets/info_dialog_title.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
 Future displayingEditInfoDialog(BuildContext context,

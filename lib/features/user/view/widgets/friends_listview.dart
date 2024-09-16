@@ -3,11 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/app_routes.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
-import 'package:chaty/features/users/view/widgets/friends_list_item.dart';
+import 'package:chaty/features/user/view/widgets/friends_list_item.dart';
 
 class FriendsListView extends StatelessWidget {
   const FriendsListView({super.key});

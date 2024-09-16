@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
 
 class FriendsListItem extends StatelessWidget {
   const FriendsListItem({super.key, required this.user, this.onTap});

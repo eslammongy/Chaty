@@ -6,16 +6,16 @@ import 'package:chaty/core/utils/user_pref.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/features/auth/cubit/auth_cubit.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/core/widgets/customized_text_btn.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:chaty/features/users/view/widgets/profile_bio.dart';
-import 'package:chaty/features/users/view/widgets/profile_settings.dart';
-import 'package:chaty/features/users/view/widgets/confirm_user_logout.dart';
-import 'package:chaty/features/users/view/widgets/profile_image_section.dart';
-import 'package:chaty/features/users/view/widgets/profile_info_field_item.dart';
+import 'package:chaty/features/user/view/widgets/profile_bio.dart';
+import 'package:chaty/features/user/view/widgets/profile_settings.dart';
+import 'package:chaty/features/user/view/widgets/confirm_user_logout.dart';
+import 'package:chaty/features/user/view/widgets/profile_image_section.dart';
+import 'package:chaty/features/user/view/widgets/profile_info_field_item.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

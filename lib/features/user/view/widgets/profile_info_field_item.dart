@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 

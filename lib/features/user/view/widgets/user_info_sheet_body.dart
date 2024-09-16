@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/customized_text_btn.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
 
 class UserInfoSheetBody extends StatelessWidget {
   const UserInfoSheetBody({super.key, required this.user});

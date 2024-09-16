@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:toastification/toastification.dart';
 import 'package:chaty/core/widgets/loading_state_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/users/view/widgets/custom_text_btn.dart';
+import 'package:chaty/features/user/view/widgets/custom_text_btn.dart';
 
 /// this is the default box shadow for the card items
 get defBoxShadows => [

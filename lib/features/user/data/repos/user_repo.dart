@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:chaty/core/errors/exp_enum.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
 
 abstract class UserRepo {
   Future<Either<ExceptionsType, UserModel>> createNewUserProfile(

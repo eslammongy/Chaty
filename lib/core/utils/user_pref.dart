@@ -14,11 +14,11 @@ class SharedPref {
     await sharedPreferences.setBool(userAuthCheckerKey, isLogged);
   }
 
-  static Future<void> saveFirebaseMsgToken({required String token}) async {
+  static Future<void> saveFCMToken({required String token}) async {
     await sharedPreferences.setString(firebaseMsgToken, token);
   }
 
-  static String? getFirebaseMsgToken() {
+  static String? getFCMToken() {
     return sharedPreferences.getString(selectedThemeKey) ?? "DARK_THEME";
   }
 

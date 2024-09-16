@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:chaty/features/users/view/widgets/custom_text_button.dart';
+import 'package:chaty/features/user/view/widgets/custom_text_button.dart';
 
 confirmUserLogout(BuildContext context, {required Function() userLogout}) {
   final theme = Theme.of(context);

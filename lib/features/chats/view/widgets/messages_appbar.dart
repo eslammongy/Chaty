@@ -5,8 +5,8 @@ import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
-import 'package:chaty/features/users/view/widgets/user_info_sheet_body.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
+import 'package:chaty/features/user/view/widgets/user_info_sheet_body.dart';
 
 class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MessagesAppBar({super.key, required this.receiver});
