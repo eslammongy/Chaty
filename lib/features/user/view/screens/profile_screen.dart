@@ -12,7 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/core/widgets/customized_text_btn.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/user/view/widgets/profile_bio.dart';
-import 'package:chaty/features/user/view/widgets/profile_settings.dart';
 import 'package:chaty/features/user/view/widgets/confirm_user_logout.dart';
 import 'package:chaty/features/user/view/widgets/profile_image_section.dart';
 import 'package:chaty/features/user/view/widgets/profile_info_field_item.dart';
@@ -43,13 +42,6 @@ class ProfileScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: theme.scaffoldBackgroundColor,
-            actions: const [
-              ProfileSettings(),
-              SizedBox(width: 10),
-            ],
-          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
@@ -57,11 +49,11 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  const SizedBox(height: 60),
                   if (state is UserLoadingState) displayLinearIndicator(theme),
                   const SizedBox(height: 20),
                   ProfileImageSection(
-                    profileImgUrl:
-                        profileCubit.user?.imageUrl ?? dummyImageUrl,
+                    profileImgUrl: profileCubit.user?.imageUrl ?? dummyImageUrl,
                   ),
                   const SizedBox(height: 20),
                   ProfileBio(pioTxtController: pioTxtController),

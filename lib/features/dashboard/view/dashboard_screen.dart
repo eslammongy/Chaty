@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/core/services/notification_services.dart';
+import 'package:chaty/features/settings/cubit/settings_cubit.dart';
 import 'package:chaty/features/user/view/screens/friends_screen.dart';
 import 'package:chaty/features/user/view/screens/profile_screen.dart';
 import 'package:chaty/features/chats/view/screen/chat_list_screen.dart';
+import 'package:chaty/features/settings/view/screen/settings_screen.dart';
 import 'package:chaty/features/dashboard/view/widgets/bottom_nav_bar.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -19,8 +21,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     const ChatListScreen(),
     const FriendsScreen(),
     const ProfileScreen(),
+    const SettingsScreen(),
   ];
-  int _selectedPage = 0;
 
   @override
   void initState() {
@@ -35,21 +37,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final settingsCubit = SettingsCubit.get(context);
     return Scaffold(
       extendBody: true,
-      body: listOfScreens[_selectedPage],
+      body: listOfScreens[settingsCubit.currentPageIndex],
       bottomNavigationBar: FloatingBottomNavBar(
-        currentIndex: _selectedPage,
+        currentIndex: settingsCubit.currentPageIndex,
         getCurrentIndex: (int index) {
-          onTapNavClicked(index);
+          onTapNavClicked(settingsCubit, index);
         },
       ),
     );
   }
 
-  onTapNavClicked(int index) {
+  onTapNavClicked(SettingsCubit settingsCubit, int index) {
     setState(() {
-      _selectedPage = index;
+      settingsCubit.currentPageIndex = index;
     });
   }
 }

@@ -18,13 +18,16 @@ class AuthRepoImplementation implements AuthRepo {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
+      debugPrint("Auth WithGoogle: ${googleAccount?.displayName}");
       GoogleSignInAuthentication? authentication =
           await googleAccount?.authentication;
+
       AuthCredential credential = GoogleAuthProvider.credential(
           idToken: authentication?.idToken,
           accessToken: authentication?.accessToken);
       final userCredential =
           await firebaseAuth.signInWithCredential(credential);
+
       if (userCredential.user == null) {
         return left(ExceptionsType.undefined);
       }

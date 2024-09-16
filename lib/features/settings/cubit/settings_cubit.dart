@@ -14,6 +14,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
   static SettingsCubit get(context) => BlocProvider.of(context);
   final SettingsRepo settingsRepo;
 
+  int currentPageIndex = 0;
   ThemeData currentTheme = darkThemeData();
   bool isLight = false;
   Color msgBkColor = CommonColorPalette.primaryColor;

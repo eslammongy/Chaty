@@ -28,20 +28,18 @@ class SignInScreen extends StatelessWidget {
           await userInfoCubit
               .createNewUserProfile(user: state.userModel)
               .then((value) async {
+            if (!context.mounted) return;
             await _keepUserLoggedIn(context);
           });
         }
         if (state is SignInSuccessState) {
-          Future(() async {
-            await _getUserInfo(context);
-          });
+          if (!context.mounted) return;
+          await _getUserInfo(context);
         }
         if (state is AuthGenericFailureState) {
-          Future(() {
-            //*pop the loading dialog
-            GoRouter.of(context).pop();
-            displaySnackBar(context, state.errorMsg);
-          });
+          if (!context.mounted) return;
+          GoRouter.of(context).pop();
+          displaySnackBar(context, state.errorMsg);
         }
       },
       builder: (context, state) {
@@ -54,14 +52,14 @@ class SignInScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 80.h,
+                      height: 60.h,
                     ),
                     const LoginScreenIntroSection(
                       introText: "Welcome Back",
                       subIntroText: "Sign in to continue",
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     SingInFrom(
                       emailTxtController: emailTxtController,
@@ -78,9 +76,7 @@ class SignInScreen extends StatelessWidget {
                     BlocListener<UserCubit, UserStates>(
                       listener: (context, state) async {
                         if (state is UserFetchedState) {
-                          Future(() async {
-                            _keepUserLoggedIn(context);
-                          });
+                          _keepUserLoggedIn(context);
                         }
                         if (state is UserFailureState) {
                           displaySnackBar(context, state.errorMsg);
@@ -99,13 +95,15 @@ class SignInScreen extends StatelessWidget {
 
   Future<void> _getUserInfo(BuildContext context) async {
     await UserCubit.get(context).fetchUserInfo().then((value) async {
+      if (!context.mounted) return;
       await _keepUserLoggedIn(context);
     });
   }
 
   Future<void> _keepUserLoggedIn(BuildContext context) async {
-     AppRouter.isUserLogin = true;
+    AppRouter.isUserLogin = true;
     await SharedPref.keepUserAuthenticated(isLogged: true).then((value) {
+      if (!context.mounted) return;
       GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
     });
   }

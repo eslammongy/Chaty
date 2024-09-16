@@ -56,6 +56,15 @@ class FloatingBottomNavBar extends StatelessWidget {
                 getCurrentIndex(2);
               },
             ),
+            _buildBottomNavItem(
+              context,
+              title: "Settings",
+              icon: FontAwesomeIcons.gear,
+              isActive: currentIndex == 3 ? true : false,
+              onTap: () {
+                getCurrentIndex(3);
+              },
+            ),
           ],
         ),
       ),

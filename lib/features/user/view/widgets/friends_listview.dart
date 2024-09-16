@@ -51,7 +51,7 @@ class FriendsListView extends StatelessWidget {
 
     chatCubit.openedChat ??=
         ChatModel(id: chatId, participants: [userId, friendId], messages: []);
-    Future(() => _navigateChatScreen(context, chatCubit));
+    if (context.mounted) _navigateChatScreen(context, chatCubit);
   }
 
   void _navigateChatScreen(BuildContext context, ChatCubit chatCubit) {
