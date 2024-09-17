@@ -15,3 +15,6 @@ const String selectedFontKey = "SELECTED_FONT_KEY";
 const String selectedAColorKey = "SELECTED_ACCENT_COLOR_KEY";
 const String userAuthCheckerKey = "UserAuthCheckerKey";
 const String firebaseMsgToken = "FIREBASE_MSG_TOKEN";
+
+const failureConnectionMsg =
+    "Sorry for the inconvenience. We are working on it, may be your internet connection is poor";

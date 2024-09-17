@@ -4,7 +4,6 @@ import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
-import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/user/view/widgets/friends_list_item.dart';
@@ -44,18 +43,17 @@ class FriendsListView extends StatelessWidget {
     BuildContext context,
     String userId,
     String friendId,
-  ) async {
-    final chatCubit = ChatCubit.get(context);
+  ) {
     final chatId = generateChatId(userId: userId, participantId: friendId);
-    chatCubit.openedChat = chatCubit.isChatExist(chatId);
-
-    chatCubit.openedChat ??=
-        ChatModel(id: chatId, participants: [userId, friendId], messages: []);
-    if (context.mounted) _navigateChatScreen(context, chatCubit);
+    final chat = ChatModel(
+      id: chatId,
+      participants: [userId, friendId],
+      messages: [],
+    );
+    if (context.mounted) _navigateChatScreen(context, chat);
   }
 
-  void _navigateChatScreen(BuildContext context, ChatCubit chatCubit) {
-    GoRouter.of(context)
-        .push(AppRouter.chatScreen, extra: chatCubit.openedChat);
+  void _navigateChatScreen(BuildContext context, ChatModel chat) {
+    GoRouter.of(context).push(AppRouter.chatScreen, extra: chat);
   }
 }

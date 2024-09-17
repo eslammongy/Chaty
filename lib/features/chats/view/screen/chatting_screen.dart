@@ -8,12 +8,17 @@ import 'package:chaty/features/chats/view/widgets/send_new_message.dart';
 import 'package:chaty/features/chats/view/widgets/chatting_state_handler.dart';
 
 class ChattingScreen extends StatelessWidget {
-  const ChattingScreen({super.key, required this.chat});
+  const ChattingScreen({
+    super.key,
+    required this.chat,
+  });
+
   final ChatModel chat;
 
   @override
   Widget build(BuildContext context) {
     final chatCubit = ChatCubit.get(context);
+    chatCubit.openedChat = chat;
     return Scaffold(
       appBar: MessagesAppBar(
         receiver: chatCubit.getChatParticipant(context, chat) ?? UserModel(),

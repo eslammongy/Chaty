@@ -33,7 +33,6 @@ class ChatCubit extends Cubit<ChatStates> {
   }
 
   Future<void> createNewChat({required ChatModel chat}) async {
-    //  emit(ChatLoadingState());
     final result = await chatRepo.createNewChatDoc(chat: chat);
     result.fold((exp) {
       final msg = ExceptionHandler.getExpMessage(exp);
@@ -58,6 +57,9 @@ class ChatCubit extends Cubit<ChatStates> {
   }
 
   Future<void> fetchChatMessages({required String chatId}) async {
+    if (isChatExist(chatId) == null) {
+      await createNewChat(chat: openedChat!);
+    }
     emit(ChatLoadingMsgState());
     List<MessageModel> messages = [];
     chatRepo.fetchAllChatMsgs(chatId: chatId).listen(
@@ -71,7 +73,6 @@ class ChatCubit extends Cubit<ChatStates> {
             },
           ).toList();
         }
-        debugPrint("Chat Cubit MS: ${messages.lastOrNull?.text}");
 
         emit(ChatFetchChatMsgsState(messages: messages));
       },
@@ -89,6 +90,7 @@ class ChatCubit extends Cubit<ChatStates> {
       final chat = listOFChats.firstWhere(
         (element) => element.id == chatId,
       );
+
       return chat;
     } catch (_) {
       return null;
