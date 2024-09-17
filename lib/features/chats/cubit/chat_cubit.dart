@@ -71,7 +71,7 @@ class ChatCubit extends Cubit<ChatStates> {
             },
           ).toList();
         }
-        debugPrint("Chat Cubit MS------: ${messages.lastOrNull?.text}");
+        debugPrint("Chat Cubit MS: ${messages.lastOrNull?.text}");
 
         emit(ChatFetchChatMsgsState(messages: messages));
       },

@@ -19,7 +19,7 @@ class FloatingBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
       elevation: 4,
       shadowColor: Colors.indigo.shade800,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -54,15 +54,6 @@ class FloatingBottomNavBar extends StatelessWidget {
               isActive: currentIndex == 2 ? true : false,
               onTap: () {
                 getCurrentIndex(2);
-              },
-            ),
-            _buildBottomNavItem(
-              context,
-              title: "Settings",
-              icon: FontAwesomeIcons.gear,
-              isActive: currentIndex == 3 ? true : false,
-              onTap: () {
-                getCurrentIndex(3);
               },
             ),
           ],
