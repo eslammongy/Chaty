@@ -52,8 +52,19 @@ class ChatCubit extends Cubit<ChatStates> {
       final msg = ExceptionHandler.getExpMessage(exp);
       emit(ChatFailureState(errorMsg: msg));
     }, (msg) {
+      _handleAddingChatToList(msg);
       emit(ChatSendingMsgState(msg: msg));
     });
+  }
+
+  /// Add the new message to the list of messages of the current chat if the chat has no messages yet.
+  /// This is used to handle the case when the user sends a new message to a chat that does not contain any messages yet.
+  /// If the chat already contains messages, this function does nothing.
+  void _handleAddingChatToList(MessageModel msg) {
+    if (openedChat!.messages!.isEmpty) {
+      openedChat!.messages!.add(msg);
+      listOFChats.add(openedChat!);
+    }
   }
 
   Future<void> fetchChatMessages({required String chatId}) async {
