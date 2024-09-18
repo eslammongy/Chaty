@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/constants.dart';
+import 'package:chaty/core/services/fcm_services.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,19 +27,15 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
           if (state is UserLoadingState) {
             showLoadingDialog(context, text: "loading profile info...");
           }
-          if (state is UserLoadAllFriendsState) {
-            Future(() async {
-              _closeLoadingIndicator(context);
-              if (ChatCubit.get(context).listOFChats.isEmpty) {
-                await ChatCubit.get(context).fetchAllUserChats();
-              }
-            });
+          if (state is UserLoadAllFriendsState && context.mounted) {
+            _closeLoadingIndicator(context);
+            if (ChatCubit.get(context).listOFChats.isEmpty) {
+              await ChatCubit.get(context).fetchAllUserChats();
+            }
           }
-          if (state is UserFailureState) {
-            Future(() {
-              _closeLoadingIndicator(context);
-              displayToastMsg(context, state.errorMsg);
-            });
+          if (state is UserFailureState && context.mounted) {
+            _closeLoadingIndicator(context);
+            displayToastMsg(context, state.errorMsg);
           }
         },
         builder: (context, state) {
@@ -62,9 +59,8 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CacheNetworkImg(
-                              imgUrl:
-                                  UserCubit.get(context).user?.imageUrl ??
-                                      dummyImageUrl,
+                              imgUrl: UserCubit.get(context).user?.imageUrl ??
+                                  dummyImageUrl,
                               radius: 26,
                             ),
                             const SizedBox(
@@ -82,6 +78,15 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                             const SizedBox(
                               width: 10,
                             ),
+                            InkWell(
+                              onTap: () async {
+                                await FCMService.sendNotifications(
+                                    sender: "eslam mongy",
+                                    msg: "welcome pro how are you doing today",
+                                    userId: "userId");
+                              },
+                              child: const Icon(Icons.notification_add),
+                            )
                           ],
                         ),
                       ],
