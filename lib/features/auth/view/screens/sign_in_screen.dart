@@ -23,7 +23,7 @@ class SignInScreen extends StatelessWidget {
         }
         if (state is SignInSuccessState) {
           if (!context.mounted) return;
-          await UserCubit.get(context).fetchUserInfo();
+          await _handleFetchingUserInfo(context);
         }
         if (state is AuthGenericFailureState) {
           if (!context.mounted) return;
@@ -41,11 +41,28 @@ class SignInScreen extends StatelessWidget {
   }
 
   Future<void> _handleCreateNewUserDoc(
-      BuildContext context, UserModel user) async {
+    BuildContext context,
+    UserModel user,
+  ) async {
     final userCubit = UserCubit.get(context);
-    await FCMService.checkDeviceToken().then((_) async {
+    await FCMService.getDeviceToken().then((_) async {
       user.token = FCMService.userDeviceToken;
+      debugPrint("User Device Token:${user.token}");
       await userCubit.createNewUserProfile(user: user);
+    });
+  }
+
+  Future<void> _handleFetchingUserInfo(
+    BuildContext context,
+  ) async {
+    final userCubit = UserCubit.get(context);
+    await userCubit.fetchUserInfo().then((_) async {
+      if (!FCMService.isDeviceHasToken) {
+        await FCMService.getDeviceToken().then((_) async {
+          debugPrint("User Device Token:${FCMService.userDeviceToken}");
+          await userCubit.setUserDeviceToken(token: FCMService.userDeviceToken);
+        });
+      }
     });
   }
 }

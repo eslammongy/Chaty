@@ -9,8 +9,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FCMService {
   static String userDeviceToken = "";
-  static Future<void> checkDeviceToken() async {
-    if (isDeviceHasToken) return;
+  static Future<void> getDeviceToken() async {
     if (Platform.isAndroid) {
       final token = await FirebaseMessaging.instance.getToken();
       await SharedPref.saveFCMToken(token: token!);

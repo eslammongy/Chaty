@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:chaty/core/services/fcm_services.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/settings/cubit/settings_cubit.dart';
 import 'package:chaty/features/user/view/screens/friends_screen.dart';
@@ -25,9 +24,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _handleDeviceToken().then(
-        (value) => _fetchAllUserFriends(),
-      );
+      _fetchAllUserFriends();
     });
   }
 
@@ -49,15 +46,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   onTapNavClicked(SettingsCubit settingsCubit, int index) {
     setState(() {
       settingsCubit.currentPageIndex = index;
-    });
-  }
-
-  Future<void> _handleDeviceToken() async {
-    final userCubit = UserCubit.get(context);
-    FCMService.checkDeviceToken().then((_) async {
-      await userCubit.setUserDeviceToken(
-        token: FCMService.userDeviceToken,
-      );
     });
   }
 
