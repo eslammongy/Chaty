@@ -130,4 +130,24 @@ class UserRepoImpl implements UserRepo {
       return left(ExceptionHandler.handleException(error));
     }
   }
+
+  @override
+  Future<Either<ExceptionsType, String>> setUserDeviceToken(
+      String token) async {
+    try {
+      await databaseReference.ref.child(firebaseAuth.currentUser!.uid).update(
+        {
+          "token": token,
+        },
+      );
+      debugPrint("Update Profile Token Done");
+
+      return right("Update User Token Done");
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
+    }
+  }
 }

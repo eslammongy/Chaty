@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/services/fcm_services.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/settings/cubit/settings_cubit.dart';
@@ -25,12 +24,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    FCMService.getDeviceToken();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (UserCubit.get(context).friendsList.isEmpty) {
-        context.read<UserCubit>().fetchAllUserFriends();
-      }
-    });
+    _handleDeviceToken().then(
+      (value) => _fetchAllUserFriends(),
+    );
   }
 
   @override
@@ -51,6 +47,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
   onTapNavClicked(SettingsCubit settingsCubit, int index) {
     setState(() {
       settingsCubit.currentPageIndex = index;
+    });
+  }
+
+  Future<void> _handleDeviceToken() async {
+    final userCubit = UserCubit.get(context);
+    FCMService.checkDeviceToken().then((_) async {
+      await userCubit.setUserDeviceToken(
+        token: FCMService.userDeviceToken,
+      );
+    });
+  }
+
+  void _fetchAllUserFriends() {
+    final userCubit = UserCubit.get(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (userCubit.friendsList.isEmpty) {
+        userCubit.fetchAllUserFriends();
+      }
     });
   }
 }

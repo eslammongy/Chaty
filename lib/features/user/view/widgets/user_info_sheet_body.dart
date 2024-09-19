@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/core/widgets/customized_text_btn.dart';
 import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/user/data/models/user_model.dart';
@@ -20,6 +20,20 @@ class UserInfoSheetBody extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
         child: Column(
           children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: InkWell(
+                onTap: () => GoRouter.of(context).pop(),
+                child: Icon(
+                  Icons.cancel_outlined,
+                  color: theme.colorScheme.error,
+                  size: 30,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
             CacheNetworkImg(
               imgUrl: user.imageUrl ?? dummyImageUrl,
               radius: 60,
@@ -42,15 +56,6 @@ class UserInfoSheetBody extends StatelessWidget {
             ),
             _buildInfoItem(
                 theme, user.phone ?? dummyPhone, FontAwesomeIcons.phone),
-            const Spacer(),
-            CustomizedTextBtn(
-                btnText: "Close",
-                bkColor: theme.colorScheme.error,
-                textColor: Colors.white,
-                onPressed: () => Navigator.pop(context)),
-            const SizedBox(
-              height: 30,
-            ),
           ],
         ),
       ),

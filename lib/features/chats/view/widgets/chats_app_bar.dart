@@ -61,7 +61,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                             CacheNetworkImg(
                               imgUrl: UserCubit.get(context).user?.imageUrl ??
                                   dummyImageUrl,
-                              radius: 26,
+                              radius: 22,
                             ),
                             const SizedBox(
                               width: 10,

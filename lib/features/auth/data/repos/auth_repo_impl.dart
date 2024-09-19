@@ -62,7 +62,9 @@ class AuthRepoImplementation implements AuthRepo {
         return left(ExceptionsType.undefined);
       }
       final userModel = UserModel(
-          uId: userCredential.user?.uid, email: email, password: password);
+        uId: userCredential.user?.uid,
+        email: email,
+      );
       return right(userModel);
     } catch (error) {
       if (error is FirebaseException) {

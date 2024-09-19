@@ -80,4 +80,15 @@ class UserCubit extends Cubit<UserStates> {
       emit(ProfileImgUploadedState());
     });
   }
+
+  Future<void> setUserDeviceToken({required String token}) async {
+    emit(UserLoadingState());
+    var result = await userRepo.setUserDeviceToken(token);
+    result.fold((errorStatus) {
+      var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
+      emit(UserFailureState(errorMsg: errorMsg));
+    }, (msg) {
+      emit(UserUpdatedState());
+    });
+  }
 }
