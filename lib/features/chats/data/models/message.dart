@@ -36,7 +36,7 @@ class MessageModel {
 
   String toJson() => json.encode(toMap());
 
-  static buildMsg(
+  factory MessageModel.buildMsg(
     String text,
     String senderId, {
     MsgType type = MsgType.text,

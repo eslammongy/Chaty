@@ -85,17 +85,15 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
   }
 
   Future displayPickGalleryImg(XFile imgFile, UserCubit profileCubit) async {
-    Future(() {
-      displayPickImageDialog(
-        context,
-        imgFile.path,
-        onConfirm: () async {
-          selectedImg = File(imgFile.path);
-          profileCubit.user?.imageUrl = selectedImg?.path;
-          GoRouter.of(context).pop();
-          await _updateProfileInfo(profileCubit);
-        },
-      );
-    });
+    displayPickImageDialog(
+      context,
+      imgFile.path,
+      onConfirm: () async {
+        selectedImg = File(imgFile.path);
+        profileCubit.currentUser.imageUrl = selectedImg?.path;
+        GoRouter.of(context).pop();
+        await _updateProfileInfo(profileCubit);
+      },
+    );
   }
 }

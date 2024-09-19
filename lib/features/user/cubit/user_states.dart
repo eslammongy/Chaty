@@ -16,8 +16,8 @@ class UserCreatedState extends UserStates {
   UserCreatedState({super.userModel});
 }
 
-class ProfileImgUploadedState extends UserStates {
-  ProfileImgUploadedState();
+class UserUploadProfileImgState extends UserStates {
+  UserUploadProfileImgState();
 }
 
 class UserUpdatedState extends UserStates {
@@ -25,8 +25,10 @@ class UserUpdatedState extends UserStates {
 }
 
 class UserFetchedState extends UserStates {
+  final String? token;
   UserFetchedState({
     super.userModel,
+    this.token,
   });
 }
 

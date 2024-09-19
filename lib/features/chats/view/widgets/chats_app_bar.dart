@@ -58,8 +58,9 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CacheNetworkImg(
-                              imgUrl: UserCubit.get(context).user?.imageUrl ??
-                                  dummyImageUrl,
+                              imgUrl:
+                                  UserCubit.get(context).currentUser.imageUrl ??
+                                      dummyImageUrl,
                               radius: 22,
                             ),
                             const SizedBox(
@@ -77,6 +78,14 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                             const SizedBox(
                               width: 10,
                             ),
+                            InkWell(
+                              onTap: () async {
+                                final userCubit = UserCubit.get(context);
+                                await userCubit.getUserDeviceToken(
+                                    recipientId: "recipientId");
+                              },
+                              child: const Icon(Icons.notifications_on),
+                            )
                           ],
                         ),
                       ],

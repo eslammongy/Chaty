@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
 
     return BlocConsumer<UserCubit, UserStates>(
       listener: (context, state) {
-        if (state is ProfileImgUploadedState || state is UserCreatedState) {
+        if (state is UserUploadProfileImgState || state is UserCreatedState) {
           if (!context.mounted) return;
           displaySnackBar(context, "Profile Info Uploaded", isFailState: false);
         }
@@ -59,19 +59,19 @@ class ProfileScreen extends StatelessWidget {
                 if (state is UserLoadingState) displayLinearIndicator(theme),
                 const SizedBox(height: 20),
                 ProfileImageSection(
-                  profileImgUrl: profileCubit.user?.imageUrl ?? dummyImageUrl,
+                  profileImgUrl: profileCubit.currentUser.imageUrl ?? dummyImageUrl,
                 ),
                 const SizedBox(height: 20),
                 ProfileBio(pioTxtController: pioTxtController),
                 const SizedBox(height: 10),
                 ProfileInfoFieldItem(
-                  text: profileCubit.user?.name ?? dummyName,
+                  text: profileCubit.currentUser.name ?? dummyName,
                   textController: nameTxtController,
                   icon: FontAwesomeIcons.user,
                 ),
                 const SizedBox(height: 10),
                 ProfileInfoFieldItem(
-                  text: profileCubit.user?.email ?? dummyEmail,
+                  text: profileCubit.currentUser.email ?? dummyEmail,
                   textController: emailTxtController,
                   icon: FontAwesomeIcons.envelope,
                   enabled: false,
@@ -89,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 ProfileInfoFieldItem(
-                  text: profileCubit.user?.phone ?? dummyPhone,
+                  text: profileCubit.currentUser.phone ?? dummyPhone,
                   textController: phoneTxtController,
                   icon: FontAwesomeIcons.phone,
                 ),
@@ -112,7 +112,6 @@ class ProfileScreen extends StatelessWidget {
   }
 
   void _userSignOut(BuildContext context) {
-    UserCubit.get(context).user = null;
     ChatCubit.get(context).openedChat = null;
     ChatCubit.get(context).listOFChats.clear();
     UserCubit.get(context).friendsList.clear();

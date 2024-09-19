@@ -21,7 +21,7 @@ class _ProfileBioState extends State<ProfileBio> {
 
   void _listeningToBioChanges() {
     final profileCubit = UserCubit.get(context);
-    widget.pioTxtController.text = profileCubit.user?.bio ?? '';
+    widget.pioTxtController.text = profileCubit.currentUser.bio ?? '';
     widget.pioTxtController.addListener(
       () {
         if (widget.pioTxtController.text.length > 40) {
@@ -65,11 +65,11 @@ class _ProfileBioState extends State<ProfileBio> {
           Expanded(
             child: CustomTextInputField(
               textEditingController: widget.pioTxtController,
-              initText: profileCubit.user?.bio ?? dummyBio,
+              initText: profileCubit.currentUser.bio ?? dummyBio,
               maxLines: 5,
               height: widget.pioTxtController.text.length > 40 ? 120 : 60,
               onSubmitted: (value) async {
-                profileCubit.user?.bio = value;
+                profileCubit.currentUser.bio = value;
                 await profileCubit.updateUserProfile();
               },
             ),

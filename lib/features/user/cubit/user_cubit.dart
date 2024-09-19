@@ -10,7 +10,7 @@ class UserCubit extends Cubit<UserStates> {
   UserCubit({required this.userRepo}) : super(UserInitialState());
   final UserRepo userRepo;
   static UserCubit get(context) => BlocProvider.of(context);
-  UserModel? user;
+  UserModel currentUser = UserModel();
   final friendsList = <UserModel>[];
 
   Future<void> createNewUserProfile({required UserModel user}) async {
@@ -20,19 +20,19 @@ class UserCubit extends Cubit<UserStates> {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (userModel) {
-      this.user = user = userModel;
+      currentUser = user = userModel;
       emit(UserCreatedState(userModel: userModel));
     });
   }
 
   Future<void> updateUserProfile() async {
     emit(UserLoadingState());
-    var result = await userRepo.updateUserProfile(userModel: user!);
+    var result = await userRepo.updateUserProfile(userModel: currentUser);
     result.fold((errorStatus) {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (userModel) {
-      user = userModel;
+      currentUser = userModel;
       emit(UserUpdatedState());
     });
   }
@@ -45,7 +45,7 @@ class UserCubit extends Cubit<UserStates> {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (userModel) {
-      user = userModel;
+      currentUser = userModel;
       emit(UserFetchedState(userModel: userModel));
     });
   }
@@ -55,8 +55,8 @@ class UserCubit extends Cubit<UserStates> {
 
     var result = await userRepo.fetchAllFriends(
       (currentUser) {
-        user = currentUser;
-        emit(UserFetchedState(userModel: user));
+        this.currentUser = currentUser;
+        emit(UserFetchedState(userModel: currentUser));
       },
     );
     result.fold((errorStatus) {
@@ -76,19 +76,29 @@ class UserCubit extends Cubit<UserStates> {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (downloadUrl) {
-      user?.imageUrl = downloadUrl;
-      emit(ProfileImgUploadedState());
+      currentUser.imageUrl = downloadUrl;
+      emit(UserUploadProfileImgState());
     });
   }
 
   Future<void> setUserDeviceToken({required String token}) async {
-    emit(UserLoadingState());
     var result = await userRepo.setUserDeviceToken(token);
     result.fold((errorStatus) {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (msg) {
       emit(UserUpdatedState());
+    });
+  }
+
+  Future<void> getUserDeviceToken({required String recipientId}) async {
+    emit(UserLoadingState());
+    var result = await userRepo.getUserDeviceToken(recipientId);
+    result.fold((errorStatus) {
+      var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
+      emit(UserFailureState(errorMsg: errorMsg));
+    }, (token) {
+      emit(UserFetchedState(token: token));
     });
   }
 }

@@ -150,4 +150,21 @@ class UserRepoImpl implements UserRepo {
       return left(ExceptionHandler.handleException(error));
     }
   }
+
+  @override
+  Future<Either<ExceptionsType, String>> getUserDeviceToken(
+    String recipientId,
+  ) async {
+    try {
+      final recipientDoc = await databaseReference.ref.child(recipientId).get();
+      final deviceToken = recipientDoc.value;
+      debugPrint("Return Recipient Object:$deviceToken");
+      return right("deviceToken");
+    } catch (error) {
+      if (error is FirebaseException) {
+        return left(ExceptionHandler.handleException(error.code));
+      }
+      return left(ExceptionHandler.handleException(error));
+    }
+  }
 }
