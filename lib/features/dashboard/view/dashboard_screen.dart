@@ -24,9 +24,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _handleDeviceToken().then(
-      (value) => _fetchAllUserFriends(),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleDeviceToken().then(
+        (value) => _fetchAllUserFriends(),
+      );
+    });
   }
 
   @override
@@ -61,10 +63,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _fetchAllUserFriends() {
     final userCubit = UserCubit.get(context);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (userCubit.friendsList.isEmpty) {
-        userCubit.fetchAllUserFriends();
-      }
-    });
+    if (userCubit.friendsList.isEmpty) {
+      userCubit.fetchAllUserFriends();
+    }
   }
 }

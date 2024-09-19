@@ -5,9 +5,10 @@ class ChatModel {
   String? id;
   final List<String>? participants;
   List<MessageModel>? messages;
+
   ChatModel({
     this.id,
-    this.participants,
+    this.participants ,
     this.messages,
   });
 

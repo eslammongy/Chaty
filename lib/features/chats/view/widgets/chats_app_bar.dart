@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/constants.dart';
-import 'package:chaty/core/services/fcm_services.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -78,15 +77,6 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                             const SizedBox(
                               width: 10,
                             ),
-                            InkWell(
-                              onTap: () async {
-                                await FCMService.sendNotifications(
-                                    sender: "eslam mongy",
-                                    msg: "welcome pro how are you doing today",
-                                    userId: "userId");
-                              },
-                              child: const Icon(Icons.notification_add),
-                            )
                           ],
                         ),
                       ],

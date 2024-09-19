@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:chaty/core/services/fcm_services.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
@@ -22,6 +23,9 @@ class SendNewMessage extends StatelessWidget {
       listener: (context, state) async {
         if (state is ChatImageMsgUploadedState) {
           await _sendImageMsg(chatCubit, state, userCubit);
+        }
+        if (state is ChatSendingMsgState) {
+          await _sendMsgNotification(chatCubit, userCubit, state.msg);
         }
       },
       child: Row(
@@ -54,8 +58,11 @@ class SendNewMessage extends StatelessWidget {
     );
   }
 
-  Future<void> _sendImageMsg(ChatCubit chatCubit,
-      ChatImageMsgUploadedState state, UserCubit userCubit) async {
+  Future<void> _sendImageMsg(
+    ChatCubit chatCubit,
+    ChatImageMsgUploadedState state,
+    UserCubit userCubit,
+  ) async {
     final msg = MessageModel.buildMsg(
       state.imageUrl,
       userCubit.user!.uId!,
@@ -75,5 +82,20 @@ class SendNewMessage extends StatelessWidget {
     );
     msgController.clear();
     await chatCubit.sendNewTextMsg(chatId: chatCubit.openedChat!.id!, msg: msg);
+  }
+
+  Future<void> _sendMsgNotification(
+      ChatCubit chatCubit, UserCubit userCubit, MessageModel msg) async {
+    final chat = chatCubit.openedChat;
+    final userName = userCubit.user!.name ?? '';
+    if (chat == null || chat.participants == null) {
+      return;
+    }
+    final recipient = chat.participants!.last;
+    await FCMService.sendNotifications(
+      sender: userName,
+      msg: msg.text!,
+      recipientToken: recipient,
+    );
   }
 }
