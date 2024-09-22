@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/user_pref.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/core/services/fcm_services.dart';
 import 'package:chaty/features/auth/cubit/auth_cubit.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +22,7 @@ class VerificationOtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userCubit = UserCubit.get(context);
     final pinController = TextEditingController();
     final focusNode = FocusNode();
     final theme = Theme.of(context);
@@ -120,8 +122,11 @@ class VerificationOtpScreen extends StatelessWidget {
                     },
                     listener: (context, state) async {
                       if (state is PhoneOtpCodeVerifiedState) {
-                        await UserCubit.get(context)
-                            .setNewUserProfile(user: state.userModel);
+                        await userCubit
+                            .setNewUserProfile(user: state.userModel)
+                            .then((_) async {
+                          await _setNewDeviceToken(userCubit);
+                        });
                       }
                       if (state is AuthGenericFailureState && context.mounted) {
                         GoRouter.of(context).pop();
@@ -138,6 +143,12 @@ class VerificationOtpScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> _setNewDeviceToken(UserCubit userCubit) async {
+    await FCMService.getDeviceToken().then((_) async {
+      await userCubit.setUserDeviceToken(token: FCMService.userDeviceToken);
+    });
   }
 
   PinTheme defaultPinTheme(theme) => PinTheme(

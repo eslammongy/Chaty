@@ -24,14 +24,12 @@ class PhoneAuthScreen extends StatelessWidget {
           showLoadingDialog(context, text: 'please wait...');
         }
         if (state is PhoneNumberSubmittedState) {
-          // pop the loading dialog
-          GoRouter.of(context).pop();
-          GoRouter.of(context).pushReplacement(AppRouter.verifyingPhoneScreen,
-              extra: state.verificationId);
+          GoRouter.of(context).pushReplacement(
+            AppRouter.verifyingPhoneScreen,
+            extra: state.verificationId,
+          );
         }
         if (state is AuthGenericFailureState) {
-          // pop the loading dialog
-          GoRouter.of(context).pop();
           displaySnackBar(context, state.errorMsg);
         }
       },
@@ -104,16 +102,27 @@ class PhoneAuthScreen extends StatelessWidget {
                         backgroundColor: theme.colorScheme.primary,
                         text: "Send Code",
                         onPressed: () async {
-                          if (phoneNumController.text.isEmpty ||
-                              phoneNumController.text.length < 10) {
-                            displaySnackBar(context,
-                                "please enter the correct phone number..");
+                          final phone = phoneNumController.text;
+                          if (phone.isEmpty || phone.length < 10) {
+                            displaySnackBar(
+                              context,
+                              "please enter the correct phone number..",
+                            );
                           } else {
                             final String phoneWithCountryCode =
-                                "$countryCode${phoneNumController.value.text}";
+                                "$countryCode$phone";
 
                             await AuthCubit.get(context)
-                                .submitUserPhoneNumber(phoneWithCountryCode);
+                                .submitUserPhoneNumber(phoneWithCountryCode)
+                                .whenComplete(() {
+                              // pop the loading dialog
+                              if (context.mounted) GoRouter.of(context).pop();
+                            }).onError(
+                              (error, stackTrace) {
+                                // pop the loading dialog
+                                if (context.mounted) GoRouter.of(context).pop();
+                              },
+                            );
                           }
                         },
                       ),
