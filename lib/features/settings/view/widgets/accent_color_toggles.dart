@@ -22,8 +22,8 @@ class AccentColorToggles extends StatelessWidget {
         ),
         _buildAccentColorBtn(
           context,
-          CommonColorPalette.primaryColor,
-          selectedColor.value == CommonColorPalette.primaryColor.value,
+          CommonColorPalette.mainBlue,
+          selectedColor.value == CommonColorPalette.mainBlue.value,
         ),
         _buildAccentColorBtn(
           context,

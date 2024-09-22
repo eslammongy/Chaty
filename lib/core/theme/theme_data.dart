@@ -9,7 +9,7 @@ ThemeData darkThemeData() => ThemeData(
       scaffoldBackgroundColor: DarkPalette.backgroundDarkColor,
       colorScheme: ColorScheme(
         brightness: Brightness.dark,
-        primary: CommonColorPalette.primaryColor,
+        primary: CommonColorPalette.mainBlue,
         onPrimary: CommonColorPalette.greenColor,
         secondary: CommonColorPalette.mainOrangeColor,
         onSecondary: CommonColorPalette.greenColor,
@@ -31,7 +31,7 @@ ThemeData lightThemeData() => ThemeData(
     scaffoldBackgroundColor: LightPalette.backgroundLightColor,
     colorScheme: ColorScheme(
       brightness: Brightness.light,
-      primary: CommonColorPalette.primaryColor,
+      primary: CommonColorPalette.mainBlue,
       onPrimary: CommonColorPalette.greenColor,
       secondary: CommonColorPalette.mainOrangeColor,
       onSecondary: CommonColorPalette.greenColor,

@@ -17,7 +17,7 @@ class SettingsCubit extends Cubit<SettingsStates> {
   int currentPageIndex = 0;
   ThemeData currentTheme = darkThemeData();
   bool isLight = false;
-  Color msgBkColor = CommonColorPalette.primaryColor;
+  Color msgBkColor = CommonColorPalette.mainBlue;
   String msgFont = ubuntuSans;
 
   switchAppTheme(ThemeData theme) {

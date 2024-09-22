@@ -20,7 +20,7 @@ class CacheNetworkProfileImg extends StatelessWidget {
       imageBuilder: (context, imageProvider) => Card(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius),
-            side: BorderSide(color: theme.colorScheme.surfaceTint, width: 1)),
+            side: BorderSide(color: theme.colorScheme.surfaceTint, width: 2)),
         color: theme.scaffoldBackgroundColor,
         margin: EdgeInsets.zero,
         child: CircleAvatar(

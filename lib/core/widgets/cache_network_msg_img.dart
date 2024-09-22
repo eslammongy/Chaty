@@ -19,10 +19,6 @@ class CacheNetworkMsgImg extends StatelessWidget {
       imageUrl: imgUrl,
       fadeInCurve: Curves.bounceInOut,
       imageBuilder: (context, imageProvider) => Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radius),
-          side: BorderSide(color: theme.colorScheme.surfaceTint, width: 1),
-        ),
         color: theme.scaffoldBackgroundColor,
         margin: EdgeInsets.zero,
         child: ClipRRect(
