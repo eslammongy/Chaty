@@ -18,20 +18,25 @@ class AuthRepoImplementation implements AuthRepo {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
-      debugPrint("Auth WithGoogle: ${googleAccount?.displayName}");
+      debugPrint(
+          "**Auth With Google User Named: ${googleAccount?.displayName}");
       GoogleSignInAuthentication? authentication =
           await googleAccount?.authentication;
 
       AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: authentication?.idToken,
-          accessToken: authentication?.accessToken);
+        idToken: authentication?.idToken,
+        accessToken: authentication?.accessToken,
+      );
+
       final userCredential =
           await firebaseAuth.signInWithCredential(credential);
-
+  
       if (userCredential.user == null) {
         return left(ExceptionsType.undefined);
       }
       final userModel = _fillUserModel(userCredential.user!);
+      debugPrint(
+          "**Auth With Google Account: ${userCredential.additionalUserInfo}");
       return right(userModel);
     } catch (error) {
       if (error is FirebaseException) {

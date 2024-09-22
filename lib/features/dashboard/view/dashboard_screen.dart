@@ -51,7 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _fetchAllUserFriends() {
     final userCubit = UserCubit.get(context);
-    if (userCubit.friendsList.isEmpty) {
+  if (userCubit.friendsList.isEmpty) {
       userCubit.fetchAllUserFriends();
     }
   }

@@ -13,19 +13,14 @@ class AuthCubit extends Cubit<AuthStates> {
 
   Future<void> signInWithGoogleAccount() async {
     emit(AuthLoadingState());
-    try {
-      var result = await authRepo.signInWithGoogle();
-      result.fold((errorCode) {
-        var errorMsg = ExceptionHandler.getExpMessage(errorCode);
-        emit(AuthGenericFailureState(errorMsg));
-      }, (user) async {
-        emit(SignInWithGoogleSuccessState(userModel: user));
-      });
-    } catch (exp) {
-      final errorMsg = ExceptionHandler.getExpMessage(exp);
-      debugPrint("SignIn CUBIT Error-$errorMsg");
+    var result = await authRepo.signInWithGoogle();
+    result.fold((errorCode) {
+      var errorMsg = ExceptionHandler.getExpMessage(errorCode);
       emit(AuthGenericFailureState(errorMsg));
-    }
+    }, (user) async {
+      debugPrint("User Signed name:${user.name}");
+      emit(SignInWithGoogleSuccessState(userModel: user));
+    });
   }
 
   Future<void> signUpWithEmailPassword({

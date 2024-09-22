@@ -67,7 +67,7 @@ class SignUpScreen extends StatelessWidget {
     await FCMService.getDeviceToken().then((_) async {
       user.token = FCMService.userDeviceToken;
       debugPrint("User Device Token:${user.token}");
-      await userCubit.createNewUserProfile(user: user);
+      await userCubit.setNewUserProfile(user: user);
     });
   }
 

@@ -11,8 +11,8 @@ class FCMService {
   static String userDeviceToken = "";
   static Future<void> getDeviceToken() async {
     if (Platform.isAndroid) {
-      final token = await FirebaseMessaging.instance.getToken();
-      await SharedPref.saveFCMToken(token: token!);
+      userDeviceToken = await FirebaseMessaging.instance.getToken() ?? '';
+      await SharedPref.saveFCMToken(token: userDeviceToken);
     }
     if (Platform.isIOS) {
       requestNotificationPermission();

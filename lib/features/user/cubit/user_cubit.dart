@@ -13,7 +13,7 @@ class UserCubit extends Cubit<UserStates> {
   UserModel currentUser = UserModel();
   final friendsList = <UserModel>[];
 
-  Future<void> createNewUserProfile({required UserModel user}) async {
+  Future<void> setNewUserProfile({required UserModel user}) async {
     emit(UserLoadingState());
     var result = await userRepo.createNewUserProfile(userModel: user);
     result.fold((errorStatus) {
@@ -91,14 +91,15 @@ class UserCubit extends Cubit<UserStates> {
     });
   }
 
-  Future<void> getUserDeviceToken({required String recipientId}) async {
-    emit(UserLoadingState());
+  Future<String?> getUserDeviceToken({required String recipientId}) async {
+    String? token;
     var result = await userRepo.getUserDeviceToken(recipientId);
     result.fold((errorStatus) {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (token) {
-      emit(UserFetchedState(token: token));
+      token = token;
     });
+    return token;
   }
 }

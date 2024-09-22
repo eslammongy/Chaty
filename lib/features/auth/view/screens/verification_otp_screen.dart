@@ -29,7 +29,7 @@ class VerificationOtpScreen extends StatelessWidget {
       listener: (context, state) async {
         if (state is UserCreatedState) {
           await SharedPref.keepUserAuthenticated(isLogged: true).then((value) {
-             AppRouter.isUserLogin = true;
+            AppRouter.isUserLogin = true;
             GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
           });
         }
@@ -121,13 +121,11 @@ class VerificationOtpScreen extends StatelessWidget {
                     listener: (context, state) async {
                       if (state is PhoneOtpCodeVerifiedState) {
                         await UserCubit.get(context)
-                            .createNewUserProfile(user: state.userModel);
+                            .setNewUserProfile(user: state.userModel);
                       }
-                      if (state is AuthGenericFailureState) {
-                        Future(() {
-                          GoRouter.of(context).pop();
-                          displaySnackBar(context, state.errorMsg);
-                        });
+                      if (state is AuthGenericFailureState && context.mounted) {
+                        GoRouter.of(context).pop();
+                        displaySnackBar(context, state.errorMsg);
                       }
                     },
                     child: const SizedBox(),

@@ -45,11 +45,7 @@ class SignInScreen extends StatelessWidget {
     UserModel user,
   ) async {
     final userCubit = UserCubit.get(context);
-    await FCMService.getDeviceToken().then((_) async {
-      user.token = FCMService.userDeviceToken;
-      debugPrint("User Device Token:${user.token}");
-      await userCubit.createNewUserProfile(user: user);
-    });
+    await _handleSetDeviceTokenProcess(userCubit, user: user);
   }
 
   Future<void> _handleFetchingUserInfo(
@@ -57,12 +53,29 @@ class SignInScreen extends StatelessWidget {
   ) async {
     final userCubit = UserCubit.get(context);
     await userCubit.fetchUserInfo().then((_) async {
-      if (!FCMService.isDeviceHasToken) {
-        await FCMService.getDeviceToken().then((_) async {
-          debugPrint("User Device Token:${FCMService.userDeviceToken}");
-          await userCubit.setUserDeviceToken(token: FCMService.userDeviceToken);
-        });
-      }
+      // case the device does'nt has a token yet
+      await _handleSetDeviceTokenProcess(userCubit);
     });
+  }
+
+  Future<void> _handleSetDeviceTokenProcess(
+    UserCubit userCubit, {
+    UserModel? user,
+  }) async {
+    // when user is not null this means we already sign in and try to create a user profile info
+    // also when the device token is not empty or null this means we already set the device token
+    if (FCMService.isDeviceHasToken && user != null) {
+      user.token = FCMService.userDeviceToken;
+      await userCubit.setNewUserProfile(user: user);
+    } else {
+      await FCMService.getDeviceToken().then((_) async {
+        if (user != null) {
+          user.token = FCMService.userDeviceToken;
+          await userCubit.setNewUserProfile(user: user);
+        } else {
+          await userCubit.setUserDeviceToken(token: FCMService.userDeviceToken);
+        }
+      });
+    }
   }
 }

@@ -19,7 +19,7 @@ class SharedPref {
   }
 
   static String? getFCMToken() {
-    return sharedPreferences.getString(selectedThemeKey) ?? "DARK_THEME";
+    return sharedPreferences.getString(firebaseMsgToken);
   }
 
   static Future<bool> isUserAuthenticated() async {

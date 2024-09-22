@@ -59,7 +59,8 @@ class ProfileScreen extends StatelessWidget {
                 if (state is UserLoadingState) displayLinearIndicator(theme),
                 const SizedBox(height: 20),
                 ProfileImageSection(
-                  profileImgUrl: profileCubit.currentUser.imageUrl ?? dummyImageUrl,
+                  profileImgUrl:
+                      profileCubit.currentUser.imageUrl ?? dummyImageUrl,
                 ),
                 const SizedBox(height: 20),
                 ProfileBio(pioTxtController: pioTxtController),
@@ -112,6 +113,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
   void _userSignOut(BuildContext context) {
+    SharedPref.saveFCMToken(token: '');
     ChatCubit.get(context).openedChat = null;
     ChatCubit.get(context).listOFChats.clear();
     UserCubit.get(context).friendsList.clear();
