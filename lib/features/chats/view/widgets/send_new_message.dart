@@ -92,10 +92,13 @@ class SendNewMessage extends StatelessWidget {
     if (chat == null || chat.participants == null) {
       return;
     }
-    final recipientId = chat.participants!.last;
+    final recipientId = chat.participants!.firstWhere(
+      (element) => element != userCubit.currentUser.uId,
+    );
     await userCubit
-        .getUserDeviceToken(recipientId: recipientId)
+        .getRecipientDeviceToken(recipientId: recipientId)
         .then((token) async {
+      debugPrint("recipient Token: $token");
       if (token == null) return;
       await _sendingNewMsgNotification(userName, msg, token);
     });
@@ -106,7 +109,6 @@ class SendNewMessage extends StatelessWidget {
     MessageModel msg,
     String token,
   ) async {
-  
     await FCMService.sendNotifications(
       sender: userName,
       msg: msg.text!,

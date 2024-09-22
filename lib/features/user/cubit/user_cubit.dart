@@ -91,15 +91,15 @@ class UserCubit extends Cubit<UserStates> {
     });
   }
 
-  Future<String?> getUserDeviceToken({required String recipientId}) async {
-    String? token;
-    var result = await userRepo.getUserDeviceToken(recipientId);
+  Future<String?> getRecipientDeviceToken({required String recipientId}) async {
+    String? recipientToken;
+    var result = await userRepo.getRecipientDeviceToken(recipientId);
     result.fold((errorStatus) {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (token) {
-      token = token;
+      return recipientToken = token;
     });
-    return token;
+    return recipientToken;
   }
 }

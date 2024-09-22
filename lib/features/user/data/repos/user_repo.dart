@@ -16,5 +16,6 @@ abstract class UserRepo {
   );
   Future<Either<ExceptionsType, String>> uploadProfileImg(File imageFile);
   Future<Either<ExceptionsType, String>> setUserDeviceToken(String token);
-  Future<Either<ExceptionsType, String>> getUserDeviceToken(String recipientId);
+  Future<Either<ExceptionsType, String>> getRecipientDeviceToken(
+      String recipientId);
 }

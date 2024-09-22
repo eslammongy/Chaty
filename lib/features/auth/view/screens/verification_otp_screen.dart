@@ -30,14 +30,14 @@ class VerificationOtpScreen extends StatelessWidget {
         if (state is UserCreatedState) {
           await SharedPref.keepUserAuthenticated(isLogged: true).then((value) {
             AppRouter.isUserLogin = true;
-            GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
+            if (context.mounted) {
+              GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
+            }
           });
         }
-        if (state is UserFailureState) {
-          Future(() {
-            GoRouter.of(context).pop();
-            displaySnackBar(context, state.errorMsg);
-          });
+        if (state is UserFailureState && context.mounted) {
+          GoRouter.of(context).pop();
+          displaySnackBar(context, state.errorMsg);
         }
       },
       builder: (context, state) {

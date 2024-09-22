@@ -140,8 +140,6 @@ class UserRepoImpl implements UserRepo {
           "token": token,
         },
       );
-      debugPrint("Update Profile Token Done");
-
       return right("Update User Token Done");
     } catch (error) {
       if (error is FirebaseException) {
@@ -152,14 +150,14 @@ class UserRepoImpl implements UserRepo {
   }
 
   @override
-  Future<Either<ExceptionsType, String>> getUserDeviceToken(
+  Future<Either<ExceptionsType, String>> getRecipientDeviceToken(
     String recipientId,
   ) async {
     try {
       final recipientDoc = await databaseReference.ref.child(recipientId).get();
-      final deviceToken = recipientDoc.value;
-      debugPrint("Return Recipient Object:$deviceToken");
-      return right("deviceToken");
+      final recipientJson = recipientDoc.value as Map;
+      final token = recipientJson["token"];
+      return right(token);
     } catch (error) {
       if (error is FirebaseException) {
         return left(ExceptionHandler.handleException(error.code));

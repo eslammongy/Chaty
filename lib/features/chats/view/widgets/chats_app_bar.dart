@@ -78,14 +78,6 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                             const SizedBox(
                               width: 10,
                             ),
-                            InkWell(
-                              onTap: () async {
-                                final userCubit = UserCubit.get(context);
-                                await userCubit.getUserDeviceToken(
-                                    recipientId: "recipientId");
-                              },
-                              child: const Icon(Icons.notifications_on),
-                            )
                           ],
                         ),
                       ],
