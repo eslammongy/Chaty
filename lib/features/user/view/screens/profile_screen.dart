@@ -113,7 +113,7 @@ class ProfileScreen extends StatelessWidget {
   void _userSignOut(BuildContext context) {
     SharedPref.saveFCMToken(token: '');
     ChatCubit.get(context).openedChat = null;
-    ChatCubit.get(context).listOFChats.clear();
+    ChatCubit.get(context).listOfChats.clear();
     UserCubit.get(context).friendsList.clear();
     GoRouter.of(context).pushReplacement(AppRouter.loginScreen);
   }

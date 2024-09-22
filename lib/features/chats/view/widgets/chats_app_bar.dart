@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:chaty/core/utils/debouncer.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
@@ -18,6 +19,8 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final controller = TextEditingController();
+    final debouncer = Debounce(delay: const Duration(milliseconds: 150));
+    final chatCubit = ChatCubit.get(context);
     final theme = Theme.of(context);
     return PreferredSize(
       preferredSize: Size.fromHeight(100.h),
@@ -28,7 +31,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
           }
           if (state is UserLoadAllFriendsState && context.mounted) {
             _closeLoadingIndicator(context);
-            if (ChatCubit.get(context).listOFChats.isEmpty) {
+            if (ChatCubit.get(context).listOfChats.isEmpty) {
               await ChatCubit.get(context).fetchAllUserChats();
             }
           }
@@ -71,8 +74,16 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 textEditingController: controller,
                                 bkColor: theme.scaffoldBackgroundColor,
                                 prefix: const Icon(
-                                    FontAwesomeIcons.magnifyingGlass),
+                                  FontAwesomeIcons.magnifyingGlass,
+                                ),
                                 hint: searchHint,
+                                onChange: (text) {
+                                  debouncer.call(
+                                    () {
+                                      chatCubit.searchForChat(text!);
+                                    },
+                                  );
+                                },
                               ),
                             ),
                             const SizedBox(

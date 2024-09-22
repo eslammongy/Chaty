@@ -16,18 +16,19 @@ class ChatCubit extends Cubit<ChatStates> {
   static ChatCubit get(context) => BlocProvider.of(context);
 
   ChatModel? openedChat;
-  final List<ChatModel> listOFChats = [];
+  final List<ChatModel> listOfChats = [];
+  List<ChatModel> resultOfSearch = [];
 
   /// Use this function to fetch all the user chats so, user can select and open any chat from the list
   Future<void> fetchAllUserChats() async {
     emit(ChatLoadingState());
-    listOFChats.clear();
+    listOfChats.clear();
     final fetchingResult = await chatRepo.fetchAllUserChats();
     fetchingResult.fold((exp) {
       final msg = ExceptionHandler.getExpMessage(exp);
       emit(ChatFailureState(errorMsg: msg));
     }, (chats) {
-      listOFChats.addAll(chats);
+      listOfChats.addAll(chats);
       emit(ChatFetchAllChatsState());
     });
   }
@@ -63,7 +64,7 @@ class ChatCubit extends Cubit<ChatStates> {
   void _handleAddingChatToList(MessageModel msg) {
     if (openedChat!.messages!.isEmpty) {
       openedChat!.messages!.add(msg);
-      listOFChats.add(openedChat!);
+      listOfChats.add(openedChat!);
     }
   }
 
@@ -98,7 +99,7 @@ class ChatCubit extends Cubit<ChatStates> {
   /// else return null, in this case may be the chat need to created
   ChatModel? isChatExist(String chatId) {
     try {
-      final chat = listOFChats.firstWhere(
+      final chat = listOfChats.firstWhere(
         (element) => element.id == chatId,
       );
 
@@ -141,5 +142,13 @@ class ChatCubit extends Cubit<ChatStates> {
     }, (downloadUrl) {
       emit(ChatImageMsgUploadedState(imageUrl: downloadUrl));
     });
+  }
+
+  void searchForChat(String text) {
+    resultOfSearch = listOfChats
+        .where(
+          (element) => text.contains(element.id!),
+        )
+        .toList();
   }
 }
