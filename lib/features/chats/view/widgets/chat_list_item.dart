@@ -3,9 +3,9 @@ import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
+import 'package:chaty/core/widgets/cache_network_profile_img.dart';
 
 class ChatListItem extends StatelessWidget {
   const ChatListItem({
@@ -27,7 +27,7 @@ class ChatListItem extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
           child: Row(
             children: [
-              CacheNetworkImg(
+              CacheNetworkProfileImg(
                 imgUrl: receiver?.imageUrl ?? dummyImageUrl,
                 radius: 28,
               ),

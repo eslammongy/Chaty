@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/user/data/models/user_model.dart';
+import 'package:chaty/core/widgets/cache_network_profile_img.dart';
 
 class UserInfoSheetBody extends StatelessWidget {
   const UserInfoSheetBody({super.key, required this.user});
@@ -34,7 +34,7 @@ class UserInfoSheetBody extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            CacheNetworkImg(
+            CacheNetworkProfileImg(
               imgUrl: user.imageUrl ?? dummyImageUrl,
               radius: 60,
             ),
@@ -42,20 +42,20 @@ class UserInfoSheetBody extends StatelessWidget {
               height: 30,
             ),
             _buildInfoItem(
-                theme, user.bio ?? dummyBio, Icons.info_outline_rounded),
+                theme, user.bio ?? "none", Icons.info_outline_rounded),
             const SizedBox(
               height: 15,
             ),
-            _buildInfoItem(theme, user.name ?? "", FontAwesomeIcons.user),
-            const SizedBox(
-              height: 15,
-            ),
-            _buildInfoItem(theme, user.email ?? "", FontAwesomeIcons.envelope),
+            _buildInfoItem(theme, user.name ?? "none", FontAwesomeIcons.user),
             const SizedBox(
               height: 15,
             ),
             _buildInfoItem(
-                theme, user.phone ?? dummyPhone, FontAwesomeIcons.phone),
+                theme, user.email ?? "none", FontAwesomeIcons.envelope),
+            const SizedBox(
+              height: 15,
+            ),
+            _buildInfoItem(theme, user.phone ?? "none", FontAwesomeIcons.phone),
           ],
         ),
       ),
@@ -79,11 +79,13 @@ class UserInfoSheetBody extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: text.length >= 50
+                ? CrossAxisAlignment.start
+                : CrossAxisAlignment.center,
             children: [
-              Icon(icon, color: theme.colorScheme.primary),
+              Icon(icon, color: theme.colorScheme.secondary),
               const SizedBox(
-                width: 6,
+                width: 12,
               ),
               Flexible(
                 child: Text(

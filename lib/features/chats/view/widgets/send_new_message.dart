@@ -111,7 +111,7 @@ class SendNewMessage extends StatelessWidget {
   ) async {
     await FCMService.sendNotifications(
       sender: userName,
-      msg: msg.text!,
+      msg: msg.msgType == MsgType.text ? msg.text! : "sended an image",
       recipientToken: token,
     );
   }

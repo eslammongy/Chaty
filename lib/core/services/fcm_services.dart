@@ -51,21 +51,11 @@ class FCMService {
     }
   }
 
-  /// handle notifications when received
-  void handleMessages(RemoteMessage? message) {
-    if (message != null) {
-      // navigatorKey.currentState?.pushNamed(NotificationsScreen.routeName, arguments: message);
-      /*    displayToastMsg(
-          'on Background Message notification',
-          state: ToastStates.SUCCESS); */
-    }
-  }
-
   /// handel notifications in case app is terminated
-  void handleBackgroundNotifications() async {
-    FirebaseMessaging.instance.getInitialMessage().then((handleMessages));
-    FirebaseMessaging.onMessageOpenedApp.listen(handleMessages);
-  }
+  // void handleBackgroundNotifications() async {
+  //   FirebaseMessaging.instance.getInitialMessage().then((handleMessages));
+  //   FirebaseMessaging.onMessageOpenedApp.listen(handleMessages);
+  // }
 
   static Future<String?> _getServerKey() async {
     try {

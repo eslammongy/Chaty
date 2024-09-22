@@ -3,9 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/user/data/models/user_model.dart';
+import 'package:chaty/core/widgets/cache_network_profile_img.dart';
 import 'package:chaty/features/user/view/widgets/user_info_sheet_body.dart';
 
 class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -29,7 +29,7 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 10.h),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
@@ -42,17 +42,31 @@ class MessagesAppBar extends StatelessWidget implements PreferredSizeWidget {
               const SizedBox(
                 width: 10,
               ),
-              CacheNetworkImg(
+              CacheNetworkProfileImg(
                 imgUrl: receiver.imageUrl ?? dummyImageUrl,
-                radius: 28,
+                radius: 26,
               ),
               const SizedBox(
                 width: 10,
               ),
-              Text(
-                receiver.name ?? "",
-                style: theme.textTheme.bodyLarge
-                    ?.copyWith(fontWeight: FontWeight.w600),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      receiver.name ?? "",
+                      style: theme.textTheme.bodyLarge
+                          ?.copyWith(fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      receiver.bio ?? "none",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: theme.textTheme.bodyLarge
+                          ?.copyWith(color: theme.colorScheme.surfaceTint),
+                    ),
+                  ],
+                ),
               ),
               const Spacer(),
               IconButton(

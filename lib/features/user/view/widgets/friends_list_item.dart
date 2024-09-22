@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:chaty/features/user/data/models/user_model.dart';
+import 'package:chaty/core/widgets/cache_network_profile_img.dart';
 
 class FriendsListItem extends StatelessWidget {
   const FriendsListItem({super.key, required this.user, this.onTap});
@@ -23,7 +23,7 @@ class FriendsListItem extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
             child: Row(
               children: [
-                CacheNetworkImg(
+                CacheNetworkProfileImg(
                   imgUrl: user.imageUrl ?? dummyImageUrl,
                   radius: 25,
                 ),

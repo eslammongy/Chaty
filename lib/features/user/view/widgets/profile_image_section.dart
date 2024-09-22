@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
-import 'package:chaty/core/widgets/cache_network_image.dart';
+import 'package:chaty/core/widgets/cache_network_profile_img.dart';
 import 'package:chaty/features/user/view/widgets/pick_image_sheet.dart';
 
 class ProfileImageSection extends StatefulWidget {
@@ -36,7 +36,7 @@ class _ProfileImageSectionState extends State<ProfileImageSection> {
                   shape: roundedShape,
                   child: CircleAvatar(
                       radius: 80, backgroundImage: FileImage(selectedImg!)))
-              : CacheNetworkImg(
+              : CacheNetworkProfileImg(
                   imgUrl: widget.profileImgUrl,
                 ),
           Positioned(

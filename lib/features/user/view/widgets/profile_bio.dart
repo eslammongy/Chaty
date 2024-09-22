@@ -67,6 +67,7 @@ class _ProfileBioState extends State<ProfileBio> {
               textEditingController: widget.pioTxtController,
               initText: profileCubit.currentUser.bio ?? dummyBio,
               maxLines: 5,
+              
               height: widget.pioTxtController.text.length > 40 ? 120 : 60,
               onSubmitted: (value) async {
                 profileCubit.currentUser.bio = value;

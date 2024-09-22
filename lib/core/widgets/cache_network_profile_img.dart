@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:chaty/core/constants/app_assets.dart';
-import 'package:chaty/core/widgets/placeholder_img_msg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class CacheNetworkImg extends StatelessWidget {
-  const CacheNetworkImg({
+class CacheNetworkProfileImg extends StatelessWidget {
+  const CacheNetworkProfileImg({
     super.key,
     required this.imgUrl,
     this.radius = 80,
-    this.isChatMsg = false,
   });
   final String imgUrl;
   final double radius;
-  final bool isChatMsg;
 
   @override
   Widget build(BuildContext context) {
@@ -26,28 +23,22 @@ class CacheNetworkImg extends StatelessWidget {
             side: BorderSide(color: theme.colorScheme.surfaceTint, width: 1)),
         color: theme.scaffoldBackgroundColor,
         margin: EdgeInsets.zero,
-        child: isChatMsg
-            ? ClipRRect(
-                borderRadius: BorderRadius.circular(radius),
-                child: Image(image: imageProvider))
-            : CircleAvatar(
-                radius: radius,
-                backgroundImage: imageProvider,
-              ),
+        child: CircleAvatar(
+          radius: radius,
+          backgroundImage: imageProvider,
+        ),
       ),
       placeholder: (context, url) => Card(
         shape: shapeBorder(theme.scaffoldBackgroundColor),
         margin: EdgeInsets.zero,
         color: theme.scaffoldBackgroundColor,
-        child: isChatMsg
-            ? const PlaceholderImgMsg(type: PlaceholderType.asset)
-            : CircleAvatar(
-                radius: radius,
-                child: Image.asset(
-                  AppAssetsManager.loading,
-                  width: 40,
-                ),
-              ),
+        child: CircleAvatar(
+          radius: radius,
+          child: Image.asset(
+            AppAssetsManager.loading,
+            width: 40,
+          ),
+        ),
       ),
       errorWidget: (context, url, error) => Card(
         shape: shapeBorder(theme.scaffoldBackgroundColor),

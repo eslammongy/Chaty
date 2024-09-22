@@ -3,7 +3,7 @@ import 'package:chaty/core/utils/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/core/widgets/placeholder_img_msg.dart';
-import 'package:chaty/core/widgets/cache_network_image.dart';
+import 'package:chaty/core/widgets/cache_network_msg_img.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/settings/cubit/settings_cubit.dart';
 import 'package:chaty/features/chats/view/widgets/expandable_text.dart';
@@ -62,10 +62,9 @@ class MessageItem extends StatelessWidget {
   }
 
   Widget _networkImgMsg() {
-    return CacheNetworkImg(
+    return CacheNetworkMsgImg(
       imgUrl: msg.text ?? "",
       radius: 12,
-      isChatMsg: true,
     );
   }
 
