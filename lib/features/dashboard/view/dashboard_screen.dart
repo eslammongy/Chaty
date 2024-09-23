@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:chaty/core/services/fcm_services.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/settings/cubit/settings_cubit.dart';
 import 'package:chaty/features/user/view/screens/friends_screen.dart';
@@ -23,6 +24,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
+    FCMService.handleForegroundNotifications(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchAllUserFriends();
     });
@@ -51,7 +53,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _fetchAllUserFriends() {
     final userCubit = UserCubit.get(context);
-  if (userCubit.friendsList.isEmpty) {
+    if (userCubit.friendsList.isEmpty) {
       userCubit.fetchAllUserFriends();
     }
   }

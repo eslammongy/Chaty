@@ -13,7 +13,7 @@ class ChatListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    final chatCubit = ChatCubit.get(context);
     return Scaffold(
       appBar: const ChatsAppBar(
         searchHint: "Search for a chat...",
@@ -31,7 +31,11 @@ class ChatListScreen extends StatelessWidget {
                   style: theme.textTheme.headlineMedium
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                _handleStateResponse(context, state),
+                if (state is ChatLoadingState &&
+                    chatCubit.listOfChats.isNotEmpty) ...[
+                  _displayLinearLoadingBar()
+                ],
+                _handleStateResponse(chatCubit, state),
               ],
             );
           },
@@ -52,8 +56,8 @@ class ChatListScreen extends StatelessWidget {
     );
   }
 
-  Widget _handleStateResponse(BuildContext context, ChatStates state) {
-    if (state is ChatLoadingState) {
+  Widget _handleStateResponse(ChatCubit chatCubit, ChatStates state) {
+    if (state is ChatLoadingState && chatCubit.listOfChats.isEmpty) {
       return _displayLinearLoadingBar();
     } else if (state is ChatFailureState) {
       return const FailureStateUI(

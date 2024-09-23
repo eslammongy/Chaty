@@ -26,9 +26,11 @@ void displaySnackBar(BuildContext context, String msg,
     {bool isFailState = true}) {
   final theme = Theme.of(context);
   final snackBar = SnackBar(
-    content: Text(
-      msg,
-      style: theme.textTheme.bodyMedium,
+    content: Center(
+      child: Text(
+        msg,
+        style: theme.textTheme.bodyLarge,
+      ),
     ),
     margin: const EdgeInsets.only(right: 20, left: 20, bottom: 20),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

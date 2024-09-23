@@ -2,9 +2,12 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/utils/user_pref.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:chaty/core/constants/fcm_service.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
+import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FCMService {
@@ -51,11 +54,41 @@ class FCMService {
     }
   }
 
-  /// handel notifications in case app is terminated
-  // void handleBackgroundNotifications() async {
-  //   FirebaseMessaging.instance.getInitialMessage().then((handleMessages));
-  //   FirebaseMessaging.onMessageOpenedApp.listen(handleMessages);
-  // }
+// Handle foreground messages (when the app is open and running)
+  static handleForegroundNotifications(BuildContext context) async {
+    // Handle messages when the app is opened from a terminated state
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        if (context.mounted) {
+          displaySnackBar(
+            context,
+            "New Message From ${message.notification!.title}",
+            isFailState: false,
+          );
+        }
+      }
+    });
+    FirebaseMessaging.onMessage.listen((message) {
+      if (context.mounted) {
+        displaySnackBar(
+          context,
+          "New Message From ${message.notification!.title}",
+          isFailState: false,
+        );
+        handleForegroundMessage(context, message);
+      }
+    });
+  }
+
+  // Custom handler for foreground messages
+  static void handleForegroundMessage(
+    BuildContext context,
+    RemoteMessage message,
+  ) {
+    final chatCubit = ChatCubit.get(context);
+    final friends = UserCubit.get(context).friendsList;
+    chatCubit.fetchAllUserChats(friends: friends);
+  }
 
   static Future<String?> _getServerKey() async {
     try {
