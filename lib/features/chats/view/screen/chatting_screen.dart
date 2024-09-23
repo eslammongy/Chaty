@@ -21,7 +21,7 @@ class ChattingScreen extends StatelessWidget {
     chatCubit.openedChat = chat;
     return Scaffold(
       appBar: MessagesAppBar(
-        receiver: chatCubit.getChatParticipant(context, chat) ?? UserModel(),
+        receiver: chat.currentRecipient ?? UserModel(),
       ),
       body: Padding(
         padding: EdgeInsets.only(left: 15.w, right: 15.w, bottom: 20.h),

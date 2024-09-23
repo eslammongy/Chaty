@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
 import 'package:chaty/core/errors/auth_exceptions_handler.dart';
@@ -20,7 +18,7 @@ class ChatCubit extends Cubit<ChatStates> {
   List<ChatModel> resultOfSearch = [];
 
   /// Use this function to fetch all the user chats so, user can select and open any chat from the list
-  Future<void> fetchAllUserChats() async {
+  Future<void> fetchAllUserChats({List<UserModel>? friends}) async {
     emit(ChatLoadingState());
     listOfChats.clear();
     final fetchingResult = await chatRepo.fetchAllUserChats();
@@ -28,7 +26,10 @@ class ChatCubit extends Cubit<ChatStates> {
       final msg = ExceptionHandler.getExpMessage(exp);
       emit(ChatFailureState(errorMsg: msg));
     }, (chats) {
-      listOfChats.addAll(chats);
+      for (var chat in chats) {
+        chat.currentRecipient = _getChatParticipant(friends!, chat);
+        listOfChats.add(chat);
+      }
       emit(ChatFetchAllChatsState());
     });
   }
@@ -39,7 +40,7 @@ class ChatCubit extends Cubit<ChatStates> {
       final msg = ExceptionHandler.getExpMessage(exp);
       emit(ChatFailureState(errorMsg: msg));
     }, (chat) {
-      emit(ChatCreatedNewState(chat: chat));
+      emit(ChatCreatedState(chat: chat));
     });
   }
 
@@ -47,14 +48,14 @@ class ChatCubit extends Cubit<ChatStates> {
     required String chatId,
     required MessageModel msg,
   }) async {
-    emit(ChatLoadingMsgState());
+    emit(ChatSendingMsgLoadingState());
     final result = await chatRepo.sendNewTextMsg(chatId: chatId, msg: msg);
     result.fold((exp) {
       final msg = ExceptionHandler.getExpMessage(exp);
       emit(ChatFailureState(errorMsg: msg));
     }, (msg) {
       _handleAddingChatToList(msg);
-      emit(ChatSendingMsgState(msg: msg));
+      emit(ChatMsgSendedState(msg: msg));
     });
   }
 
@@ -72,7 +73,7 @@ class ChatCubit extends Cubit<ChatStates> {
     if (isChatExist(chatId) == null) {
       await createNewChat(chat: openedChat!);
     }
-    emit(ChatLoadingMsgState());
+    emit(ChatSendingMsgLoadingState());
     List<MessageModel> messages = [];
     chatRepo.fetchAllChatMsgs(chatId: chatId).listen(
       (event) {
@@ -109,19 +110,18 @@ class ChatCubit extends Cubit<ChatStates> {
     }
   }
 
-  UserModel? getChatParticipant(BuildContext context, ChatModel chat) {
-    final userCubit = UserCubit.get(context);
-    if (userCubit.friendsList.isEmpty || chat.participants == null) {
+  UserModel? _getChatParticipant(List<UserModel> friends, ChatModel chat) {
+    if (chat.participants == null) {
       return null;
     }
-
     try {
-      final participant = userCubit.friendsList.firstWhere(
+      final participants = chat.participants!;
+      final participant = friends.firstWhere(
         (element) {
-          if (element.uId == chat.participants?.first) {
-            return element.uId == chat.participants?.first;
+          if (element.uId == participants.first) {
+            return element.uId == participants.first;
           } else {
-            return element.uId == chat.participants!.last;
+            return element.uId == participants.last;
           }
         },
       );
@@ -132,7 +132,7 @@ class ChatCubit extends Cubit<ChatStates> {
   }
 
   Future<void> uploadProfileImage(File imageFile, MessageModel msg) async {
-    emit(ChatLoadingMsgState());
+    emit(ChatSendingMsgLoadingState());
     openedChat!.messages?.insert(0, msg);
     final result =
         await chatRepo.uploadChattingImgMsg(imageFile, openedChat?.id ?? '');
@@ -145,10 +145,13 @@ class ChatCubit extends Cubit<ChatStates> {
   }
 
   void searchForChat(String text) {
-    resultOfSearch = listOfChats
-        .where(
-          (element) => text.contains(element.id!),
-        )
-        .toList();
+    // for (var element in friendsList) {
+    //   final isExist = text.contains(element.name!);
+    //   resultOfSearch.add();
+    // }
+
+    if (resultOfSearch.isNotEmpty) {
+      emit(ChatSearchState());
+    }
   }
 }

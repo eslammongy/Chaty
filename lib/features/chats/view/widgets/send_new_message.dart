@@ -24,7 +24,7 @@ class SendNewMessage extends StatelessWidget {
         if (state is ChatImageMsgUploadedState) {
           await _sendImageMsg(chatCubit, state, userCubit);
         }
-        if (state is ChatSendingMsgState) {
+        if (state is ChatMsgSendedState) {
           debugPrint("Start Sending Notification");
           await _handleSendingMsgNotification(chatCubit, userCubit, state.msg);
         }
@@ -86,7 +86,10 @@ class SendNewMessage extends StatelessWidget {
   }
 
   Future<void> _handleSendingMsgNotification(
-      ChatCubit chatCubit, UserCubit userCubit, MessageModel msg) async {
+    ChatCubit chatCubit,
+    UserCubit userCubit,
+    MessageModel msg,
+  ) async {
     final chat = chatCubit.openedChat;
     final userName = userCubit.currentUser.name ?? '';
     if (chat == null || chat.participants == null) {

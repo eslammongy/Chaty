@@ -18,7 +18,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
   static Size heightOfAppBar = Size.fromHeight(kToolbarHeight + 30.h);
   @override
   Widget build(BuildContext context) {
-    final controller = TextEditingController();
+    final searchTextController = TextEditingController();
     final debouncer = Debounce(delay: const Duration(milliseconds: 150));
     final chatCubit = ChatCubit.get(context);
     final theme = Theme.of(context);
@@ -32,7 +32,8 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
           if (state is UserLoadAllFriendsState && context.mounted) {
             _closeLoadingIndicator(context);
             if (ChatCubit.get(context).listOfChats.isEmpty) {
-              await ChatCubit.get(context).fetchAllUserChats();
+              final friends = UserCubit.get(context).friendsList;
+              await ChatCubit.get(context).fetchAllUserChats(friends: friends);
             }
           }
           if (state is UserFailureState && context.mounted) {
@@ -71,7 +72,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                             ),
                             Expanded(
                               child: CustomTextInputField(
-                                textEditingController: controller,
+                                textEditingController: searchTextController,
                                 bkColor: theme.scaffoldBackgroundColor,
                                 prefix: const Icon(
                                   FontAwesomeIcons.magnifyingGlass,
