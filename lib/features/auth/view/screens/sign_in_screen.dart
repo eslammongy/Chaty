@@ -45,7 +45,7 @@ class SignInScreen extends StatelessWidget {
     UserModel user,
   ) async {
     final userCubit = UserCubit.get(context);
-    await _handleSetDeviceTokenProcess(userCubit, user: user);
+    await _handleSetDeviceTokenProcess(context, userCubit, user: user);
   }
 
   Future<void> _handleFetchingUserInfo(
@@ -54,11 +54,14 @@ class SignInScreen extends StatelessWidget {
     final userCubit = UserCubit.get(context);
     await userCubit.fetchUserInfo().then((_) async {
       // case the device does'nt has a token yet
-      await _handleSetDeviceTokenProcess(userCubit);
+      if (context.mounted) {
+        await _handleSetDeviceTokenProcess(context, userCubit);
+      }
     });
   }
 
   Future<void> _handleSetDeviceTokenProcess(
+    BuildContext context,
     UserCubit userCubit, {
     UserModel? user,
   }) async {
@@ -68,7 +71,7 @@ class SignInScreen extends StatelessWidget {
       user.token = FCMService.userDeviceToken;
       await userCubit.setNewUserProfile(user: user);
     } else {
-      await FCMService.getDeviceToken().then((_) async {
+      await FCMService.getDeviceToken(context).then((_) async {
         if (user != null) {
           user.token = FCMService.userDeviceToken;
           await userCubit.setNewUserProfile(user: user);

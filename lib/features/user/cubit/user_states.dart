@@ -36,6 +36,10 @@ class UserLoadAllFriendsState extends UserStates {
   UserLoadAllFriendsState();
 }
 
+class UserSearchState extends UserStates {
+  UserSearchState();
+}
+
 class UserFailureState extends UserStates {
   final String errorMsg;
 

@@ -14,13 +14,12 @@ class ChatCubit extends Cubit<ChatStates> {
   static ChatCubit get(context) => BlocProvider.of(context);
 
   ChatModel? openedChat;
-  final List<ChatModel> listOfChats = [];
+  List<ChatModel> listOfChats = [];
   List<ChatModel> resultOfSearch = [];
 
   /// Use this function to fetch all the user chats so, user can select and open any chat from the list
   Future<void> fetchAllUserChats({List<UserModel>? friends}) async {
     emit(ChatLoadingState());
-    listOfChats.clear();
     final fetchingResult = await chatRepo.fetchAllUserChats();
     fetchingResult.fold((exp) {
       final msg = ExceptionHandler.getExpMessage(exp);
@@ -28,8 +27,8 @@ class ChatCubit extends Cubit<ChatStates> {
     }, (chats) {
       for (var chat in chats) {
         chat.currentRecipient = _getChatParticipant(friends!, chat);
-        listOfChats.add(chat);
       }
+      listOfChats = chats;
       emit(ChatFetchAllChatsState());
     });
   }

@@ -12,6 +12,7 @@ class UserCubit extends Cubit<UserStates> {
   static UserCubit get(context) => BlocProvider.of(context);
   UserModel currentUser = UserModel();
   final friendsList = <UserModel>[];
+  List<UserModel> resultOfSearch = [];
 
   Future<void> setNewUserProfile({required UserModel user}) async {
     emit(UserLoadingState());
@@ -101,5 +102,22 @@ class UserCubit extends Cubit<UserStates> {
       return recipientToken = token;
     });
     return recipientToken;
+  }
+
+  void searchForFriend(String text) {
+    final lowerCaseText = text.toLowerCase();
+
+    if (lowerCaseText.isEmpty) {
+      resultOfSearch.clear();
+      emit(UserLoadAllFriendsState());
+      return;
+    }
+
+    resultOfSearch = friendsList.where((element) {
+      final name = element.name?.toLowerCase();
+      return name != null && name.contains(lowerCaseText);
+    }).toList();
+
+    emit(UserSearchState());
   }
 }

@@ -5,20 +5,20 @@ import 'package:http/http.dart' as http;
 import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/utils/user_pref.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
-import 'package:chaty/core/constants/fcm_service.dart';
+import 'package:chaty/core/constants/fcm_constants.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FCMService {
   static String userDeviceToken = "";
-  static Future<void> getDeviceToken() async {
+  static Future<void> getDeviceToken(BuildContext context) async {
     if (Platform.isAndroid) {
       userDeviceToken = await FirebaseMessaging.instance.getToken() ?? '';
       await SharedPref.saveFCMToken(token: userDeviceToken);
     }
-    if (Platform.isIOS) {
-      requestNotificationPermission();
+    if (Platform.isIOS && context.mounted) {
+      requestNotificationPermission(context);
     }
   }
 
@@ -27,7 +27,9 @@ class FCMService {
     return userDeviceToken.isNotEmpty;
   }
 
-  static Future<void> requestNotificationPermission() async {
+  static Future<void> requestNotificationPermission(
+    BuildContext context,
+  ) async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
@@ -41,15 +43,29 @@ class FCMService {
 
     final status = settings.authorizationStatus;
 
-    if (status == AuthorizationStatus.authorized) {
-      debugPrint('User granted permission');
+    if (status == AuthorizationStatus.authorized && context.mounted) {
+      displaySnackBar(
+        context,
+        'User granted Notification permission',
+        isFailState: false,
+      );
       final token = await messaging.getToken();
       await SharedPref.saveFCMToken(token: token!);
-    } else if (status == AuthorizationStatus.provisional) {
-      debugPrint('User granted provisional permission');
+    } else if (status == AuthorizationStatus.provisional && context.mounted) {
+      displaySnackBar(
+        context,
+        'User granted provisional Notification permission',
+        isFailState: false,
+      );
       return;
     } else {
-      debugPrint('User declined or has not accepted permission');
+      if (context.mounted) {
+        displaySnackBar(
+          context,
+          'User declined or has not accepted Notification permission',
+        );
+      }
+
       return;
     }
   }
@@ -160,8 +176,6 @@ class FCMService {
         ),
       );
 
-      // debugPrint response status code and body for debugging
-      debugPrint('Response Status Code: ${response.statusCode}');
       debugPrint('Response Data: ${response.body}');
     } catch (e) {
       debugPrint("Error sending notification: $e");

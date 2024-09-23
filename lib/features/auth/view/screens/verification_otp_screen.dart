@@ -125,7 +125,9 @@ class VerificationOtpScreen extends StatelessWidget {
                         await userCubit
                             .setNewUserProfile(user: state.userModel)
                             .then((_) async {
-                          await _setNewDeviceToken(userCubit);
+                          if (context.mounted) {
+                            await _setNewDeviceToken(context, userCubit);
+                          }
                         });
                       }
                       if (state is AuthGenericFailureState && context.mounted) {
@@ -145,8 +147,9 @@ class VerificationOtpScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _setNewDeviceToken(UserCubit userCubit) async {
-    await FCMService.getDeviceToken().then((_) async {
+  Future<void> _setNewDeviceToken(
+      BuildContext context, UserCubit userCubit) async {
+    await FCMService.getDeviceToken(context).then((_) async {
       await userCubit.setUserDeviceToken(token: FCMService.userDeviceToken);
     });
   }
