@@ -67,6 +67,7 @@ class ChatListScreen extends StatelessWidget {
         text: "Currently, your inbox is empty and you don't have any messages",
       );
     } else {
+      debugPrint("IS Search Enabled:${state is ChatSearchState}");
       return const ChatsList();
     }
   }

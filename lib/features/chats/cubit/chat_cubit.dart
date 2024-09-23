@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
@@ -145,13 +146,19 @@ class ChatCubit extends Cubit<ChatStates> {
   }
 
   void searchForChat(String text) {
-    // for (var element in friendsList) {
-    //   final isExist = text.contains(element.name!);
-    //   resultOfSearch.add();
-    // }
+    final lowerCaseText = text.toLowerCase();
 
-    if (resultOfSearch.isNotEmpty) {
-      emit(ChatSearchState());
+    if (lowerCaseText.isEmpty) {
+      resultOfSearch.clear();
+      emit(ChatFetchAllChatsState());
+      return;
     }
+
+    resultOfSearch = listOfChats.where((element) {
+      final name = element.currentRecipient?.name?.toLowerCase();
+      return name != null && name.contains(lowerCaseText);
+    }).toList();
+
+    emit(ChatSearchState());
   }
 }
