@@ -21,6 +21,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
     final searchTextController = TextEditingController();
     final debouncer = Debounce(delay: const Duration(milliseconds: 150));
     final chatCubit = ChatCubit.get(context);
+    final userCubit = UserCubit.get(context);
     final theme = Theme.of(context);
     return PreferredSize(
       preferredSize: Size.fromHeight(100.h),
@@ -81,7 +82,11 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 onChange: (text) {
                                   debouncer.call(
                                     () {
-                                      chatCubit.searchForChat(text!);
+                                      if (searchHint == searchForFriendHint) {
+                                        userCubit.searchForFriend(text!);
+                                      } else {
+                                        chatCubit.searchForChat(text!);
+                                      }
                                     },
                                   );
                                 },

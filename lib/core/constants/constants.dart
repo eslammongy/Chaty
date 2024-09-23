@@ -18,3 +18,8 @@ const String firebaseMsgToken = "FIREBASE_MSG_TOKEN";
 
 const failureConnectionMsg =
     "Sorry for the inconvenience. We are working on it, may be your internet connection is poor";
+
+const String emptySearchResponseMsg =
+    "Sorry, we couldn't find any results for your search";
+const String searchForFriendHint = "Search for a friend...";
+const String searchForChatHint = "Search for a a chat...";

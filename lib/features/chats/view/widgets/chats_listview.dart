@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/app_routes.dart';
+import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/core/widgets/empty_state_ui.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
@@ -12,8 +12,6 @@ import 'package:chaty/features/chats/view/widgets/chat_list_item.dart';
 
 const String emptyChatsResponseMsg =
     "Currently, your inbox is empty and you don't have any messages";
-const String emptySearchResponseMsg =
-    "Sorry, we couldn't find any results for your search";
 
 class ChatsList extends StatelessWidget {
   const ChatsList({

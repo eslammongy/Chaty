@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/core/widgets/failure_state_ui.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
@@ -16,7 +17,7 @@ class ChatListScreen extends StatelessWidget {
     final chatCubit = ChatCubit.get(context);
     return Scaffold(
       appBar: const ChatsAppBar(
-        searchHint: "Search for a chat...",
+        searchHint: searchForChatHint,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),

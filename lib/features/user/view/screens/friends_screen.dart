@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:chaty/core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chaty/features/chats/view/widgets/chats_app_bar.dart';
 import 'package:chaty/features/user/view/widgets/friends_listview.dart';
@@ -11,7 +12,7 @@ class FriendsScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
         appBar: const ChatsAppBar(
-          searchHint: "Search for a friend...",
+          searchHint: searchForFriendHint,
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),

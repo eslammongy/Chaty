@@ -109,7 +109,7 @@ class UserCubit extends Cubit<UserStates> {
 
     if (lowerCaseText.isEmpty) {
       resultOfSearch.clear();
-      emit(UserLoadAllFriendsState());
+      emit(UserInitialState());
       return;
     }
 
