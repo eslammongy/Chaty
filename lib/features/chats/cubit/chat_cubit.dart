@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
@@ -71,9 +70,6 @@ class ChatCubit extends Cubit<ChatStates> {
   }
 
   Future<void> fetchChatMessages({required String chatId}) async {
-    if (isChatExist(chatId) == null) {
-      await createNewChat(chat: openedChat!);
-    }
     emit(ChatSendingMsgLoadingState());
     List<MessageModel> messages = [];
     chatRepo.fetchAllChatMsgs(chatId: chatId).listen(
@@ -108,6 +104,17 @@ class ChatCubit extends Cubit<ChatStates> {
       return chat;
     } catch (_) {
       return null;
+    }
+  }
+
+  handleListenToChatMsgs() async {
+    final chat = openedChat;
+    if (isChatExist(chat!.id!) == null) {
+      await createNewChat(chat: chat).then((_) async {
+        await fetchChatMessages(chatId: chat.id!);
+      });
+    } else {
+      await fetchChatMessages(chatId: chat.id!);
     }
   }
 

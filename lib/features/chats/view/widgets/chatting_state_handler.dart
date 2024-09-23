@@ -11,10 +11,9 @@ class ChattingStateHandler extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chat = ChatCubit.get(context).openedChat;
-
+    final chatCubit = ChatCubit.get(context);
     return BlocConsumer<ChatCubit, ChatStates>(
-      bloc: ChatCubit.get(context)..fetchChatMessages(chatId: chat?.id ?? ''),
+      bloc: ChatCubit.get(context)..handleListenToChatMsgs(),
       listener: (context, state) {
         if (state is ChatFailureState) {
           displayToastMsg(
@@ -29,7 +28,7 @@ class ChattingStateHandler extends StatelessWidget {
           return const ChatMessagePlaceholder();
         }
         if (state is ChatFetchChatMsgsState) {
-          chat?.messages = state.messages;
+          chatCubit.openedChat?.messages = state.messages;
 
           return ChattingMsgsListView(msgSource: state.messages);
         } else {

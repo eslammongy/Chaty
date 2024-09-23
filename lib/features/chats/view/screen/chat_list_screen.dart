@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/constants/app_assets.dart';
-import 'package:chaty/core/widgets/empty_state_ui.dart';
 import 'package:chaty/core/widgets/failure_state_ui.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +13,7 @@ class ChatListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final chatList = ChatCubit.get(context).listOfChats;
+
     return Scaffold(
       appBar: const ChatsAppBar(
         searchHint: "Search for a chat...",
@@ -32,7 +31,7 @@ class ChatListScreen extends StatelessWidget {
                   style: theme.textTheme.headlineMedium
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                _handleStateResponse(state, chatList),
+                _handleStateResponse(context, state),
               ],
             );
           },
@@ -53,7 +52,7 @@ class ChatListScreen extends StatelessWidget {
     );
   }
 
-  Widget _handleStateResponse(ChatStates state, List chats) {
+  Widget _handleStateResponse(BuildContext context, ChatStates state) {
     if (state is ChatLoadingState) {
       return _displayLinearLoadingBar();
     } else if (state is ChatFailureState) {
@@ -61,13 +60,7 @@ class ChatListScreen extends StatelessWidget {
         imgPath: AppAssetsManager.emptyInbox,
         text: "Something went wrong, please try again",
       );
-    } else if (state is ChatFetchAllChatsState && chats.isEmpty) {
-      return const EmptyStateUI(
-        imgPath: AppAssetsManager.emptyInbox,
-        text: "Currently, your inbox is empty and you don't have any messages",
-      );
     } else {
-      debugPrint("IS Search Enabled:${state is ChatSearchState}");
       return const ChatsList();
     }
   }

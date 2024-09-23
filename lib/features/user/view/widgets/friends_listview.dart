@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/user/view/widgets/friends_list_item.dart';
 
@@ -29,7 +30,7 @@ class FriendsListView extends StatelessWidget {
                 onTap: () {
                   final userId = userCubit.currentUser.uId;
                   if (userId == null || friend.uId == null) return;
-                  _handleNavToChattingScreen(context, userId, friend.uId!);
+                  _handleNavToChattingScreen(context, userId, friend);
                 },
               );
             },
@@ -42,13 +43,14 @@ class FriendsListView extends StatelessWidget {
   void _handleNavToChattingScreen(
     BuildContext context,
     String userId,
-    String friendId,
+    UserModel friend,
   ) {
-    final chatId = generateChatId(userId: userId, participantId: friendId);
+    final chatId = generateChatId(userId: userId, participantId: friend.uId!);
     final chat = ChatModel(
       id: chatId,
-      participants: [userId, friendId],
+      participants: [userId, friend.uId!],
       messages: [],
+      currentRecipient: friend,
     );
     if (context.mounted) _navigateChatScreen(context, chat);
   }
