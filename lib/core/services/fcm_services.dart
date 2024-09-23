@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/utils/user_pref.dart';
+import 'package:toastification/toastification.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:chaty/core/constants/fcm_constants.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
@@ -86,10 +87,11 @@ class FCMService {
     });
     FirebaseMessaging.onMessage.listen((message) {
       if (context.mounted) {
-        displaySnackBar(
+        displayToastMsg(
           context,
           "New Message From ${message.notification!.title}",
-          isFailState: false,
+          alignment: Alignment.topCenter,
+          type: ToastificationType.success,
         );
         handleForegroundMessage(context, message);
       }

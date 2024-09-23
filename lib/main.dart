@@ -14,7 +14,6 @@ import 'package:chaty/features/settings/data/settings_repo.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:chaty/features/settings/cubit/settings_cubit.dart';
 import 'package:chaty/core/services/services_locator.dart' as injectable;
-// ignore: unused_import
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

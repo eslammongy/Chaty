@@ -58,7 +58,6 @@ class ChatListScreen extends StatelessWidget {
 
   Widget _handleStateResponse(ChatCubit chatCubit, ChatStates state) {
     if (state is ChatLoadingState && chatCubit.listOfChats.isEmpty) {
-      debugPrint("Loading State Called again..${chatCubit.listOfChats}");
       return _displayLinearLoadingBar();
     } else if (state is ChatFailureState) {
       return const FailureStateUI(
