@@ -7,9 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/user_pref.dart';
 import 'package:chaty/core/utils/app_routes.dart';
 import 'package:chaty/core/constants/app_assets.dart';
+import 'package:chaty/core/services/fcm_services.dart';
 import 'package:chaty/features/auth/cubit/auth_cubit.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
 
 class VerificationOtpScreen extends StatelessWidget {
   final String verifyId;
@@ -21,6 +22,7 @@ class VerificationOtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userCubit = UserCubit.get(context);
     final pinController = TextEditingController();
     final focusNode = FocusNode();
     final theme = Theme.of(context);
@@ -29,15 +31,15 @@ class VerificationOtpScreen extends StatelessWidget {
       listener: (context, state) async {
         if (state is UserCreatedState) {
           await SharedPref.keepUserAuthenticated(isLogged: true).then((value) {
-             AppRouter.isUserLogin = true;
-            GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
+            AppRouter.isUserLogin = true;
+            if (context.mounted) {
+              GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
+            }
           });
         }
-        if (state is UserFailureState) {
-          Future(() {
-            GoRouter.of(context).pop();
-            displaySnackBar(context, state.errorMsg);
-          });
+        if (state is UserFailureState && context.mounted) {
+          GoRouter.of(context).pop();
+          displaySnackBar(context, state.errorMsg);
         }
       },
       builder: (context, state) {
@@ -120,14 +122,17 @@ class VerificationOtpScreen extends StatelessWidget {
                     },
                     listener: (context, state) async {
                       if (state is PhoneOtpCodeVerifiedState) {
-                        await UserCubit.get(context)
-                            .createNewUserProfile(user: state.userModel);
-                      }
-                      if (state is AuthGenericFailureState) {
-                        Future(() {
-                          GoRouter.of(context).pop();
-                          displaySnackBar(context, state.errorMsg);
+                        await userCubit
+                            .setNewUserProfile(user: state.userModel)
+                            .then((_) async {
+                          if (context.mounted) {
+                            await _setNewDeviceToken(context, userCubit);
+                          }
                         });
+                      }
+                      if (state is AuthGenericFailureState && context.mounted) {
+                        GoRouter.of(context).pop();
+                        displaySnackBar(context, state.errorMsg);
                       }
                     },
                     child: const SizedBox(),
@@ -140,6 +145,13 @@ class VerificationOtpScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> _setNewDeviceToken(
+      BuildContext context, UserCubit userCubit) async {
+    await FCMService.getDeviceToken(context).then((_) async {
+      await userCubit.setUserDeviceToken(token: FCMService.userDeviceToken);
+    });
   }
 
   PinTheme defaultPinTheme(theme) => PinTheme(

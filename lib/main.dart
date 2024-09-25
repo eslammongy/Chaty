@@ -1,33 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:chaty/core/utils/app_routes.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:chaty/core/widgets/error_screen.dart';
 import 'package:chaty/features/auth/cubit/auth_cubit.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
 import 'package:chaty/features/auth/data/repos/auth_repo.dart';
-import 'package:chaty/features/users/data/repos/user_repo.dart';
+import 'package:chaty/features/user/data/repos/user_repo.dart';
 import 'package:chaty/features/settings/data/settings_repo.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:chaty/features/settings/cubit/settings_cubit.dart';
-import 'package:chaty/core/utils/services_locator.dart' as injectable;
+import 'package:chaty/core/services/services_locator.dart' as injectable;
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  await _setupAppConfiguration(widgetsBinding);
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await initAppConfiguration();
 }
 
-Future<void> _setupAppConfiguration(WidgetsBinding widgetsBinding) async {
-  Future.delayed(const Duration(microseconds: 1000), () async {
+Future<void> initAppConfiguration() async {
+  try {
     await Firebase.initializeApp();
-    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     await injectable.initServices();
     await AppRouter.setInitialRoute();
-    runApp(const Chatty());
+  } catch (e) {
     FlutterNativeSplash.remove();
-  });
+    runApp(ErrorScreen(error: e.toString()));
+  } finally {
+    FlutterNativeSplash.remove();
+    runApp(const Chatty());
+  }
 }
 
 class Chatty extends StatelessWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:chaty/core/constants/app_assets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class LoginScreenIntroSection extends StatelessWidget {
@@ -19,10 +20,12 @@ class LoginScreenIntroSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Center(
-          child: SvgPicture.asset(
-            AppAssetsManager.appLogo,
-            width: 80,
-            fit: BoxFit.contain,
+          child: ClipOval(
+            child: SvgPicture.asset(
+              AppAssetsManager.appLogo,
+              width: 160.w, // Adjust size
+              fit: BoxFit.contain,
+            ),
           ),
         ),
         Text(

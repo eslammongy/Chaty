@@ -11,11 +11,19 @@ class SharedPref {
   }
 
   static Future<void> keepUserAuthenticated({required bool isLogged}) async {
-    await sharedPreferences.setBool('UserAuthCheckerKey', isLogged);
+    await sharedPreferences.setBool(userAuthCheckerKey, isLogged);
+  }
+
+  static Future<void> saveFCMToken({required String token}) async {
+    await sharedPreferences.setString(firebaseMsgToken, token);
+  }
+
+  static String? getFCMToken() {
+    return sharedPreferences.getString(firebaseMsgToken);
   }
 
   static Future<bool> isUserAuthenticated() async {
-    return sharedPreferences.getBool('UserAuthCheckerKey') ?? false;
+    return sharedPreferences.getBool(userAuthCheckerKey) ?? false;
   }
 
   static Future<bool> saveSelectedTheme(String theme) async {

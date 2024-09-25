@@ -1,14 +1,19 @@
 import 'dart:convert';
 import 'package:chaty/features/chats/data/models/message.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
 
 class ChatModel {
   String? id;
   final List<String>? participants;
   List<MessageModel>? messages;
+  // this field represent the user that is not the current user using the app ot the device
+  UserModel? currentRecipient;
+
   ChatModel({
     this.id,
     this.participants,
     this.messages,
+    this.currentRecipient,
   });
 
   Map<String, dynamic> toMap() {

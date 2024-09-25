@@ -6,18 +6,18 @@ class ChatInitialState extends ChatStates {}
 
 class ChatLoadingState extends ChatStates {}
 
-class ChatLoadingMsgState extends ChatStates {}
+class ChatSendingMsgLoadingState extends ChatStates {}
 
-class ChatCreatedNewState extends ChatStates {
+class ChatCreatedState extends ChatStates {
   final ChatModel chat;
 
-  ChatCreatedNewState({required this.chat});
+  ChatCreatedState({required this.chat});
 }
 
-class ChatSendingMsgState extends ChatStates {
+class ChatMsgSendedState extends ChatStates {
   final MessageModel msg;
 
-  ChatSendingMsgState({required this.msg});
+  ChatMsgSendedState({required this.msg});
 }
 
 class ChatFailureState extends ChatStates {
@@ -39,4 +39,8 @@ class ChatImageMsgUploadedState extends ChatStates {
   final String imageUrl;
 
   ChatImageMsgUploadedState({required this.imageUrl});
+}
+
+class ChatSearchState extends ChatStates {
+  ChatSearchState();
 }

@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:intl/intl.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:chaty/core/theme/dark_palette.dart';
 import 'package:toastification/toastification.dart';
+import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/core/widgets/loading_state_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/users/view/widgets/custom_text_btn.dart';
+import 'package:chaty/features/user/view/widgets/custom_text_btn.dart';
 
 /// this is the default box shadow for the card items
 get defBoxShadows => [
@@ -26,11 +29,16 @@ void displaySnackBar(BuildContext context, String msg,
     {bool isFailState = true}) {
   final theme = Theme.of(context);
   final snackBar = SnackBar(
-    content: Text(
-      msg,
-      style: theme.textTheme.bodyMedium,
+    content: Center(
+      child: Text(
+        msg,
+        style: theme.textTheme.bodyLarge,
+      ),
     ),
-    margin: const EdgeInsets.only(right: 20, left: 20, bottom: 20),
+    margin: const EdgeInsets.only(
+      right: 20,
+      left: 20,
+    ),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     backgroundColor:
         isFailState ? theme.colorScheme.error : theme.colorScheme.primary,
@@ -133,14 +141,24 @@ void displayToastMsg(
   toastification.show(
     context: context,
     title: Text(
+      "Chatty",
+      style: theme.textTheme.titleLarge
+          ?.copyWith(color: DarkPalette.backgroundDarkColor),
+    ),
+    description: Text(
       msg,
-      style: theme.textTheme.titleMedium,
+      style: theme.textTheme.titleMedium
+          ?.copyWith(color: DarkPalette.backgroundDarkColor),
+    ),
+    icon: SvgPicture.asset(
+      AppAssetsManager.appLogo,
+      width: 45,
     ),
     type: type ?? ToastificationType.info,
-    style: ToastificationStyle.simple,
+    style: ToastificationStyle.flat,
     borderSide: BorderSide.none,
+    backgroundColor: Colors.white,
     alignment: alignment,
-    backgroundColor: type != null ? Colors.red : theme.colorScheme.secondary,
     autoCloseDuration: const Duration(seconds: 2),
   );
 }

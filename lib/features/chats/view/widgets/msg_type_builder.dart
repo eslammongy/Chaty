@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:chaty/core/utils/helper.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -27,8 +27,7 @@ class MsgTypeBuilder extends StatelessWidget {
           onPressed: () async {
             final image = await pickImageFromCamera(context);
             if (image == null) return;
-            final msg = MessageModel.buildMsg(
-                image.path, userCubit.user!.uId!,
+            final msg = MessageModel.buildMsg(image.path, userCubit.currentUser.uId!,
                 type: MsgType.file);
             await chatCubit.uploadProfileImage(File(image.path), msg);
           },
@@ -39,8 +38,7 @@ class MsgTypeBuilder extends StatelessWidget {
           onPressed: () async {
             final image = await pickGalleryImage(context);
             if (image == null) return;
-            final msg = MessageModel.buildMsg(
-                image.path, userCubit.user!.uId!,
+            final msg = MessageModel.buildMsg(image.path, userCubit.currentUser.uId!,
                 type: MsgType.file);
             await chatCubit.uploadProfileImage(File(image.path), msg);
           },

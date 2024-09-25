@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:chaty/features/auth/data/repos/auth_repo.dart';
 import 'package:chaty/core/errors/auth_exceptions_handler.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
 
 class AuthRepoImplementation implements AuthRepo {
   FirebaseAuth firebaseAuth;
@@ -18,17 +18,25 @@ class AuthRepoImplementation implements AuthRepo {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
+      debugPrint(
+          "**Auth With Google User Named: ${googleAccount?.displayName}");
       GoogleSignInAuthentication? authentication =
           await googleAccount?.authentication;
+
       AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: authentication?.idToken,
-          accessToken: authentication?.accessToken);
+        idToken: authentication?.idToken,
+        accessToken: authentication?.accessToken,
+      );
+
       final userCredential =
           await firebaseAuth.signInWithCredential(credential);
+  
       if (userCredential.user == null) {
         return left(ExceptionsType.undefined);
       }
       final userModel = _fillUserModel(userCredential.user!);
+      debugPrint(
+          "**Auth With Google Account: ${userCredential.additionalUserInfo}");
       return right(userModel);
     } catch (error) {
       if (error is FirebaseException) {
@@ -59,7 +67,9 @@ class AuthRepoImplementation implements AuthRepo {
         return left(ExceptionsType.undefined);
       }
       final userModel = UserModel(
-          uId: userCredential.user?.uid, email: email, password: password);
+        uId: userCredential.user?.uid,
+        email: email,
+      );
       return right(userModel);
     } catch (error) {
       if (error is FirebaseException) {

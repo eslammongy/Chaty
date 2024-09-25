@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/features/auth/data/repos/auth_repo.dart';
 import 'package:chaty/core/errors/auth_exceptions_handler.dart';
-import 'package:chaty/features/users/data/models/user_model.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthStates> {
@@ -13,19 +13,14 @@ class AuthCubit extends Cubit<AuthStates> {
 
   Future<void> signInWithGoogleAccount() async {
     emit(AuthLoadingState());
-    try {
-      var result = await authRepo.signInWithGoogle();
-      result.fold((errorCode) {
-        var errorMsg = ExceptionHandler.getExpMessage(errorCode);
-        emit(AuthGenericFailureState(errorMsg));
-      }, (user) async {
-        emit(SignInWithGoogleSuccessState(userModel: user));
-      });
-    } catch (exp) {
-      final errorMsg = ExceptionHandler.getExpMessage(exp);
-      debugPrint("SignIn CUBIT Error-$errorMsg");
+    var result = await authRepo.signInWithGoogle();
+    result.fold((errorCode) {
+      var errorMsg = ExceptionHandler.getExpMessage(errorCode);
       emit(AuthGenericFailureState(errorMsg));
-    }
+    }, (user) async {
+      debugPrint("User Signed name:${user.name}");
+      emit(SignInWithGoogleSuccessState(userModel: user));
+    });
   }
 
   Future<void> signUpWithEmailPassword({

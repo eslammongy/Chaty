@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:chaty/core/constants/constants.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/core/widgets/failure_state_ui.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
@@ -13,10 +14,10 @@ class ChatListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final chatList = ChatCubit.get(context).listOFChats;
+    final chatCubit = ChatCubit.get(context);
     return Scaffold(
       appBar: const ChatsAppBar(
-        searchHint: "Search for a chat...",
+        searchHint: searchForChatHint,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
@@ -31,7 +32,11 @@ class ChatListScreen extends StatelessWidget {
                   style: theme.textTheme.headlineMedium
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
-               _handleStateResponse(state, chatList),
+                if (state is ChatLoadingState &&
+                    chatCubit.listOfChats.isNotEmpty) ...[
+                  _displayLinearLoadingBar()
+                ],
+                _handleStateResponse(chatCubit, state),
               ],
             );
           },
@@ -52,21 +57,15 @@ class ChatListScreen extends StatelessWidget {
     );
   }
 
-  Widget _handleStateResponse(ChatStates state, List chatList) {
-    if (state is ChatLoadingState) {
+  Widget _handleStateResponse(ChatCubit chatCubit, ChatStates state) {
+    if (state is ChatLoadingState && chatCubit.listOfChats.isEmpty) {
       return _displayLinearLoadingBar();
-    }
-
-    /// case is there an exception happened when retrieving chats
-    else if (state is ChatFailureState) {
+    } else if (state is ChatFailureState) {
       return const FailureStateUI(
         imgPath: AppAssetsManager.emptyInbox,
         text: "Something went wrong, please try again",
       );
-    }
-
-    /// case all chats loaded successfully or chat list is not empty
-    else {
+    } else {
       return const ChatsList();
     }
   }

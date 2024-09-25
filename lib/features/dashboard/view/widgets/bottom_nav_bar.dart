@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:chaty/core/theme/common_palette.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -19,7 +18,7 @@ class FloatingBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
       elevation: 4,
       shadowColor: Colors.indigo.shade800,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -70,7 +69,7 @@ class FloatingBottomNavBar extends StatelessWidget {
     Function()? onTap,
   }) {
     final theme = Theme.of(context);
-    const activeColor = CommonColorPalette.mainOrangeColor;
+    final activeColor = theme.colorScheme.secondary;
     final defColor = theme.colorScheme.surfaceTint;
     return InkWell(
       borderRadius: BorderRadius.circular(100),

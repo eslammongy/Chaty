@@ -3,7 +3,7 @@ import 'package:chaty/core/utils/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/core/widgets/placeholder_img_msg.dart';
-import 'package:chaty/core/widgets/cache_network_image.dart';
+import 'package:chaty/core/widgets/cache_network_msg_img.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/settings/cubit/settings_cubit.dart';
 import 'package:chaty/features/chats/view/widgets/expandable_text.dart';
@@ -37,7 +37,7 @@ class MessageItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Visibility(
-              visible: state is ChatFailureState || state is ChatFailureState,
+              visible: state is ChatFailureState,
               child: Icon(
                 Icons.info,
                 color: theme.colorScheme.error,
@@ -62,10 +62,9 @@ class MessageItem extends StatelessWidget {
   }
 
   Widget _networkImgMsg() {
-    return CacheNetworkImg(
+    return CacheNetworkMsgImg(
       imgUrl: msg.text ?? "",
       radius: 12,
-      isChatMsg: true,
     );
   }
 
@@ -90,7 +89,7 @@ class MessageItem extends StatelessWidget {
     );
   }
 
-  Widget _buildFileMsgLayout(BuildContext context) {
+  Widget _buildFileMsgLayout() {
     return const Opacity(
       opacity: 0.4,
       child: PlaceholderImgMsg(
@@ -107,7 +106,7 @@ class MessageItem extends StatelessWidget {
       case MsgType.image:
         return _networkImgMsg();
       case MsgType.file:
-        return _buildFileMsgLayout(context);
+        return _buildFileMsgLayout();
       default:
         return _textMsgLayout(context);
     }

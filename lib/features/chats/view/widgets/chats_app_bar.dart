@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:chaty/core/utils/debouncer.dart';
 import 'package:chaty/core/constants/constants.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
-import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:chaty/core/widgets/cache_network_profile_img.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
 class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -17,7 +18,10 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
   static Size heightOfAppBar = Size.fromHeight(kToolbarHeight + 30.h);
   @override
   Widget build(BuildContext context) {
-    final controller = TextEditingController();
+    final searchTextController = TextEditingController();
+    final debouncer = Debounce(delay: const Duration(milliseconds: 150));
+    final chatCubit = ChatCubit.get(context);
+    final userCubit = UserCubit.get(context);
     final theme = Theme.of(context);
     return PreferredSize(
       preferredSize: Size.fromHeight(100.h),
@@ -26,19 +30,16 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
           if (state is UserLoadingState) {
             showLoadingDialog(context, text: "loading profile info...");
           }
-          if (state is UserLoadAllFriendsState) {
-            Future(() async {
-              _closeLoadingIndicator(context);
-              if (ChatCubit.get(context).listOFChats.isEmpty) {
-                await ChatCubit.get(context).fetchAllUserChats();
-              }
-            });
+          if (state is UserLoadAllFriendsState && context.mounted) {
+            _closeLoadingIndicator(context);
+            if (ChatCubit.get(context).listOfChats.isEmpty) {
+              final friends = UserCubit.get(context).friendsList;
+              await ChatCubit.get(context).fetchAllUserChats(friends: friends);
+            }
           }
-          if (state is UserFailureState) {
-            Future(() {
-              _closeLoadingIndicator(context);
-              displayToastMsg(context, state.errorMsg);
-            });
+          if (state is UserFailureState && context.mounted) {
+            _closeLoadingIndicator(context);
+            displayToastMsg(context, state.errorMsg);
           }
         },
         builder: (context, state) {
@@ -61,22 +62,34 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            CacheNetworkImg(
+                            CacheNetworkProfileImg(
                               imgUrl:
-                                  UserCubit.get(context).user?.imageUrl ??
+                                  UserCubit.get(context).currentUser.imageUrl ??
                                       dummyImageUrl,
-                              radius: 26,
+                              radius: 22,
                             ),
                             const SizedBox(
                               width: 10,
                             ),
                             Expanded(
                               child: CustomTextInputField(
-                                textEditingController: controller,
+                                textEditingController: searchTextController,
                                 bkColor: theme.scaffoldBackgroundColor,
                                 prefix: const Icon(
-                                    FontAwesomeIcons.magnifyingGlass),
+                                  FontAwesomeIcons.magnifyingGlass,
+                                ),
                                 hint: searchHint,
+                                onChange: (text) {
+                                  debouncer.call(
+                                    () {
+                                      if (searchHint == searchForFriendHint) {
+                                        userCubit.searchForFriend(text!);
+                                      } else {
+                                        chatCubit.searchForChat(text!);
+                                      }
+                                    },
+                                  );
+                                },
                               ),
                             ),
                             const SizedBox(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
+import 'package:chaty/core/services/fcm_services.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/chats/view/widgets/msg_type_builder.dart';
 
 class SendNewMessage extends StatelessWidget {
@@ -24,6 +24,10 @@ class SendNewMessage extends StatelessWidget {
         if (state is ChatImageMsgUploadedState) {
           await _sendImageMsg(chatCubit, state, userCubit);
         }
+        if (state is ChatMsgSendedState) {
+          debugPrint("Start Sending Notification");
+          await _handleSendingMsgNotification(chatCubit, userCubit, state.msg);
+        }
       },
       child: Row(
         children: [
@@ -37,15 +41,7 @@ class SendNewMessage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(100)),
               child: InkWell(
                 onTap: () async {
-                  final chat = chatCubit.openedChat;
-                  if (_checkIsChatCreate(chat)) {
-                    await _sendNewTextMsg(userCubit, chatCubit, msgController);
-                  } else {
-                    await chatCubit.createNewChat(chat: chat!).then((_) async {
-                      await _sendNewTextMsg(
-                          userCubit, chatCubit, msgController);
-                    });
-                  }
+                  await _sendNewTextMsg(userCubit, chatCubit, msgController);
                 },
                 borderRadius: BorderRadius.circular(100),
                 child: const Padding(
@@ -63,20 +59,17 @@ class SendNewMessage extends StatelessWidget {
     );
   }
 
-  Future<void> _sendImageMsg(ChatCubit chatCubit,
-      ChatImageMsgUploadedState state, UserCubit userCubit) async {
-    final chat = chatCubit.openedChat;
-    final msg = MessageModel.buildMsg(state.imageUrl, userCubit.user!.uId!,
-        type: MsgType.image);
-    if (_checkIsChatCreate(chat)) {
-      await chatCubit.sendNewTextMsg(
-          chatId: chatCubit.openedChat?.id ?? '', msg: msg);
-    } else {
-      await chatCubit.createNewChat(chat: chat!).then((_) async {
-        await chatCubit.sendNewTextMsg(
-            chatId: chatCubit.openedChat?.id ?? '', msg: msg);
-      });
-    }
+  Future<void> _sendImageMsg(
+    ChatCubit chatCubit,
+    ChatImageMsgUploadedState state,
+    UserCubit userCubit,
+  ) async {
+    final msg = MessageModel.buildMsg(
+      state.imageUrl,
+      userCubit.currentUser.uId!,
+      type: MsgType.image,
+    );
+    await chatCubit.sendNewTextMsg(chatId: chatCubit.openedChat!.id!, msg: msg);
   }
 
   Future<void> _sendNewTextMsg(
@@ -84,20 +77,45 @@ class SendNewMessage extends StatelessWidget {
     ChatCubit chatCubit,
     TextEditingController msgController,
   ) async {
-    final msg =
-        MessageModel.buildMsg(msgController.text, userCubit.user!.uId!);
+    final msg = MessageModel.buildMsg(
+      msgController.text,
+      userCubit.currentUser.uId!,
+    );
     msgController.clear();
-    await chatCubit.sendNewTextMsg(
-        chatId: chatCubit.openedChat?.id ?? '', msg: msg);
+    await chatCubit.sendNewTextMsg(chatId: chatCubit.openedChat!.id!, msg: msg);
   }
 
-  bool _checkIsChatCreate(ChatModel? chat) {
-    if (chat == null) return false;
-    // case the chat is not exist in the collection or does'nt created yet...
-    if (chat.messages == null || chat.messages!.isEmpty) {
-      return false;
-    } else {
-      return true;
+  Future<void> _handleSendingMsgNotification(
+    ChatCubit chatCubit,
+    UserCubit userCubit,
+    MessageModel msg,
+  ) async {
+    final chat = chatCubit.openedChat;
+    final userName = userCubit.currentUser.name ?? '';
+    if (chat == null || chat.participants == null) {
+      return;
     }
+    final recipientId = chat.participants!.firstWhere(
+      (element) => element != userCubit.currentUser.uId,
+    );
+    await userCubit
+        .getRecipientDeviceToken(recipientId: recipientId)
+        .then((token) async {
+      debugPrint("recipient Token: $token");
+      if (token == null) return;
+      await _sendingNewMsgNotification(userName, msg, token);
+    });
+  }
+
+  Future<void> _sendingNewMsgNotification(
+    String userName,
+    MessageModel msg,
+    String token,
+  ) async {
+    await FCMService.sendNotifications(
+      sender: userName,
+      msg: msg.msgType == MsgType.text ? msg.text! : "sended an image",
+      recipientToken: token,
+    );
   }
 }

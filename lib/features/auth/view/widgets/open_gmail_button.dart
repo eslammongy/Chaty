@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:android_intent_plus/android_intent.dart';
-import 'package:chaty/features/users/view/widgets/custom_text_button.dart';
+import 'package:chaty/features/user/view/widgets/custom_text_button.dart';
 
 class OpenGmailButton extends StatelessWidget {
   const OpenGmailButton({super.key, required this.shouldVisible});

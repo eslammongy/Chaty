@@ -2,129 +2,83 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chaty/core/utils/user_pref.dart';
-import 'package:chaty/core/utils/app_routes.dart';
+import 'package:chaty/core/services/fcm_services.dart';
 import 'package:chaty/features/auth/cubit/auth_cubit.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/users/cubit/user_cubit.dart';
-import 'package:chaty/features/auth/view/widgets/signin_from.dart';
-import 'package:chaty/features/auth/view/widgets/login_screen_intro_section.dart';
-import 'package:chaty/features/auth/view/widgets/signin_with_social_accounts.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
+import 'package:chaty/features/auth/view/widgets/signing_screen_body.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final passwordTxtController = TextEditingController();
-    final emailTxtController = TextEditingController();
-    final userInfoCubit = UserCubit.get(context);
     return BlocConsumer<AuthCubit, AuthStates>(
       listener: (context, state) async {
         if (state is AuthLoadingState) {
           showLoadingDialog(context, text: "please wait...");
         }
         if (state is SignInWithGoogleSuccessState) {
-          await userInfoCubit
-              .createNewUserProfile(user: state.userModel)
-              .then((value) async {
-            await _keepUserLoggedIn(context);
-          });
+          await _handleCreateNewUserDoc(context, state.userModel);
         }
         if (state is SignInSuccessState) {
-          Future(() async {
-            await _getUserInfo(context);
-          });
+          if (!context.mounted) return;
+          await _handleFetchingUserInfo(context);
         }
         if (state is AuthGenericFailureState) {
-          Future(() {
-            //*pop the loading dialog
-            GoRouter.of(context).pop();
-            displaySnackBar(context, state.errorMsg);
-          });
+          if (!context.mounted) return;
+          GoRouter.of(context).pop();
+          displaySnackBar(context, state.errorMsg);
         }
       },
       builder: (context, state) {
-        return Scaffold(
+        return const Scaffold(
           body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 80.h,
-                    ),
-                    const LoginScreenIntroSection(
-                      introText: "Welcome Back",
-                      subIntroText: "Sign in to continue",
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SingInFrom(
-                      emailTxtController: emailTxtController,
-                      passTxtController: passwordTxtController,
-                      onPressed: () async {
-                        await userSignInWithEmail(
-                          context,
-                          emailTxtController,
-                          passwordTxtController,
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    BlocListener<UserCubit, UserStates>(
-                      listener: (context, state) async {
-                        if (state is UserFetchedState) {
-                          Future(() async {
-                            _keepUserLoggedIn(context);
-                          });
-                        }
-                        if (state is UserFailureState) {
-                          displaySnackBar(context, state.errorMsg);
-                        }
-                      },
-                      child: const SizedBox(),
-                    ),
-                    const SignInWithSocialAccounts()
-                  ]),
-            ),
-          ),
+              physics: BouncingScrollPhysics(), child: SignInScreenBody()),
         );
       },
     );
   }
 
-  Future<void> _getUserInfo(BuildContext context) async {
-    await UserCubit.get(context).fetchUserInfo().then((value) async {
-      await _keepUserLoggedIn(context);
-    });
-  }
-
-  Future<void> _keepUserLoggedIn(BuildContext context) async {
-     AppRouter.isUserLogin = true;
-    await SharedPref.keepUserAuthenticated(isLogged: true).then((value) {
-      GoRouter.of(context).pushReplacement(AppRouter.dashboardScreen);
-    });
-  }
-
-  userSignInWithEmail(
+  Future<void> _handleCreateNewUserDoc(
     BuildContext context,
-    TextEditingController emailController,
-    TextEditingController passwordController,
+    UserModel user,
   ) async {
-    final authCubit = AuthCubit.get(context);
-    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-      displaySnackBar(context, "please make sure you entered all info!");
-      return;
+    final userCubit = UserCubit.get(context);
+    await _handleSetDeviceTokenProcess(context, userCubit, user: user);
+  }
+
+  Future<void> _handleFetchingUserInfo(
+    BuildContext context,
+  ) async {
+    final userCubit = UserCubit.get(context);
+    await userCubit.fetchUserInfo().then((_) async {
+      // case the device does'nt has a token yet
+      if (context.mounted) {
+        await _handleSetDeviceTokenProcess(context, userCubit);
+      }
+    });
+  }
+
+  Future<void> _handleSetDeviceTokenProcess(
+    BuildContext context,
+    UserCubit userCubit, {
+    UserModel? user,
+  }) async {
+    // when user is not null this means we already sign in and try to create a user profile info
+    // also when the device token is not empty or null this means we already set the device token
+    if (FCMService.isDeviceHasToken && user != null) {
+      user.token = FCMService.userDeviceToken;
+      await userCubit.setNewUserProfile(user: user);
+    } else {
+      await FCMService.getDeviceToken(context).then((_) async {
+        if (user != null) {
+          user.token = FCMService.userDeviceToken;
+          await userCubit.setNewUserProfile(user: user);
+        } else {
+          await userCubit.setUserDeviceToken(token: FCMService.userDeviceToken);
+        }
+      });
     }
-    if (!isValidEmail(emailController.text)) {
-      displaySnackBar(context, "please make sure you entered a valid email!");
-      return;
-    }
-    await authCubit.signInWithEmailPassword(
-        email: emailController.text, password: passwordController.text);
   }
 }

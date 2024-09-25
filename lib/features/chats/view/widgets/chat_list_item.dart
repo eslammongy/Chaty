@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/constants/constants.dart';
-import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/core/widgets/cache_network_image.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
+import 'package:chaty/core/widgets/cache_network_profile_img.dart';
 
 class ChatListItem extends StatelessWidget {
   const ChatListItem({
@@ -17,7 +16,7 @@ class ChatListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final receiver = ChatCubit.get(context).getChatParticipant(context, chat);
+    final recipient = chat.currentRecipient;
 
     return Card(
       elevation: 1,
@@ -27,8 +26,8 @@ class ChatListItem extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
           child: Row(
             children: [
-              CacheNetworkImg(
-                imgUrl: receiver?.imageUrl ?? dummyImageUrl,
+              CacheNetworkProfileImg(
+                imgUrl: recipient!.imageUrl ?? dummyImageUrl,
                 radius: 28,
               ),
               const SizedBox(
@@ -44,7 +43,7 @@ class ChatListItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          receiver?.name ?? dummyName,
+                          recipient.name ?? dummyName,
                           style: theme.textTheme.bodyLarge
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
