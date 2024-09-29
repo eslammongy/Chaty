@@ -16,9 +16,9 @@ class VerificationOtpScreen extends StatelessWidget {
   final String verifyId;
 
   const VerificationOtpScreen({
-    Key? key,
+    super.key,
     required this.verifyId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +75,6 @@ class VerificationOtpScreen extends StatelessWidget {
                     controller: pinController,
                     focusNode: focusNode,
                     length: 6,
-                    androidSmsAutofillMethod:
-                        AndroidSmsAutofillMethod.smsUserConsentApi,
-                    listenForMultipleSmsOnAndroid: true,
                     defaultPinTheme: defaultPinTheme(theme),
                     hapticFeedbackType: HapticFeedbackType.lightImpact,
                     onCompleted: (code) {
