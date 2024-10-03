@@ -8,8 +8,8 @@ import 'package:chaty/features/auth/view/widgets/build_login_option_btn.dart';
 
 class AuthProviders extends StatelessWidget {
   const AuthProviders({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

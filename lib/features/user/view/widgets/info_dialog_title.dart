@@ -4,10 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class InfoDialogTitleRow extends StatelessWidget {
   const InfoDialogTitleRow({
-    Key? key,
+    super.key,
     required this.dialogTitle,
     this.onPressed,
-  }) : super(key: key);
+  });
   final String dialogTitle;
   final void Function()? onPressed;
   @override

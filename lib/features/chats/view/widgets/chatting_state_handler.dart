@@ -24,7 +24,8 @@ class ChattingStateHandler extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is ChatLoadingState) {
+        if (state is ChatLoadingState &&
+            chatCubit.openedChat?.messages == null) {
           return const ChatMessagePlaceholder();
         }
         if (state is ChatFetchChatMsgsState) {

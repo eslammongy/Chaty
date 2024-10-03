@@ -53,7 +53,7 @@ class SignInOptionBtn extends StatelessWidget {
                   btnText,
                   style: theme.textTheme.titleMedium?.copyWith(
                       color: signInOption == SignInOption.google
-                          ? theme.colorScheme.background
+                          ? theme.scaffoldBackgroundColor
                           : Colors.white,
                       fontWeight: FontWeight.w700),
                 ),

@@ -6,10 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreenIntroSection extends StatelessWidget {
   const LoginScreenIntroSection({
-    Key? key,
+    super.key,
     required this.introText,
     required this.subIntroText,
-  }) : super(key: key);
+  });
   final String introText;
   final String subIntroText;
 

@@ -3,7 +3,7 @@ import 'package:chaty/core/utils/helper.dart';
 
 class CustomTextInputField extends StatelessWidget {
   const CustomTextInputField(
-      {Key? key,
+      {super.key,
       required this.textEditingController,
       this.hint,
       this.prefix,
@@ -20,8 +20,7 @@ class CustomTextInputField extends StatelessWidget {
       this.bkColor,
       this.fieldRoundedRadius,
       this.focusColor,
-      this.enabled = true})
-      : super(key: key);
+      this.enabled = true});
 
   final TextEditingController textEditingController;
   final String? initText;

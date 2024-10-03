@@ -8,6 +8,7 @@ import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:chaty/features/settings/cubit/settings_cubit.dart';
 import 'package:chaty/core/widgets/cache_network_profile_img.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
 
@@ -20,14 +21,15 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final searchTextController = TextEditingController();
     final debouncer = Debounce(delay: const Duration(milliseconds: 150));
-    final chatCubit = ChatCubit.get(context);
+  final chatCubit = ChatCubit.get(context);
     final userCubit = UserCubit.get(context);
     final theme = Theme.of(context);
     return PreferredSize(
       preferredSize: Size.fromHeight(100.h),
       child: BlocConsumer<UserCubit, UserStates>(
         listener: (context, state) async {
-          if (state is UserLoadingState) {
+          final settingCubit = SettingsCubit.get(context);
+          if (state is UserLoadingState && settingCubit.currentPageIndex != 2) {
             showLoadingDialog(context, text: "loading profile info...");
           }
           if (state is UserLoadAllFriendsState && context.mounted) {

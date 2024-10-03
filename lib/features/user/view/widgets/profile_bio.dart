@@ -45,7 +45,7 @@ class _ProfileBioState extends State<ProfileBio> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final profileCubit = UserCubit.get(context);
+    final userCubit = UserCubit.get(context);
     return Card(
       color: theme.colorScheme.surface,
       elevation: 0,
@@ -65,13 +65,12 @@ class _ProfileBioState extends State<ProfileBio> {
           Expanded(
             child: CustomTextInputField(
               textEditingController: widget.pioTxtController,
-              initText: profileCubit.currentUser.bio ?? dummyBio,
+              initText: userCubit.currentUser.bio ?? dummyBio,
               maxLines: 5,
-              
               height: widget.pioTxtController.text.length > 40 ? 120 : 60,
               onSubmitted: (value) async {
-                profileCubit.currentUser.bio = value;
-                await profileCubit.updateUserProfile();
+                userCubit.currentUser.bio = value;
+                await userCubit.updateUserProfile();
               },
             ),
           ),
