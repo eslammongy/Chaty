@@ -1,10 +1,12 @@
 import 'dart:io';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:chaty/core/errors/auth_exceptions_handler.dart';
+import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
-import 'package:chaty/core/errors/auth_exceptions_handler.dart';
 import 'package:chaty/features/user/data/models/user_model.dart';
-import 'package:chaty/features/chats/data/models/chat_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'chat_states.dart';
 
@@ -71,7 +73,7 @@ class ChatCubit extends Cubit<ChatStates> {
   Future<void> fetchChatMessages({required String chatId}) async {
     emit(ChatSendingMsgLoadingState());
     List<MessageModel> messages = [];
-    chatRepo.fetchAllChatMsgs(chatId: chatId).listen(
+    chatRepo.fetchAllChatMessages(chatId: chatId).listen(
       (event) {
         if (event.data() != null && event['messages'] != null) {
           final chatMsgs = event['messages'] as List;
@@ -108,6 +110,7 @@ class ChatCubit extends Cubit<ChatStates> {
 
   handleListenToChatMsgs() async {
     final chat = openedChat;
+    debugPrint("Chat ID -> ${chat?.id}");
     if (isChatExist(chat!.id!) == null) {
       await createNewChat(chat: chat).then((_) async {
         await fetchChatMessages(chatId: chat.id!);

@@ -1,37 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:chaty/core/utils/helper.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/utils/app_routes.dart';
-import 'package:chaty/core/constants/constants.dart';
-import 'package:chaty/core/constants/app_assets.dart';
-import 'package:chaty/core/widgets/empty_state_ui.dart';
-import 'package:chaty/features/user/cubit/user_cubit.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chaty/features/user/data/models/user_model.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/features/chats/data/models/chat_model.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
+import 'package:chaty/features/user/data/models/user_model.dart';
 import 'package:chaty/features/user/view/widgets/friends_list_item.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 const String emptyChatsResponseMsg =
     "Currently, your friends list is empty and you don't have any friend yet..";
 
 class FriendsListView extends StatelessWidget {
-  const FriendsListView({super.key});
+  const FriendsListView({super.key, required this.friends});
+  final List<UserModel> friends;
 
   @override
   Widget build(BuildContext context) {
     final userCubit = UserCubit.get(context);
     return BlocBuilder<UserCubit, UserStates>(
       builder: (context, state) {
-        final friends = getFriends(userCubit);
-        if (friends.isEmpty && state is! UserInitialState) {
-          return EmptyStateUI(
-            imgPath: AppAssetsManager.emptyInbox,
-            text: state is UserSearchState
-                ? emptySearchResponseMsg
-                : emptyChatsResponseMsg, 
-          );
-        }
         return Expanded(
           child: ListView.builder(
             padding: EdgeInsets.only(bottom: 75.h),
@@ -71,14 +60,6 @@ class FriendsListView extends StatelessWidget {
   }
 
   void _navigateChatScreen(BuildContext context, ChatModel chat) {
-    GoRouter.of(context).push(AppRouter.chatScreen, extra: chat);
-  }
-
-  List<UserModel> getFriends(UserCubit userCubit) {
-    if (userCubit.state is UserSearchState) {
-      return userCubit.resultOfSearch;
-    } else {
-      return userCubit.friendsList;
-    }
+    GoRouter.of(context).push(AppRouter.chattingScreen, extra: chat);
   }
 }

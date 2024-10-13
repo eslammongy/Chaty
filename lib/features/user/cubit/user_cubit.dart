@@ -1,8 +1,9 @@
 import 'dart:io';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chaty/features/user/data/repos/user_repo.dart';
+
 import 'package:chaty/core/errors/auth_exceptions_handler.dart';
 import 'package:chaty/features/user/data/models/user_model.dart';
+import 'package:chaty/features/user/data/repos/user_repo.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'user_states.dart';
 
@@ -11,7 +12,7 @@ class UserCubit extends Cubit<UserStates> {
   final UserRepo userRepo;
   static UserCubit get(context) => BlocProvider.of(context);
   UserModel currentUser = UserModel();
-  final friendsList = <UserModel>[];
+  List<UserModel> friendsList = <UserModel>[];
   List<UserModel> resultOfSearch = [];
 
   Future<void> setNewUserProfile({required UserModel user}) async {
@@ -52,8 +53,8 @@ class UserCubit extends Cubit<UserStates> {
   }
 
   Future<void> fetchAllUserFriends() async {
+    if (friendsList.isNotEmpty) return;
     emit(UserLoadingState());
-
     var result = await userRepo.fetchAllFriends(
       (currentUser) {
         this.currentUser = currentUser;
@@ -64,7 +65,7 @@ class UserCubit extends Cubit<UserStates> {
       var errorMsg = ExceptionHandler.getExpMessage(errorStatus);
       emit(UserFailureState(errorMsg: errorMsg));
     }, (friends) {
-      friendsList.addAll(friends);
+      friendsList = friends;
       emit(UserLoadAllFriendsState());
     });
   }

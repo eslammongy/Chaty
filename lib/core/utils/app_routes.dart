@@ -1,15 +1,15 @@
-import 'package:go_router/go_router.dart';
 import 'package:chaty/core/utils/user_pref.dart';
-import 'package:chaty/features/chats/data/models/chat_model.dart';
-import 'package:chaty/features/dashboard/view/dashboard_screen.dart';
-import 'package:chaty/features/auth/view/screens/signup_screen.dart';
-import 'package:chaty/features/auth/view/screens/sign_in_screen.dart';
-import 'package:chaty/features/user/view/screens/profile_screen.dart';
-import 'package:chaty/features/chats/view/screen/chatting_screen.dart';
-import 'package:chaty/features/auth/view/widgets/forget_password.dart';
-import 'package:chaty/features/chats/view/screen/chat_list_screen.dart';
 import 'package:chaty/features/auth/view/screens/phone_auth_screen.dart';
+import 'package:chaty/features/auth/view/screens/sign_in_screen.dart';
+import 'package:chaty/features/auth/view/screens/signup_screen.dart';
 import 'package:chaty/features/auth/view/screens/verification_otp_screen.dart';
+import 'package:chaty/features/auth/view/widgets/forget_password.dart';
+import 'package:chaty/features/chats/data/models/chat_model.dart';
+import 'package:chaty/features/chats/view/screen/chat_list_screen.dart';
+import 'package:chaty/features/chats/view/screen/chatting_screen.dart';
+import 'package:chaty/features/dashboard/view/dashboard_screen.dart';
+import 'package:chaty/features/user/view/screens/profile_screen.dart';
+import 'package:go_router/go_router.dart';
 
 abstract class AppRouter {
   static String dashboardScreen = '/dashboard';
@@ -20,7 +20,7 @@ abstract class AppRouter {
   static String verifyingPhoneScreen = '/verifyingPhoneScreen';
   static String profileScreen = '/profileScreen';
   static String chatsListScreen = '/chatsListScreen';
-  static String chatScreen = '/chatScreen';
+  static String chattingScreen = '/chattingScreen';
   static String settingsScreen = '/settingsScreen';
 
   static bool isUserLogin = false;
@@ -77,7 +77,7 @@ abstract class AppRouter {
         builder: (context, state) => const ChatListScreen(),
       ),
       GoRoute(
-        path: chatScreen,
+        path: chattingScreen,
         builder: (context, state) {
           final chat = state.extra;
           return ChattingScreen(chat: chat as ChatModel);

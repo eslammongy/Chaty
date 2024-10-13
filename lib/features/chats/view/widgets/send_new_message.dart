@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chaty/core/services/fcm_services.dart';
-import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chaty/features/chats/view/widgets/msg_type_builder.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SendNewMessage extends StatelessWidget {
   const SendNewMessage({
@@ -25,8 +25,14 @@ class SendNewMessage extends StatelessWidget {
           await _sendImageMsg(chatCubit, state, userCubit);
         }
         if (state is ChatMsgSendedState) {
-          debugPrint("Start Sending Notification");
-          await _handleSendingMsgNotification(chatCubit, userCubit, state.msg);
+          if (chatCubit.openedChat!.messages!.isEmpty) {
+            chatCubit.openedChat!.messages!.add(state.msg);
+          }
+          await FCMService.handleSendingMsgNotification(
+            chatCubit,
+            userCubit,
+            state.msg,
+          );
         }
       },
       child: Row(
@@ -83,39 +89,5 @@ class SendNewMessage extends StatelessWidget {
     );
     msgController.clear();
     await chatCubit.sendNewTextMsg(chatId: chatCubit.openedChat!.id!, msg: msg);
-  }
-
-  Future<void> _handleSendingMsgNotification(
-    ChatCubit chatCubit,
-    UserCubit userCubit,
-    MessageModel msg,
-  ) async {
-    final chat = chatCubit.openedChat;
-    final userName = userCubit.currentUser.name ?? '';
-    if (chat == null || chat.participants == null) {
-      return;
-    }
-    final recipientId = chat.participants!.firstWhere(
-      (element) => element != userCubit.currentUser.uId,
-    );
-    await userCubit
-        .getRecipientDeviceToken(recipientId: recipientId)
-        .then((token) async {
-      debugPrint("recipient Token: $token");
-      if (token == null) return;
-      await _sendingNewMsgNotification(userName, msg, token);
-    });
-  }
-
-  Future<void> _sendingNewMsgNotification(
-    String userName,
-    MessageModel msg,
-    String token,
-  ) async {
-    await FCMService.sendNotifications(
-      sender: userName,
-      msg: msg.msgType == MsgType.text ? msg.text! : "sended an image",
-      recipientToken: token,
-    );
   }
 }

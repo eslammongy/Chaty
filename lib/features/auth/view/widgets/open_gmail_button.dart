@@ -1,9 +1,10 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:chaty/core/utils/helper.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 import 'package:android_intent_plus/android_intent.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/features/user/view/widgets/custom_text_button.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OpenGmailButton extends StatelessWidget {
   const OpenGmailButton({super.key, required this.shouldVisible});
@@ -31,11 +32,8 @@ class OpenGmailButton extends StatelessWidget {
       } else if (Platform.isIOS) {
         await _launchIOSMail(context, target: '', url: 'message://');
       }
-    } on Exception catch (e) {
-      Future(() => displaySnackBar(
-            context,
-            "something went wrong : ${e.toString()}",
-          ));
+    } on Exception catch (_) {
+      if (context.mounted) displaySnackBar(context, "something went wrong!}");
     }
   }
 
@@ -57,11 +55,8 @@ class OpenGmailButton extends StatelessWidget {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri);
       }
-    } on Exception catch (e) {
-      Future(() => displaySnackBar(
-            context,
-            "something went wrong : ${e.toString()}",
-          ));
+    } on Exception catch (_) {
+      if (context.mounted) displaySnackBar(context, "something went wrong!}");
     }
   }
 }

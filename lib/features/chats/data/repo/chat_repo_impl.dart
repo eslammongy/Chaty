@@ -1,13 +1,15 @@
 import 'dart:io';
-import 'package:dartz/dartz.dart';
+
+import 'package:chaty/core/errors/auth_exceptions_handler.dart';
 import 'package:chaty/core/errors/exp_enum.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:chaty/features/chats/data/models/chat_model.dart';
 import 'package:chaty/features/chats/data/models/message.dart';
 import 'package:chaty/features/chats/data/repo/chat_repo.dart';
-import 'package:chaty/core/errors/auth_exceptions_handler.dart';
-import 'package:chaty/features/chats/data/models/chat_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 
 class ChatRepoImpl extends ChatRepo {
   final chatCollection = FirebaseFirestore.instance.collection("chats");
@@ -34,25 +36,30 @@ class ChatRepoImpl extends ChatRepo {
       final listOfChats = <ChatModel>[];
       final userChats = await chatCollection
           .where('participants', arrayContains: userID)
-          .orderBy('__name__')
+          //  .orderBy('__last_update__')
           .get();
-      for (var element in userChats.docs) {
-        final chat = element.data();
-        if (chat['messages'] != null && chat['messages'].isNotEmpty) {
-          final messages = chat['messages'] as List;
-          chat['messages'] = messages.reversed;
-          listOfChats.add(ChatModel.fromMap(chat));
-        } else {
-          continue;
-        }
-      }
-
+      _fillUserChatList(userChats, listOfChats);
       return right(listOfChats);
     } catch (error) {
+      debugPrint("fetchAllUserChats error: $error");
       if (error is FirebaseException) {
         return left(ExceptionHandler.handleException(error.code));
       }
       return left(ExceptionHandler.handleException(error));
+    }
+  }
+
+  void _fillUserChatList(QuerySnapshot<Map<String, dynamic>> userChats,
+      List<ChatModel> listOfChats) {
+    for (var element in userChats.docs) {
+      final chat = element.data();
+      if (chat['messages'] != null && chat['messages'].isNotEmpty) {
+        final messages = chat['messages'] as List;
+        chat['messages'] = messages.reversed;
+        listOfChats.add(ChatModel.fromMap(chat));
+      } else {
+        continue;
+      }
     }
   }
 
@@ -63,6 +70,7 @@ class ChatRepoImpl extends ChatRepo {
   }) async {
     try {
       await chatCollection.doc(chatId).update({
+        'last_update': Timestamp.now(),
         'messages': FieldValue.arrayUnion([msg.toMap()])
       });
       return right(msg);
@@ -75,7 +83,7 @@ class ChatRepoImpl extends ChatRepo {
   }
 
   @override
-  Stream<DocumentSnapshot<Map<String, dynamic>>> fetchAllChatMsgs({
+  Stream<DocumentSnapshot<Map<String, dynamic>>> fetchAllChatMessages({
     required String chatId,
   }) {
     return chatCollection.doc(chatId).snapshots();

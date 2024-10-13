@@ -1,15 +1,17 @@
-import 'dart:io';
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'dart:io';
+
+import 'package:chaty/core/constants/fcm_constants.dart';
 import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/utils/user_pref.dart';
-import 'package:toastification/toastification.dart';
-import 'package:googleapis_auth/auth_io.dart' as auth;
-import 'package:chaty/core/constants/fcm_constants.dart';
-import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:chaty/features/chats/cubit/chat_cubit.dart';
+import 'package:chaty/features/chats/data/models/message.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:googleapis_auth/auth_io.dart' as auth;
+import 'package:http/http.dart' as http;
+import 'package:toastification/toastification.dart';
 
 class FCMService {
   static String userDeviceToken = "";
@@ -182,5 +184,39 @@ class FCMService {
     } catch (e) {
       debugPrint("Error sending notification: $e");
     }
+  }
+
+  static Future<void> handleSendingMsgNotification(
+    ChatCubit chatCubit,
+    UserCubit userCubit,
+    MessageModel msg,
+  ) async {
+    final chat = chatCubit.openedChat;
+    final userName = userCubit.currentUser.name ?? '';
+    if (chat == null || chat.participants == null) {
+      return;
+    }
+    final recipientId = chat.participants!.firstWhere(
+      (element) => element != userCubit.currentUser.uId,
+    );
+    await userCubit
+        .getRecipientDeviceToken(recipientId: recipientId)
+        .then((token) async {
+      debugPrint("recipient Token: $token");
+      if (token == null) return;
+      await sendingNewMsgNotification(userName, msg, token);
+    });
+  }
+
+  static Future<void> sendingNewMsgNotification(
+    String userName,
+    MessageModel msg,
+    String token,
+  ) async {
+    await FCMService.sendNotifications(
+      sender: userName,
+      msg: msg.msgType == MsgType.text ? msg.text! : "sent an image",
+      recipientToken: token,
+    );
   }
 }

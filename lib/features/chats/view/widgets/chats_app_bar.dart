@@ -1,47 +1,40 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:chaty/core/utils/helper.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chaty/core/utils/debouncer.dart';
 import 'package:chaty/core/constants/constants.dart';
-import 'package:chaty/features/user/cubit/user_cubit.dart';
-import 'package:chaty/features/chats/cubit/chat_cubit.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:chaty/features/settings/cubit/settings_cubit.dart';
+import 'package:chaty/core/utils/debouncer.dart';
+import 'package:chaty/core/utils/helper.dart';
 import 'package:chaty/core/widgets/cache_network_profile_img.dart';
 import 'package:chaty/features/auth/view/widgets/custom_text_input_filed.dart';
+import 'package:chaty/features/chats/cubit/chat_cubit.dart';
+import 'package:chaty/features/user/cubit/user_cubit.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ChatsAppBar({super.key, required this.searchHint});
-  final String searchHint;
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key, required this.index});
+  final int index;
 
   static Size heightOfAppBar = Size.fromHeight(kToolbarHeight + 30.h);
   @override
   Widget build(BuildContext context) {
     final searchTextController = TextEditingController();
-    final debouncer = Debounce(delay: const Duration(milliseconds: 150));
-  final chatCubit = ChatCubit.get(context);
+    final debounce = Debounce(delay: const Duration(milliseconds: 150));
+    final chatCubit = ChatCubit.get(context);
     final userCubit = UserCubit.get(context);
     final theme = Theme.of(context);
     return PreferredSize(
       preferredSize: Size.fromHeight(100.h),
       child: BlocConsumer<UserCubit, UserStates>(
+        bloc: userCubit..fetchAllUserFriends(),
         listener: (context, state) async {
-          final settingCubit = SettingsCubit.get(context);
-          if (state is UserLoadingState && settingCubit.currentPageIndex != 2) {
-            showLoadingDialog(context, text: "loading profile info...");
-          }
-          if (state is UserLoadAllFriendsState && context.mounted) {
-            _closeLoadingIndicator(context);
+          if (state is UserLoadAllFriendsState) {
             if (ChatCubit.get(context).listOfChats.isEmpty) {
               final friends = UserCubit.get(context).friendsList;
               await ChatCubit.get(context).fetchAllUserChats(friends: friends);
             }
           }
-          if (state is UserFailureState && context.mounted) {
-            _closeLoadingIndicator(context);
-            displayToastMsg(context, state.errorMsg);
+          if (state is UserFailureState) {
+            if (context.mounted) displayToastMsg(context, state.errorMsg);
           }
         },
         builder: (context, state) {
@@ -80,14 +73,16 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 prefix: const Icon(
                                   FontAwesomeIcons.magnifyingGlass,
                                 ),
-                                hint: searchHint,
+                                hint: index == 0
+                                    ? searchForChatHint
+                                    : searchForFriendHint,
                                 onChange: (text) {
-                                  debouncer.call(
+                                  debounce.call(
                                     () {
-                                      if (searchHint == searchForFriendHint) {
-                                        userCubit.searchForFriend(text!);
-                                      } else {
+                                      if (index == 0) {
                                         chatCubit.searchForChat(text!);
+                                      } else {
+                                        userCubit.searchForFriend(text!);
                                       }
                                     },
                                   );
@@ -106,10 +101,6 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  /// close loading dialog
-  void _closeLoadingIndicator(BuildContext context) =>
-      GoRouter.of(context).pop();
 
   @override
   Size get preferredSize => heightOfAppBar;
