@@ -18,7 +18,9 @@ import 'package:chaty/core/services/services_locator.dart' as injectable;
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  await initAppConfiguration();
+  await Firebase.initializeApp().whenComplete(
+    () async => await initAppConfiguration(),
+  );
 }
 
 Future<void> initAppConfiguration() async {
@@ -26,12 +28,12 @@ Future<void> initAppConfiguration() async {
     await Firebase.initializeApp();
     await injectable.initServices();
     await AppRouter.setInitialRoute();
+    runApp(const Chatty());
   } catch (e) {
     FlutterNativeSplash.remove();
     runApp(ErrorScreen(error: e.toString()));
   } finally {
     FlutterNativeSplash.remove();
-    runApp(const Chatty());
   }
 }
 
@@ -81,3 +83,5 @@ class Chatty extends StatelessWidget {
     );
   }
 }
+//dart pub global activate flutterfire_cli
+//flutterfire configure --project=chatty-dev990
