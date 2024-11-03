@@ -17,9 +17,11 @@ class AuthRepoImplementation implements AuthRepo {
   Future<Either<ExceptionsType, UserModel>> signInWithGoogle() async {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
+        debugPrint(
+          "**Auth With Google User Named: ${googleSignIn.currentUser?.authentication}");
+
       GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
-      debugPrint(
-          "**Auth With Google User Named: ${googleAccount?.displayName}");
+    
       GoogleSignInAuthentication? authentication =
           await googleAccount?.authentication;
 

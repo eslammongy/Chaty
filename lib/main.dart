@@ -83,5 +83,3 @@ class Chatty extends StatelessWidget {
     );
   }
 }
-//dart pub global activate flutterfire_cli
-//flutterfire configure --project=chatty-dev990

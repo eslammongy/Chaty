@@ -53,7 +53,10 @@ class UserCubit extends Cubit<UserStates> {
 
   Future<void> fetchAllUserFriends() async {
     emit(UserLoadingState());
-
+   if(friendsList.isNotEmpty){
+     emit(UserLoadAllFriendsState());
+     return;
+   }
     var result = await userRepo.fetchAllFriends(
       (currentUser) {
         this.currentUser = currentUser;

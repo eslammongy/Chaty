@@ -1,3 +1,5 @@
+import 'package:chaty/core/constants/constants.dart';
+import 'package:chaty/features/chats/view/widgets/chats_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:chaty/core/services/fcm_services.dart';
 import 'package:chaty/features/user/cubit/user_cubit.dart';
@@ -35,6 +37,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final settingsCubit = SettingsCubit.get(context);
     return Scaffold(
       extendBody: true,
+      appBar:  settingsCubit.currentPageIndex == 2 ? null : ChatsAppBar(
+            searchHint:settingsCubit.currentPageIndex == 0 ? searchForChatHint : searchForFriendHint,
+          ),
       body: listOfScreens[settingsCubit.currentPageIndex],
       bottomNavigationBar: FloatingBottomNavBar(
         currentIndex: settingsCubit.currentPageIndex,

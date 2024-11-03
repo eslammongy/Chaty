@@ -27,7 +27,7 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
       preferredSize: Size.fromHeight(100.h),
       child: BlocConsumer<UserCubit, UserStates>(
         listener: (context, state) async {
-          if (state is UserLoadingState) {
+          if (state is! UserLoadingState) {
             showLoadingDialog(context, text: "loading profile info...");
           }
           if (state is UserLoadAllFriendsState && context.mounted) {
@@ -44,7 +44,8 @@ class ChatsAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
         builder: (context, state) {
           return SizedBox(
-              height: 100.h,
+              height: 110.h,
+              width: double.infinity,
               child: Card(
                   color: theme.colorScheme.surface,
                   elevation: 2,
