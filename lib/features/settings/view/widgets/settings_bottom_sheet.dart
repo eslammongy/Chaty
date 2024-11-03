@@ -84,7 +84,7 @@ class SettingsBottomSheet extends StatelessWidget {
       onChanged: (value) {
         settingCubit.isLight = value;
         Future.delayed(const Duration(milliseconds: 100), () {
-          debugPrint("Theme Switcher:: ${settingCubit.isLight}");
+          debugPrint("Theme Switcher:: $value");
           if (value) {
             settingCubit.switchAppTheme(lightThemeData());
           } else {

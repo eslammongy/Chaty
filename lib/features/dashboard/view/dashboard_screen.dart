@@ -38,7 +38,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       extendBody: true,
       appBar:  settingsCubit.currentPageIndex == 2 ? null : ChatsAppBar(
-            searchHint:settingsCubit.currentPageIndex == 0 ? searchForChatHint : searchForFriendHint,
+            searchHint:settingsCubit.currentPageIndex == 0 
+            ? searchForChatHint : searchForFriendHint,
           ),
       body: listOfScreens[settingsCubit.currentPageIndex],
       bottomNavigationBar: FloatingBottomNavBar(

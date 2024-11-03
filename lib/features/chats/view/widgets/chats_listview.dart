@@ -24,7 +24,8 @@ class ChatsList extends StatelessWidget {
     return BlocBuilder<ChatCubit, ChatStates>(
       builder: (context, state) {
         final chats = getChats(chatCubit);
-        if (chats.isEmpty || state is! ChatInitialState) {
+        // should be an && operator
+        if (chats.isEmpty && state is! ChatInitialState) {
           return EmptyStateUI(
             imgPath: AppAssetsManager.emptyInbox,
             text: state is ChatSearchState

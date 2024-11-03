@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:chaty/core/theme/dark_palette.dart';
 import 'package:toastification/toastification.dart';
 import 'package:chaty/core/constants/app_assets.dart';
 import 'package:chaty/core/widgets/loading_state_ui.dart';
@@ -142,13 +141,15 @@ void displayToastMsg(
     context: context,
     title: Text(
       "Chatty",
-      style: theme.textTheme.titleLarge
-          ?.copyWith(color: DarkPalette.backgroundDarkColor),
+      style: theme.textTheme.titleLarge?.copyWith(
+        color: theme.colorScheme.onSurface,
+      ),
     ),
     description: Text(
       msg,
-      style: theme.textTheme.titleMedium
-          ?.copyWith(color: DarkPalette.backgroundDarkColor),
+      style: theme.textTheme.titleMedium?.copyWith(
+        color: theme.colorScheme.onSurface,
+      ),
     ),
     icon: SvgPicture.asset(
       AppAssetsManager.appLogo,
@@ -157,7 +158,7 @@ void displayToastMsg(
     type: type ?? ToastificationType.info,
     style: ToastificationStyle.flat,
     borderSide: BorderSide.none,
-    backgroundColor: Colors.white,
+    backgroundColor: theme.colorScheme.surface,
     alignment: alignment,
     autoCloseDuration: const Duration(seconds: 2),
   );
@@ -200,13 +201,11 @@ Future<XFile?> pickGalleryImage(BuildContext context) async {
     final XFile? pickedFile =
         await picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedFile == null) return null;
+    if (pickedFile == null && !context.mounted) return null;
 
     return pickedFile;
   } on Exception catch (e) {
-    Future(() {
-      displaySnackBar(context, e.toString());
-    });
+    displaySnackBar(context, e.toString());
   }
   return null;
 }
@@ -215,13 +214,11 @@ Future<XFile?> pickGalleryImage(BuildContext context) async {
 Future<XFile?> pickImageFromCamera(BuildContext context) async {
   try {
     final pickedImg = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedImg == null) return null;
+    if (pickedImg == null && !context.mounted) return null;
     return pickedImg;
   } on Exception catch (e) {
-    Future(() {
-      displaySnackBar(context, e.toString());
-    });
+    displaySnackBar(context, e.toString());
   }
-  Future(() => GoRouter.of(context).pop());
+  GoRouter.of(context).pop();
   return null;
 }

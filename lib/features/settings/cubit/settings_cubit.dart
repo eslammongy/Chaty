@@ -22,9 +22,10 @@ class SettingsCubit extends Cubit<SettingsStates> {
 
   switchAppTheme(ThemeData theme) {
     try {
-      settingsRepo.switchAppTheme(theme: theme);
-      currentTheme = theme;
+      settingsRepo.switchAppTheme(theme: currentTheme = theme);
+
       isLight = currentTheme == lightThemeData();
+      debugPrint("The theme selected:: ${isLight}");
       emit(SettingsSwitchThemeState());
     } catch (e) {
       emit(SettingsFailureState(error: e.toString()));

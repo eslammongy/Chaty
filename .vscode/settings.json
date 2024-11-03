@@ -3,6 +3,7 @@
         "chaty",
         "Firestore",
         "screenutil",
-        "Signup"
+        "Signup",
+        "Toastification"
     ]
 }

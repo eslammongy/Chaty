@@ -29,8 +29,9 @@ class SettingsRepoImpl extends SettingsRepo {
     try {
       if (theme == darkThemeData()) {
         SharedPref.saveSelectedTheme("DARK_THEME");
+      } else {
+        SharedPref.saveSelectedTheme("LIGHT_THEME");
       }
-      SharedPref.saveSelectedTheme("LIGHT_THEME");
     } catch (e) {
       //* Indicate there is an exception happened when saving user preferred theme
       throw Exception("Failed to save the selected theme.");
